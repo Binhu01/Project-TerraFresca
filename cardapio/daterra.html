@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" 
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="./styles/output.css">
+
+    <title>Da Terra</title>
+</head>
+<body>
+     <!-- Header -->
+      
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+     <div class="w-full h-full flex flex-col justify-center items-center">
+        <img
+        src="../img/Logo_Da_Terra-removebg-preview.png"
+        alt="Logo Vida Pura"
+        class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
+        />
+        <h1 class="text-3xl mt-4 mb-2 font-bold text-white">
+           Da Terra
+        </h1>
+
+     <span class="text-white font-medium">Mercado da Produção, Centro</span>
+
+      <div class="bg-green-600 px-4 py-1 rounded-lg mt-5 shadow-lg" id="date-span">
+        <span class="text-white font-medium">
+            Segunda à Sábado - 07:00 às 18:00 
+        </span>
+      </div>
+
+     </div>
+    </header>
+
+     <!-- Fim do Header -->
+
+     <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6 text-white">
+        Lista de produtos:
+     </h2>
+
+<!--Início Menu-->
+<div id="menu">
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+
+<!--Produto Item-->
+        <div class="flex gap-2">
+   <img
+   src="./assets/Goiaba.jpg"
+   alt="Goiaba Orgânica"
+   class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+   />
+
+   <div>
+    <p class="font-bold text-white">Goiaba(KG)</p>
+    <p class="text-sm">
+        "Goiabas frescas e suculentas, cultivadas sem agrotóxicos, com sabor doce e natural. Perfeitas para consumir in natura, em sucos ou sobremesas. Saúde e qualidade direto do campo para a sua mesa!"</p>
+   </div>
+
+   <div class="flex items-center gap-2 justify-between mt-3">
+    <p class="font-bold text-lg">R$24.90</p>
+
+    <button 
+    class="bg-green-800 px-5 rounded add-to-cart-btn"
+    data-name="Goiaba"
+    data-price="24.90"
+    >
+        <i class="fa fa-cart-plus text-lg text-white"></i>
+    </button>
+      </div>
+</div>
+<!-- Fim Produto Item-->
+
+<!--Produto Item 2-->
+<div class="flex gap-2">
+    <img
+    src="./assets/Laranja.jpg"
+    alt="Laranjas Orgânicas"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Laranja(KG)</p>
+     <p class="text-sm">Laranjas frescas, sem agrotóxicos, repletas de suco e sabor natural. Ideais para um suco refrescante ou para consumir in natura. Garantia de frescor e qualidade em cada pedaço!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$13.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Laranja"
+     data-price="13.90"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 2-->
+
+ <!--Produto Item 3-->
+<div class="flex gap-2">
+    <img
+    src="./assets/maçã.jpg"
+    alt="Maçã Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Maçã(KG)</p>
+     <p class="text-sm">Maçãs frescas e crocantes, cultivadas sem agrotóxicos, com sabor doce e natural. Perfeitas para um lanche saudável ou para complementar suas receitas. Qualidade e frescor em cada mordida!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$14.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Maçã"
+     data-price="14.90"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 3-->
+
+ <!--Produto Item 4-->
+<div class="flex gap-2">
+    <img
+    src="./assets/uva.webp"
+    alt="Couve Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Uva(KG)</p>
+     <p class="text-sm">Uvas frescas e doces, cultivadas sem agrotóxicos, com sabor intenso e natural. Ideais para um lanche saudável ou para dar aquele toque especial às suas receitas. Sinta o frescor e a qualidade em cada cacho!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$15.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Couve"
+     data-price="15.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 4-->
+
+ 
+ <!--Produto Item 5-->
+        <div class="flex gap-2">
+   <img
+   src="./assets/Maracujá.jpg"
+   alt="Goiaba Orgânica"
+   class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+   />
+
+   <div>
+    <p class="font-bold text-white">Maracujá(KG)</p>
+    <p class="text-sm">
+        Maracujás frescos e aromáticos, cultivados sem agrotóxicos, com sabor intenso e refrescante. Perfeitos para sucos, sobremesas ou para saborear in natura. Sinta a energia e o frescor em cada fruta!</p>
+   </div>
+
+   <div class="flex items-center gap-2 justify-between mt-3">
+    <p class="font-bold text-lg">R$19.90</p>
+
+    <button 
+    class="bg-green-800 px-5 rounded add-to-cart-btn"
+    data-name="Maracujá"
+    data-price="19.9"
+    >
+        <i class="fa fa-cart-plus text-lg text-white"></i>
+    </button>
+      </div>
+</div>
+<!-- Fim Produto Item 5-->
+
+<!--Produto Item 6-->
+<div class="flex gap-2">
+    <img
+    src="./assets/morango.jpg"
+    alt="Goiaba Orgânica"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Morango(KG)</p>
+     <p class="text-sm">
+        Morangos fresquinhos, doces e suculentos, cultivados sem agrotóxicos. Perfeitos para um lanche saudável, sobremesas ou sucos refrescantes. Sabor natural e frescor em cada fruta!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$34.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Morango"
+     data-price="34.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+       </div>
+ </div>
+ <!-- Fim Produto Item 6-->
+ 
+
+
+
+    </main>
+
+<div class="mx-auto max-w-7xl px-2 my-2">
+    <h2 class="font-bold text-3xl">
+    Bebidas
+    </h2>
+</div>
+
+<!--Grid Bebidas-->
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16" id="menu">
+ <!--Produto bebida -->
+ <div class="flex gap-2 w-full">
+    <img
+    src="./assets/Água coco.webp"
+    alt="Achocolatado Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div class="w-full">
+     <p class="font-bold text-white">água de Coco (500ml)</p>
+     <p class="text-sm">Água de coco natural, refrescante e cheia de sabor! Ideal para hidratar e revitalizar seu corpo, com todos os benefícios da natureza em cada gole. Perfeita para qualquer momento do dia!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$6.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Água de Coco"
+     data-price="24.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim bebida -->
+ 
+  <!--Produto bebida 2-->
+<div class="flex gap-2">
+    <img
+    src="./assets/Wewi.webp"
+    alt="Cerveja SteinHaus"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Energético Wewi (269Ml)</p>
+     <p class="text-sm">Energético Wewi: a dose de energia que você precisa para o dia todo! Com ingredientes naturais e sem aditivos artificiais, oferece um sabor único e a vitalidade que você busca para manter o ritmo. Sinta o poder de estar sempre ativo!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$7.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Energético Wewi"
+     data-price="20.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Bebida 2-->
+
+</div>
+
+<!--Fim Grid Bebidas-->
+
+</div>
+<!--Fim Menu-->
+
+<!--Modal Cart-->
+
+<div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
+    <div class="bg-white p-5 rounded-md min-w-[90%] md:m-w-[600px]">
+    <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+
+    <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+
+    <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+
+    <p class="font-bold mt-4">Endereço de Entrega:</p>
+
+    <input 
+    type="text"
+    placeholder="Digite seu endereço completo"
+    id="address"
+    class="w-full border-2 p-1 rounded my-1"
+    />
+
+    <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
+
+    <div class="flex items-center justify-between mt-4 w-full">
+        <button id="close-modal-btn">Fechar</button>
+        <button id="checkout-btn" class="bg-green-700 text-white px-4 py-1 rounded">Finalizar Pedido</button>
+
+    </div>
+</div>
+</div>
+
+<!-- Fim Modal Cart-->
+
+
+<!-- Button Footer-->
+
+<footer class="w-full bg-green-800 py-2 fixed bottom-0  flex items-center justify-center">
+    <button class="flex items-center gap-2 text-white font-bold" id="cart-btn">
+        (<span id="cart-count">0</span>)
+        Ver meu carrinho    
+        <i class="fa fa-cart-plus text-lg text-white"></i>
+    </button>
+</footer>
+
+ <!-- Fim Button Footer-->
+
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

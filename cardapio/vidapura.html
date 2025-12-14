@@ -1,0 +1,285 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" 
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="./styles/output.css">
+
+    <title>Vida Pura</title>
+</head>
+<body>
+     <!-- Header -->
+      
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+     <div class="w-full h-full flex flex-col justify-center items-center">
+        <img
+        src="./assets/Logo_Vida_Pura-removebg-preview.png"
+        alt="Logo Vida Pura"
+        class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
+        />
+        <h1 class="text-3xl mt-4 mb-2 font-bold text-white">
+            Vida Pura
+        </h1>
+
+     <span class="text-white font-medium">Feirinha do Village, Vilage II</span>
+
+      <div class="bg-green-600 px-4 py-1 rounded-lg mt-5 shadow-lg" id="date-span">
+        <span class="text-white font-medium">
+            Segunda à Domingo - 07:00 às 17:00 
+        </span>
+      </div>
+
+     </div>
+    </header>
+
+     <!-- Fim do Header -->
+
+     <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6 text-white">
+        Lista de produtos:
+     </h2>
+
+<!--Início Menu-->
+<div id="menu">
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+
+<!--Produto Item-->
+        <div class="flex gap-2">
+   <img
+   src="./assets/cenoura.jpg"
+   alt="Cenouras Orgânicas"
+   class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+   />
+
+   <div>
+    <p class="font-bold text-white">Cenoura (KG)</p>
+    <p class="text-sm">Cenouras naturais cultivadas sem agrotóxicos, fresquinhas e cheias de sabor. Perfeitas para suas receitas saudáveis ​​e nutritivas. Vendidas por quilo!</p>
+   </div>
+
+   <div class="flex items-center gap-2 justify-between mt-3">
+    <p class="font-bold text-lg">R$7.90</p>
+
+    <button 
+    class="bg-green-800 px-5 rounded add-to-cart-btn"
+    data-name="Cenoura"
+    data-price="7.90"
+    >
+        <i class="fa fa-cart-plus text-lg text-white"></i>
+    </button>
+      </div>
+</div>
+<!-- Fim Produto Item-->
+
+<!--Produto Item 2-->
+<div class="flex gap-2">
+    <img
+    src="./assets/cebola.jpg"
+    alt="Cebolas Orgânicas"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Cebola (KG)</p>
+     <p class="text-sm">Cebolas naturais e frescas, cultivadas sem agrotóxicos, com sabor marcante e qualidade incomparável. Perfeitas para realçar o sabor das suas receitas favoritas, direto da terra para a sua mesa. Peça agora por quilo e transforme sua cozinha!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$4.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Cebola"
+     data-price="4.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 2-->
+
+ <!--Produto Item 3-->
+<div class="flex gap-2">
+    <img
+    src="./assets/Alface.jpg"
+    alt="Alface Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Alface (KG)</p>
+     <p class="text-sm">Alface fresquinho, cultivado sem agrotóxicos, com folhas crocantes e cheias de sabor natural. Ideal para saladas leves e nutritivas ou para acompanhar suas refeições. Peça agora e leve saúde para sua mesa!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$9.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Alface"
+     data-price="9.9"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 3-->
+
+ <!--Produto Item 4-->
+<div class="flex gap-2">
+    <img
+    src="./assets/couve.jpg"
+    alt="Couve Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Couve (KG)</p>
+     <p class="text-sm">Couve fresca e natural, cultivada sem agrotóxicos, com folhas vibrantes e cheias de sabor. Perfeita para sucos, refogados ou aquela receita caseira especial. Garanta mais saúde e sabor no seu prato!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$8.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Couve"
+     data-price="8.90"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Produto Item 4-->
+
+
+    </main>
+
+<div class="mx-auto max-w-7xl px-2 my-2">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6 text-white">
+    Bebidas
+    </h2>
+</div>
+
+<!--Grid Bebidas-->
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16" id="menu">
+ <!--Produto bebida -->
+ <div class="flex gap-2 w-full">
+    <img
+    src="./assets/Achocolatado.webp"
+    alt="Achocolatado Orgânico"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div class="w-full">
+     <p class="font-bold text-white">Achocolatado Orgânico (400g)</p>
+     <p class="text-sm">Achocolatado Native: sabor irresistível e 100% orgânico! Feito com ingredientes naturais e sustentáveis, é perfeito para começar o dia com energia ou para aquele momento de pausa. Rico em sabor e cuidado com o meio ambiente. Experimente e apaixone-se!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$24.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Achocolatado"
+     data-price="24.90"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim bebida -->
+ 
+  <!--Produto bebida 2-->
+<div class="flex gap-2">
+    <img
+    src="./assets/Cerveja.jpg"
+    alt="Cerveja SteinHaus"
+    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    />
+ 
+    <div>
+     <p class="font-bold text-white">Cerveja SteinHaus (500Ml)</p>
+     <p class="text-sm">Cerveja SteinHaus: tradição e qualidade em cada gole. Produzida artesanalmente, com ingredientes selecionados, oferece um sabor único e equilibrado para os amantes de uma boa cerveja. Ideal para momentos especiais ou para relaxar com estilo. Experimente a diferença!</p>
+    </div>
+ 
+    <div class="flex items-center gap-2 justify-between mt-3">
+     <p class="font-bold text-lg">R$20.90</p>
+ 
+     <button 
+     class="bg-green-800 px-5 rounded add-to-cart-btn"
+     data-name="Cerveja"
+     data-price="20.90"
+     >
+         <i class="fa fa-cart-plus text-lg text-white"></i>
+     </button>
+    </div>
+ </div>
+ <!-- Fim Bebida 2-->
+
+</div>
+
+<!--Fim Grid Bebidas-->
+
+</div>
+<!--Fim Menu-->
+
+<!--Modal Cart-->
+
+<div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
+    <div class="bg-white p-5 rounded-md min-w-[90%] md:m-w-[600px]">
+    <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+
+    <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+
+    <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+
+    <p class="font-bold mt-4">Endereço de Entrega:</p>
+
+    <input 
+    type="text"
+    placeholder="Digite seu endereço completo"
+    id="address"
+    class="w-full border-2 p-1 rounded my-1"
+    />
+
+    <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
+
+    <div class="flex items-center justify-between mt-4 w-full">
+        <button id="close-modal-btn">Fechar</button>
+        <button id="checkout-btn" class="bg-green-700 text-white px-4 py-1 rounded">Finalizar Pedido</button>
+
+    </div>
+</div>
+</div>
+
+<!-- Fim Modal Cart-->
+
+
+<!-- Button Footer-->
+
+<footer class="w-full bg-green-800 py-2 fixed bottom-0  flex items-center justify-center">
+    <button class="flex items-center gap-2 text-white font-bold" id="cart-btn">
+        (<span id="cart-count">0</span>)
+        Ver meu carrinho    
+        <i class="fa fa-cart-plus text-lg text-white"></i>
+    </button>
+</footer>
+
+ <!-- Fim Button Footer-->
+
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
