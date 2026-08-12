@@ -1,21 +1,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-/* ============================
-   Terra Fresca — Design Tokens
-   Verde / Branco / Nude, inspirado na paisagem dos assentamentos
-   ============================ */
+
 :root{
-    --forest: #1E3320;      /* verde-mata profundo — headers, footer, texto de destaque */
-    --forest-soft: #2B4530; /* verde-mata mais claro — gradientes, hover em fundo escuro */
-    --moss: #4C6B45;        /* verde-musgo — botões, links, ícones */
-    --moss-light: #6E8F62;  /* verde-musgo claro — hover de botão */
-    --sage: #B9C6A9;        /* verde-sálvia — bordas, detalhes suaves */
-    --nude: #E9DCC7;        /* nude/areia — fundos alternados, cards */
-    --nude-light: #F2E9D8;  /* nude claro — fundos suaves */
-    --cream: #FBF8F2;       /* branco quente — fundo base do site */
-    --honey: #B8863B;       /* mel — detalhe de destaque (estrelas, sublinhados) */
-    --ink: #24291F;         /* texto principal, verde-quase-preto */
+    --forest: #1E3320;     
+    --forest-soft: #2B4530; 
+    --moss: #4C6B45;        
+    --moss-light: #6E8F62;  
+    --sage: #B9C6A9;        
+    --nude: #E9DCC7;        
+    --nude-light: #F2E9D8;  
+    --cream: #FBF8F2;       
+    --honey: #B8863B;       
+    --ink: #24291F;        
     --ink-soft: rgba(36, 41, 31, 0.68);
     --white: #FFFFFF;
     --shadow-soft: 0 20px 45px -20px rgba(30, 51, 32, 0.35);
