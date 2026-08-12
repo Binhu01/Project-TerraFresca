@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,277 +7,239 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link rel="stylesheet" href="./styles/output.css">
+    <link rel="stylesheet" href="./styles/output.css">
 
     <title>BotaniCare</title>
 </head>
-<body>
+<body class="font-sans text-ink bg-cream">
      <!-- Header -->
-      
-    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
-     <div class="w-full h-full flex flex-col justify-center items-center">
-        <img
-        src="../img/Logo_BotaniCare-removebg-preview.png"
-        alt="Logo Vida Pura"
-        class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
-        />
-        <h1 class="text-3xl mt-4 mb-2 font-bold text-white">
-           BotaniCare
-        </h1>
+    <header class="relative w-full min-h-[440px] overflow-hidden bg-forest">
+        <div class="absolute inset-0 header-photo header-botanicare"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-forest/80 via-forest/55 to-forest/90"></div>
+        <div class="absolute inset-0 contour-overlay"></div>
 
-     <span class="text-white font-medium">Mercado Público, Jacintinho</span>
+        <div class="relative w-full h-full flex flex-col justify-center items-center text-center px-4 py-16">
+            <img
+            src="../img/logo_botanicare-removebg-preview.png"
+            alt="Logo BotaniCare"
+            class="w-28 h-28 rounded-full ring-4 ring-nude/30 shadow-xl object-cover bg-cream hover:scale-105 transition duration-300"
+            />
+            <h1 class="font-serif italic text-4xl md:text-5xl text-cream mt-6">
+                BotaniCare
+            </h1>
 
-      <div class="bg-green-600 px-4 py-1 rounded-lg mt-5 shadow-lg" id="date-span">
-        <span class="text-white font-medium">
-            Segunda à Sábado - 10:00 às 20:00 
-        </span>
-      </div>
+            <span class="text-nude/80 font-medium mt-2 tracking-wide">Mercado Público, Jacintinho</span>
 
-     </div>
+            <div class="inline-flex items-center gap-2 bg-green-600 px-5 py-2 rounded-full mt-6 shadow-lg" id="date-span">
+                <i class="fa fa-clock text-cream text-sm"></i>
+                <span class="text-cream font-semibold text-sm">
+                    Segunda à Sábado · 10:00 às 20:00
+                </span>
+            </div>
+        </div>
     </header>
+    <!-- Fim do Header -->
 
-     <!-- Fim do Header -->
-
-     <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6 text-white">
-        Lista de produtos:
-     </h2>
+    <h2 class="font-serif italic text-3xl md:text-4xl font-medium text-center mt-16 mb-10 text-forest">
+        Lista de produtos
+    </h2>
 
 <!--Início Menu-->
 <div id="menu">
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16">
 
 <!--Produto Item-->
-        <div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
    <img
-   src="./assets/Sabonete Facial.webp"
-   alt="Goiaba Orgânica"
-   class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+   src="./assets/sabonete facial.webp"
+   alt="Sabonete Facial"
+   class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
    />
-
-   <div>
-    <p class="font-bold text-white">Sabonete Facial(60g)</p>
-    <p class="text-sm">
-        Sabonete natural de Arroz + Aveia: benefícios e nutrição para a pele. Rico em propriedades hidratantes, limpa delicadamente enquanto promove renovação celular e deixa a pele macia e radiante. Livre de produtos químicos e ideal para todos os tipos de pele!</p>
+   <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Sabonete Facial (60g)</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Sabonete natural de arroz + aveia: hidrata, limpa delicadamente e promove renovação celular. Livre de químicos e ideal para todos os tipos de pele!</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$33,90</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Sabonete Facial"
+            data-price="33.90"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
    </div>
-
-   <div class="flex items-center gap-2 justify-between mt-3">
-    <p class="font-bold text-lg">R$33.90</p>
-
-    <button 
-    class="bg-green-800 px-5 rounded add-to-cart-btn"
-    data-name="Sabonete Facial"
-    data-price="33.9"
-    >
-        <i class="fa fa-cart-plus text-lg text-white"></i>
-    </button>
-      </div>
-</div>
+</article>
 <!-- Fim Produto Item-->
 
 <!--Produto Item 2-->
-<div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
     <img
-    src="./assets/Sabonete Natural.webp"
+    src="./assets/sabonete natural.webp"
     alt="Sabonete Natural"
-    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
     />
- 
-    <div>
-     <p class="font-bold text-white">Sabonete Natural</p>
-     <p class="text-sm">Sabonete em barra natural com extrato de camomila: calma e cuidado para sua pele. Com propriedades suavizantes e anti-inflamatórias, limpa delicadamente enquanto proporciona hidratação e quebra para peles sensíveis. 100% natural e livre de produtos químicos!</p>
+    <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Sabonete Natural</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Sabonete em barra com extrato de camomila: calma e cuidado para sua pele, com propriedades suavizantes. 100% natural e livre de químicos!</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$7,90</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Sabonete Natural"
+            data-price="24.50"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
     </div>
- 
-    <div class="flex items-center gap-2 justify-between mt-3">
-     <p class="font-bold text-lg">R$7.90</p>
- 
-     <button 
-     class="bg-green-800 px-5 rounded add-to-cart-btn"
-     data-name="Sabonete Natural"
-     data-price="24.5"
-     >
-         <i class="fa fa-cart-plus text-lg text-white"></i>
-     </button>
-    </div>
- </div>
+ </article>
  <!-- Fim Produto Item 2-->
 
  <!--Produto Item 3-->
-<div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
     <img
-    src="./assets/Shampoo em barra.webp"
+    src="./assets/shampoo em barra.webp"
     alt="Shampoo em Barra"
-    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
     />
- 
-    <div>
-     <p class="font-bold text-white">Shampoo em Barra(80g)</p>
-     <p class="text-sm">Shampoo em barra natural: cuidado sustentável para os cabelos. Formulado com ingredientes naturais, limpa suavemente enquanto nutre e fortalece os fios. Prático, ecológico e livre de produtos químicos, ideal para um cabelo saudável e com brilho.</p>
+    <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Shampoo em Barra (80g)</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Cuidado sustentável para os cabelos. Limpa suavemente enquanto nutre e fortalece os fios. Prático, ecológico e livre de químicos.</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$24,50</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Shampoo em Barra"
+            data-price="24.50"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
     </div>
- 
-    <div class="flex items-center gap-2 justify-between mt-3">
-     <p class="font-bold text-lg">R$24.50</p>
- 
-     <button 
-     class="bg-green-800 px-5 rounded add-to-cart-btn"
-     data-name="Shampoo em Barra"
-     data-price="24.50"
-     >
-         <i class="fa fa-cart-plus text-lg text-white"></i>
-     </button>
-    </div>
- </div>
+ </article>
  <!-- Fim Produto Item 3-->
 
  <!--Produto Item 4-->
-<div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
     <img
-    src="./assets/Shampoo natural.webp"
-    alt="Shampoo natural"
-    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    src="./assets/shampoo natural.webp"
+    alt="Shampoo Natural"
+    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
     />
- 
-    <div>
-     <p class="font-bold text-white">Shampoo Natural(140g)</p>
-     <p class="text-sm">Shampoo natural: cuidado puro para os seus cabelos. Com ingredientes naturais e nutritivos, limpa suavemente enquanto fortalece e hidrata os fios. Livre de sulfatos, parabenos e químicos agressivos, promove saúde e brilho de forma sustentável.</p>
+    <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Shampoo Natural (140g)</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Cuidado puro para os seus cabelos. Livre de sulfatos, parabenos e químicos agressivos, promove saúde e brilho de forma sustentável.</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$24,90</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Shampoo Natural"
+            data-price="24.90"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
     </div>
- 
-    <div class="flex items-center gap-2 justify-between mt-3">
-     <p class="font-bold text-lg">R$24.90</p>
- 
-     <button 
-     class="bg-green-800 px-5 rounded add-to-cart-btn"
-     data-name="Shampoo natural"
-     data-price="24.9"
-     >
-         <i class="fa fa-cart-plus text-lg text-white"></i>
-     </button>
-    </div>
- </div>
+ </article>
  <!-- Fim Produto Item 4-->
 
- 
  <!--Produto Item 5-->
-        <div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
    <img
-   src="./assets/Creme dental.webp"
-   alt="Goiaba Orgânica"
-   class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+   src="./assets/creme dental.webp"
+   alt="Creme Dental"
+   class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
    />
-
-   <div>
-    <p class="font-bold text-white">Creme dental(75g)</p>
-    <p class="text-sm">
-        Creme dental natural: cuidado bucal saudável e sustentável. Formulado com naturais, limpo e protege os dentes, ajudando a combater cáries e manter o hálito fresco. Livre de flúor, parabenos e químicos agressivos, ideal para toda a família.</p>
+   <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Creme Dental (75g)</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Cuidado bucal saudável e sustentável, ajuda a combater cáries e manter o hálito fresco. Livre de flúor, parabenos e químicos agressivos.</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$11,90</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Creme Dental"
+            data-price="11.90"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
    </div>
-
-   <div class="flex items-center gap-2 justify-between mt-3">
-    <p class="font-bold text-lg">R$11.90</p>
-
-    <button 
-    class="bg-green-800 px-5 rounded add-to-cart-btn"
-    data-name="Creme Dental"
-    data-price="11.9"
-    >
-        <i class="fa fa-cart-plus text-lg text-white"></i>
-    </button>
-      </div>
-</div>
+</article>
 <!-- Fim Produto Item 5-->
 
 <!--Produto Item 6-->
-<div class="flex gap-2">
+<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
     <img
-    src="./assets/Hidratante.png"
-    alt="Goiaba Orgânica"
-    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+    src="./assets/hidratante.png"
+    alt="Hidratante Natural"
+    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
     />
- 
-    <div>
-     <p class="font-bold text-white">Hidratante Natural(90g)</p>
-     <p class="text-sm">
-        Hidratante com Óleo de Coco e Extrato de Romã Orgânico: uma fusão de nutrição e antioxidantes para a pele. Com o poder do óleo de coco, hidrata profundamente, enquanto o extrato de romã protege contra os danos dos radicais livres, deixando a pele macia , rejuvenescida e radiante. 100% natural e orgânico.</p>
+    <div class="flex flex-col flex-1 min-w-0">
+        <p class="font-serif font-semibold text-lg text-forest">Hidratante Natural (90g)</p>
+        <p class="text-sm text-ink/70 leading-relaxed">Óleo de coco e extrato de romã orgânico: hidrata profundamente e protege contra os danos dos radicais livres. 100% natural e orgânico.</p>
+        <div class="mt-auto pt-3 flex items-center justify-between">
+            <p class="font-bold text-lg text-forest">R$24,90</p>
+            <button
+            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
+            data-name="Hidratante Natural"
+            data-price="24.90"
+            >
+                <i class="fa fa-cart-plus"></i>
+            </button>
+        </div>
     </div>
- 
-    <div class="flex items-center gap-2 justify-between mt-3">
-     <p class="font-bold text-lg">R$24.90</p>
- 
-     <button 
-     class="bg-green-800 px-5 rounded add-to-cart-btn"
-     data-name="Hidratante Natural"
-     data-price="24.9"
-     >
-         <i class="fa fa-cart-plus text-lg text-white"></i>
-     </button>
-       </div>
- </div>
+ </article>
  <!-- Fim Produto Item 6-->
- 
-
-
 
     </main>
-
-<div class="mx-auto max-w-7xl px-2 my-2">
-    <h2 class="font-bold text-3xl">
-    Bebidas
-    </h2>
-</div>
-
 </div>
 <!--Fim Menu-->
 
 <!--Modal Cart-->
+<div class="bg-forest/70 backdrop-blur-sm w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
+    <div class="bg-cream p-6 rounded-2xl shadow-2xl min-w-[90%] md:min-w-[520px] md:max-w-[560px]">
+    <h2 class="text-center font-serif italic font-medium text-2xl mb-4 text-forest">Meu Carrinho</h2>
 
-<div class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
-    <div class="bg-white p-5 rounded-md min-w-[90%] md:m-w-[600px]">
-    <h2 class="text-center font-bold text-2xl mb-2">Meu Carrinho</h2>
+    <div id="cart-items" class="flex justify-between mb-2 flex-col divide-y divide-sage/30"></div>
 
-    <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+    <p class="font-bold text-forest mt-2">Total: <span id="cart-total">0.00</span></p>
 
-    <p class="font-bold">Total: <span id="cart-total">0.00</span></p>
+    <p class="font-semibold mt-4 text-ink">Endereço de Entrega:</p>
 
-    <p class="font-bold mt-4">Endereço de Entrega:</p>
-
-    <input 
+    <input
     type="text"
     placeholder="Digite seu endereço completo"
     id="address"
-    class="w-full border-2 p-1 rounded my-1"
+    class="w-full border border-sage bg-white p-2 rounded-lg my-2 outline-none focus:border-honey transition"
     />
 
-    <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
+    <p class="text-red-500 hidden text-sm" id="address-warn">Digite seu endereço completo!</p>
 
     <div class="flex items-center justify-between mt-4 w-full">
-        <button id="close-modal-btn">Fechar</button>
-        <button id="checkout-btn" class="bg-green-700 text-white px-4 py-1 rounded">Finalizar Pedido</button>
-
+        <button id="close-modal-btn" class="text-ink/70 font-medium hover:text-forest transition">Fechar</button>
+        <button id="checkout-btn" class="bg-moss hover:bg-honey text-cream font-semibold px-5 py-2 rounded-full transition">Finalizar Pedido</button>
     </div>
 </div>
 </div>
-
 <!-- Fim Modal Cart-->
 
-
 <!-- Button Footer-->
-
-<footer class="w-full bg-green-800 py-2 fixed bottom-0  flex items-center justify-center">
-    <button class="flex items-center gap-2 text-white font-bold" id="cart-btn">
-        (<span id="cart-count">0</span>)
-        Ver meu carrinho    
-        <i class="fa fa-cart-plus text-lg text-white"></i>
+<footer class="w-full bg-forest py-3 fixed bottom-0 flex items-center justify-center shadow-[0_-6px_20px_-8px_rgba(30,51,32,0.5)]">
+    <button class="flex items-center gap-2 text-cream font-semibold" id="cart-btn">
+        <span class="bg-honey text-forest text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" id="cart-count">0</span>
+        Ver meu carrinho
+        <i class="fa fa-cart-plus text-cream"></i>
     </button>
 </footer>
-
  <!-- Fim Button Footer-->
 
  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
 <script src="script.js"></script>
 
 </body>
