@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&family=Bevan:ital@0;1&family=Work+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,10 +8,13 @@ body{
     background-color: #FBF8F2;
 }
 
-/* Textura de "curvas de nível" — mesma assinatura visual do site principal */
+/* Rosácea/sol — mesma assinatura visual do site principal,
+   inspirada em capas de cordel/xilogravura */
 .contour-overlay{
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cg fill='none' stroke='%23E9DCC7' stroke-width='1' opacity='0.16'%3E%3Cpath d='M-20,60 C40,20 90,100 150,60 S260,20 340,60'/%3E%3Cpath d='M-20,130 C40,90 90,170 150,130 S260,90 340,130'/%3E%3Cpath d='M-20,200 C40,160 90,240 150,200 S260,160 340,200'/%3E%3Cpath d='M-20,270 C40,230 90,310 150,270 S260,230 340,270'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 320px 320px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700' viewBox='0 0 700 700'%3E%3Cg transform='translate(350,350)' stroke='%23E9DCC7' stroke-width='2' fill='none' opacity='0.16'%3E%3Ccircle r='90'/%3E%3Ccircle r='170'/%3E%3Ccircle r='250'/%3E%3Cg%3E%3Cline x1='0' y1='-320' x2='0' y2='320'/%3E%3Cline x1='-320' y1='0' x2='320' y2='0'/%3E%3Cline x1='-226' y1='-226' x2='226' y2='226'/%3E%3Cline x1='226' y1='-226' x2='-226' y2='226'/%3E%3Cline x1='-320' y1='-125' x2='320' y2='125'/%3E%3Cline x1='320' y1='-125' x2='-320' y2='125'/%3E%3Cline x1='-125' y1='-320' x2='125' y2='320'/%3E%3Cline x1='125' y1='-320' x2='-125' y2='320'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 780px 780px;
+    background-position: center 40%;
+    background-repeat: no-repeat;
 }
 
 .header-photo{

@@ -14,11 +14,26 @@
 
     <link rel="stylesheet" href="./styles/output.css">
 
-    <title>Vida Pura</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Vida Pura — Cardápio | Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Verduras, legumes e bebidas fresquinhas da Vida Pura, direto da Feirinha do Village.">
+    <meta property="og:title" content="Vida Pura — Cardápio | Terra Fresca">
+    <meta property="og:description" content="Verduras, legumes e bebidas fresquinhas da Vida Pura, direto da Feirinha do Village.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
 </head>
-<body class="font-sans text-ink bg-cream">
+<body class="font-sans text-ink bg-cream" data-loja="vidapura">
      <!-- Header -->
-    <header class="relative w-full min-h-[440px] overflow-hidden bg-forest">
+    <header class="relative w-full min-h-[440px] overflow-hidden bg-forest border-b-[6px] border-honey">
         <div class="absolute inset-0 header-photo header-vidapura"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-forest/80 via-forest/55 to-forest/90"></div>
         <div class="absolute inset-0 contour-overlay"></div>
@@ -27,15 +42,15 @@
             <img
             src="./assets/logo_vida_pura-removebg-preview.png"
             alt="Logo Vida Pura"
-            class="w-28 h-28 rounded-full ring-4 ring-nude/30 shadow-xl object-cover bg-cream hover:scale-105 transition duration-300"
+            class="w-28 h-28 rounded-full border-[3px] border-nude object-cover bg-cream shadow-[6px_6px_0_0_#B8863B] hover:scale-105 transition duration-300"
             />
-            <h1 class="font-serif italic text-4xl md:text-5xl text-cream mt-6">
+            <h1 class="font-display text-4xl md:text-5xl text-cream mt-6 uppercase tracking-wide [text-shadow:4px_4px_0_rgba(30,51,32,0.5)]">
                 Vida Pura
             </h1>
 
             <span class="text-nude/80 font-medium mt-2 tracking-wide">Feirinha do Village, Vilage II</span>
 
-            <div class="inline-flex items-center gap-2 bg-green-600 px-5 py-2 rounded-full mt-6 shadow-lg" id="date-span">
+            <div class="inline-flex items-center gap-2 bg-green-600 px-5 py-2 rounded border-2 border-cream mt-6 shadow-[4px_4px_0_0_rgba(30,51,32,0.5)]" id="date-span">
                 <i class="fa fa-clock text-cream text-sm"></i>
                 <span class="text-cream font-semibold text-sm">
                     Segunda à Domingo · 07:00 às 17:00
@@ -45,182 +60,67 @@
     </header>
     <!-- Fim do Header -->
 
-    <h2 class="font-serif italic text-3xl md:text-4xl font-medium text-center mt-16 mb-10 text-forest">
+    <h2 class="font-serif text-3xl md:text-4xl text-center mt-16 mb-10 text-forest">
         Lista de produtos
     </h2>
 
-<!--Início Menu-->
+<!--Início Menu (id usado pelo script.js pra delegação de clique)-->
 <div id="menu">
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16">
-
-<!--Produto Item-->
-<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-   <img
-   src="./assets/cenoura.jpg"
-   alt="Cenouras"
-   class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-   />
-   <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Cenoura (KG)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Cenouras naturais cultivadas sem agrotóxicos, fresquinhas e cheias de sabor. Perfeitas para suas receitas saudáveis e nutritivas. Vendidas por quilo!</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$7,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Cenoura"
-            data-price="7.90"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
-        </div>
-   </div>
-</article>
-<!-- Fim Produto Item-->
-
-<!--Produto Item 2-->
-<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-    <img
-    src="./assets/cebola.jpg"
-    alt="Cebolas"
-    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-    />
-    <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Cebola (KG)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Cebolas naturais e frescas, cultivadas sem agrotóxicos, com sabor marcante e qualidade incomparável. Peça agora por quilo e transforme sua cozinha!</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$4,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Cebola"
-            data-price="4.9"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
-        </div>
-    </div>
- </article>
- <!-- Fim Produto Item 2-->
-
- <!--Produto Item 3-->
-<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-    <img
-    src="./assets/alface.jpg"
-    alt="Alface"
-    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-    />
-    <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Alface (KG)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Alface fresquinho, cultivado sem agrotóxicos, com folhas crocantes e cheias de sabor natural. Peça agora e leve saúde para sua mesa!</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$9,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Alface"
-            data-price="9.9"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
-        </div>
-    </div>
- </article>
- <!-- Fim Produto Item 3-->
-
- <!--Produto Item 4-->
-<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-    <img
-    src="./assets/couve.jpg"
-    alt="Couve"
-    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-    />
-    <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Couve (KG)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Couve fresca e natural, cultivada sem agrotóxicos, com folhas vibrantes e cheias de sabor. Garanta mais saúde e sabor no seu prato!</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$8,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Couve"
-            data-price="8.90"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
-        </div>
-    </div>
- </article>
- <!-- Fim Produto Item 4-->
-
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16" id="grid-produtos">
+        <p class="col-span-2 text-center text-ink/60">Carregando produtos...</p>
     </main>
 
-<div class="mx-auto max-w-6xl px-4 md:px-6 my-2">
-    <h2 class="font-serif italic text-3xl md:text-4xl font-medium text-center mt-6 mb-8 text-forest">
-    Bebidas
-    </h2>
-</div>
-
-<!--Grid Bebidas-->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16" id="menu">
- <!--Produto bebida -->
- <article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-    <img
-    src="./assets/achocolatado.webp"
-    alt="Achocolatado Orgânico"
-    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-    />
-    <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Achocolatado Orgânico (400g)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Achocolatado Native: sabor irresistível e 100% orgânico! Feito com ingredientes naturais e sustentáveis, perfeito para começar o dia com energia.</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$24,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Achocolatado"
-            data-price="24.90"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
+    <div class="hidden" id="secao-bebidas">
+        <div class="mx-auto max-w-6xl px-4 md:px-6 my-2">
+            <h2 class="font-serif italic text-3xl md:text-4xl font-medium text-center mt-6 mb-8 text-forest">
+                Bebidas
+            </h2>
         </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16" id="grid-bebidas"></div>
     </div>
- </article>
- <!-- Fim bebida -->
-
-  <!--Produto bebida 2-->
-<article class="group bg-white rounded-2xl shadow-md ring-1 ring-sage/40 overflow-hidden flex gap-4 p-4 hover:shadow-xl hover:-translate-y-1 transition duration-300">
-    <img
-    src="./assets/cerveja.jpg"
-    alt="Cerveja SteinHaus"
-    class="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover shrink-0"
-    />
-    <div class="flex flex-col flex-1 min-w-0">
-        <p class="font-serif font-semibold text-lg text-forest">Cerveja SteinHaus (500ml)</p>
-        <p class="text-sm text-ink/70 leading-relaxed">Cerveja SteinHaus: tradição e qualidade em cada gole. Produzida artesanalmente, com ingredientes selecionados, sabor único e equilibrado.</p>
-        <div class="mt-auto pt-3 flex items-center justify-between">
-            <p class="font-bold text-lg text-forest">R$20,90</p>
-            <button
-            class="bg-moss hover:bg-honey text-cream w-11 h-11 rounded-full flex items-center justify-center transition add-to-cart-btn"
-            data-name="Cerveja"
-            data-price="20.90"
-            >
-                <i class="fa fa-cart-plus"></i>
-            </button>
-        </div>
-    </div>
- </article>
- <!-- Fim Bebida 2-->
-
-</div>
-<!--Fim Grid Bebidas-->
-
 </div>
 <!--Fim Menu-->
 
 <!--Modal Cart-->
 <div class="bg-forest/70 backdrop-blur-sm w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
-    <div class="bg-cream p-6 rounded-2xl shadow-2xl min-w-[90%] md:min-w-[520px] md:max-w-[560px]">
-    <h2 class="text-center font-serif italic font-medium text-2xl mb-4 text-forest">Meu Carrinho</h2>
+    <div class="bg-cream p-6 rounded-lg border-[3px] border-forest shadow-[10px_10px_0_0_#B8863B] min-w-[90%] md:min-w-[520px] md:max-w-[560px]">
+    <h2 class="text-center font-serif text-2xl mb-4 text-forest">Meu Carrinho</h2>
 
     <div id="cart-items" class="flex justify-between mb-2 flex-col divide-y divide-sage/30"></div>
 
-    <p class="font-bold text-forest mt-2">Total: <span id="cart-total">0.00</span></p>
+    <div class="flex gap-2 mt-3">
+        <input
+        type="text"
+        id="cupom-input"
+        placeholder="Cupom de desconto"
+        class="flex-1 border-2 border-forest bg-white p-2 rounded uppercase text-sm outline-none focus:border-honey transition"
+        />
+        <button
+        type="button"
+        id="btn-aplicar-cupom"
+        class="bg-moss hover:bg-honey text-cream font-serif px-4 rounded border-2 border-forest shadow-[3px_3px_0_0_#1E3320] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition text-sm"
+        >Aplicar</button>
+    </div>
+    <p class="text-xs mt-1 min-h-[16px]" id="cupom-mensagem"></p>
+
+    <div class="mt-3 text-sm flex flex-col gap-1">
+        <div class="flex justify-between text-ink/70">
+            <span>Subtotal</span>
+            <span id="valor-subtotal">R$ 0,00</span>
+        </div>
+        <div class="flex justify-between text-honey hidden" id="linha-desconto">
+            <span>Desconto</span>
+            <span id="valor-desconto">- R$ 0,00</span>
+        </div>
+        <div class="flex justify-between text-ink/70">
+            <span>Frete</span>
+            <span id="valor-frete">R$ 0,00</span>
+        </div>
+        <p class="font-bold text-forest mt-1 flex justify-between text-base border-t-2 border-forest pt-2">
+            <span>Total</span>
+            <span id="cart-total">R$ 0,00</span>
+        </p>
+    </div>
 
     <p class="font-semibold mt-4 text-ink">Endereço de Entrega:</p>
 
@@ -228,14 +128,16 @@
     type="text"
     placeholder="Digite seu endereço completo"
     id="address"
-    class="w-full border border-sage bg-white p-2 rounded-lg my-2 outline-none focus:border-honey transition"
+    class="w-full border-2 border-forest bg-white p-2 rounded my-2 outline-none focus:border-honey transition"
     />
 
     <p class="text-red-500 hidden text-sm" id="address-warn">Digite seu endereço completo!</p>
 
+    <p class="hidden text-sm mt-2 font-semibold" id="checkout-status"></p>
+
     <div class="flex items-center justify-between mt-4 w-full">
         <button id="close-modal-btn" class="text-ink/70 font-medium hover:text-forest transition">Fechar</button>
-        <button id="checkout-btn" class="bg-moss hover:bg-honey text-cream font-semibold px-5 py-2 rounded-full transition">Finalizar Pedido</button>
+        <button id="checkout-btn" class="bg-moss hover:bg-honey text-cream font-serif px-5 py-2 rounded border-2 border-forest shadow-[3px_3px_0_0_#1E3320] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition">Finalizar Pedido</button>
     </div>
 </div>
 </div>
@@ -252,6 +154,7 @@
  <!-- Fim Button Footer-->
 
  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="produtos.js"></script>
 <script src="script.js"></script>
 
 </body>

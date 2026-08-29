@@ -1,15 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,500&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&family=Bevan:ital@0;1&family=Work+Sans:wght@400;500;600;700;800&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 }
 
 body{
     background-color: #F2E9D8;
-    background: linear-gradient(to right, #F2E9D8, #E9DCC7);
+    background-image:
+        linear-gradient(to right, #F2E9D8, #E9DCC7),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'%3E%3Cg transform='translate(250,250)' stroke='%231E3320' stroke-width='2' fill='none' opacity='0.05'%3E%3Ccircle r='70'/%3E%3Ccircle r='140'/%3E%3Cline x1='0' y1='-220' x2='0' y2='220'/%3E%3Cline x1='-220' y1='0' x2='220' y2='0'/%3E%3Cline x1='-155' y1='-155' x2='155' y2='155'/%3E%3Cline x1='155' y1='-155' x2='-155' y2='155'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover, 500px 500px;
+    background-position: center, center;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,8 +23,9 @@ body{
 
 .container{
     background-color: #FBF8F2;
-    border-radius: 30px;
-    box-shadow: 0 20px 45px -15px rgba(30, 51, 32, 0.35);
+    border: 3px solid #1E3320;
+    border-radius: 10px;
+    box-shadow: 10px 10px 0 #B8863B;
     position: relative;
     overflow: hidden;
     width: 768px;
@@ -29,8 +34,8 @@ body{
 }
 
 .container h1{
-    font-family: 'Newsreader', serif;
-    font-weight: 500;
+    font-family: 'Bevan', serif;
+    font-weight: 400;
     color: #1E3320;
 }
 
@@ -46,34 +51,54 @@ body{
 }
 
 .container a{
-    color: #333;
+    color: #4C6B45;
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+.container a:hover{
+    color: #B8863B;
 }
 
 .container button{
     background-color: #4C6B45;
     color: #FBF8F2;
-    font-size: 12px;
-    padding: 10px 45px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-family: 'Bevan', serif;
+    font-size: 13px;
+    padding: 11px 40px;
+    border: 2px solid #1E3320;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    box-shadow: 4px 4px 0 0 #1E3320;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s;
 }
 
 .container button:hover{
     background-color: #B8863B;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 #1E3320;
+}
+
+.container button:active{
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 0 #1E3320;
 }
 
 .container button.hidden{
     background-color: transparent;
-    border-color: #fff;
+    border-color: #FBF8F2;
+    box-shadow: none;
+}
+
+.container button.hidden:hover{
+    background-color: rgba(251, 248, 242, 0.15);
+    transform: none;
+    box-shadow: none;
 }
 
 .container form{
@@ -88,13 +113,19 @@ body{
 
 .container input{
     background-color: #F2E9D8;
-    border: none;
+    border: 2px solid #1E3320;
     margin: 8px 0;
     padding: 10px 15px;
     font-size: 13px;
-    border-radius: 8px;
+    border-radius: 6px;
     width: 100%;
     outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.container input:focus{
+    border-color: #B8863B;
+    box-shadow: 2px 2px 0 0 #B8863B;
 }
 
 .form-container{
@@ -144,14 +175,35 @@ body{
 }
 
 .social-icons a{
-    border: 1px solid #ccc;
-    border-radius: 20%;
+    border: 2px solid #1E3320;
+    border-radius: 6px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     margin: 0 3px;
     width: 40px;
     height: 40px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.social-icons a:hover{
+    background-color: #F2E9D8;
+    border-color: #B8863B;
+}
+
+.auth-message{
+    font-size: 12px;
+    min-height: 16px;
+    margin: 6px 0;
+}
+
+.auth-message.error{
+    color: #c0392b;
+}
+
+.auth-message.success{
+    color: #1E3320;
 }
 
 .toggle-container{
@@ -162,19 +214,22 @@ body{
     height: 100%;
     overflow: hidden;
     transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
+    border-radius: 0 8px 8px 0;
     z-index: 1000;
 }
 
 .container.active .toggle-container{
     transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+    border-radius: 8px 0 0 8px;
 }
 
 .toggle{
     background-color: #1E3320;
-    height: 100%;
-    background: linear-gradient(120deg, #1E3320, #4C6B45);
+    background-image:
+        linear-gradient(120deg, #1E3320, #4C6B45),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg transform='translate(200,200)' stroke='%23E9DCC7' stroke-width='2' fill='none' opacity='0.12'%3E%3Ccircle r='55'/%3E%3Ccircle r='105'/%3E%3Cline x1='0' y1='-180' x2='0' y2='180'/%3E%3Cline x1='-180' y1='0' x2='180' y2='0'/%3E%3Cline x1='-127' y1='-127' x2='127' y2='127'/%3E%3Cline x1='127' y1='-127' x2='-127' y2='127'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover, 400px 400px;
+    background-position: center, center;
     color: #FBF8F2;
     position: relative;
     left: -100%;
@@ -186,6 +241,7 @@ body{
 
 .toggle-panel h1{
     color: #FBF8F2;
+    text-shadow: 3px 3px 0 rgba(30, 51, 32, 0.5);
 }
 
 .toggle-panel .hidden{
@@ -228,3 +284,73 @@ body{
     transform: translateX(200%);
 }
 
+.mobile-toggle-link{
+    display: none;
+}
+
+/* ======================================================
+   Responsivo — o painel deslizante (login/cadastro lado a
+   lado) precisa de largura que uma tela de celular não tem.
+   Abaixo de 680px, empilha tudo e troca a animação de slide
+   por uma alternância simples entre os dois formulários.
+   ====================================================== */
+@media (max-width: 680px){
+    body{
+        height: auto;
+        min-height: 100vh;
+        padding: 30px 16px;
+    }
+
+    .container{
+        width: 100%;
+        min-height: unset;
+    }
+
+    .toggle-container{
+        display: none;
+    }
+
+    .form-container{
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: none;
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        z-index: auto !important;
+    }
+
+    .sign-in{
+        display: block;
+    }
+
+    .container.active .sign-in{
+        display: none;
+    }
+
+    .container.active .sign-up{
+        display: block;
+    }
+
+    .container form{
+        padding: 36px 26px;
+        height: auto;
+    }
+
+    .mobile-toggle-link{
+        display: inline-block;
+        background: none;
+        border: none;
+        color: #4C6B45;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 12px;
+        padding: 6px;
+    }
+
+    .mobile-toggle-link:hover{
+        color: #B8863B;
+    }
+}

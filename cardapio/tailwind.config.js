@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./*.html", "./script.js"],
+  content: ["./*.html", "./script.js", "./produtos.js"],
   safelist: ["bg-green-600", "bg-red-500"],
   theme: {
     extend: {
@@ -17,8 +17,9 @@ module.exports = {
         ink: "#24291F",
       },
       fontFamily: {
-        serif: ["Newsreader", "serif"],
-        sans: ["Manrope", "ui-sans-serif", "sans-serif"],
+        serif: ["Bevan", "serif"],
+        sans: ["Work Sans", "ui-sans-serif", "sans-serif"],
+        display: ["Rye", "serif"],
       },
     },
   },

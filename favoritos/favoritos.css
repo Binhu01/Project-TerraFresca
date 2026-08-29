@@ -1,0 +1,85 @@
+.favoritos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.favorito-card{
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.favorito-card img{
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.favorito-card-corpo{
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.favorito-card-loja{
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--honey);
+}
+
+.favorito-card-nome{
+    font-family: "Bevan", serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--forest);
+}
+
+.favorito-card-preco{
+    font-weight: 700;
+    color: var(--forest);
+}
+
+.favorito-card-acoes{
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.favorito-card-acoes a{
+    color: var(--moss);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.favorito-card-acoes a:hover{
+    color: var(--honey);
+}
+
+.favorito-card-acoes button{
+    border: 1px solid var(--sage);
+    background-color: transparent;
+    color: var(--ink-soft);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.favorito-card-acoes button:hover{
+    background-color: #c0392b;
+    border-color: #c0392b;
+    color: var(--cream);
+}

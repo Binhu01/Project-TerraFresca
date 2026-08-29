@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!--Fonte Awesome-->
     <title>Serviços - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+
+    <meta name="description" content="Veja como funciona o Terra Fresca: do cadastro à entrega, tudo que fazemos pra conectar produtor e consumidor.">
+    <meta property="og:title" content="Serviços - Terra Fresca">
+    <meta property="og:description" content="Veja como funciona o Terra Fresca: do cadastro à entrega, tudo que fazemos pra conectar produtor e consumidor.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
         <!--Link do CSS -->
 
     <link rel="stylesheet" href="./css/style.css">
@@ -23,7 +35,7 @@
     <a href="main.html">Tela inicial</a>
     <a href="sobre.html">Sobre Nós</a>
     <a href="servicos.html">Serviços</a>
-    <a class="btn" href="./login/index.html">Fazer Login</a>
+    <span class="nav-auth" id="nav-auth"><a class="btn" href="./login/index.html">Fazer Login</a></span>
     <div class="fechar-icone" onclick="CloseMenu()">
         <i class="fa fa-times" aria-hidden="true"></i>
 
@@ -182,10 +194,14 @@
                     </a>
                    
                 </div>
-                <p>Desenvolvido por Glauber Luigi</p>
+                <p><a href="privacidade/index.html">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
              </div>
              </footer>
+             <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+             <script src="./js/supabase-client.js"></script>
+             <script src="./js/auth-nav.js"></script>
              <script src="./js/main.js"></script>
+             <script src="./js/interacoes.js"></script>
 
 </body>
 </html> 

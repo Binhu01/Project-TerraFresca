@@ -1,0 +1,196 @@
+.pedidos-lista{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pedido-card{
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    padding: 26px 28px;
+}
+
+.pedido-card-topo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--nude);
+}
+
+.pedido-numero{
+    font-family: "Bevan", serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--forest);
+}
+
+.pedido-data{
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+.pedido-status{
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+.pedido-status.pendente{
+    background-color: var(--nude-light);
+    color: var(--ink-soft);
+}
+
+.pedido-status.pago{
+    background-color: rgba(76, 107, 69, 0.15);
+    color: var(--moss);
+}
+
+.pedido-status.recusado,
+.pedido-status.cancelado{
+    background-color: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
+}
+
+.pedido-status.enviado{
+    background-color: rgba(184, 134, 59, 0.15);
+    color: var(--honey);
+}
+
+.pedido-status.entregue{
+    background-color: rgba(30, 51, 32, 0.1);
+    color: var(--forest);
+}
+
+.pedido-itens-lista{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.pedido-item-linha{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--ink);
+}
+
+.pedido-item-linha .loja{
+    color: var(--ink-soft);
+    font-size: 12px;
+}
+
+.pedido-card-rodape{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid var(--nude);
+}
+
+.pedido-endereco{
+    font-size: 13px;
+    color: var(--ink-soft);
+    max-width: 60%;
+}
+
+.pedido-total{
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--forest);
+}
+
+.avaliacao-area{
+    margin: 6px 0 10px;
+}
+
+.avaliacao-btn-abrir{
+    background: none;
+    border: 1px solid var(--sage);
+    color: var(--moss);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.avaliacao-btn-abrir:hover{
+    background-color: var(--nude-light);
+    border-color: var(--honey);
+    color: var(--honey);
+}
+
+.avaliacao-ja-feita{
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 6px 0 10px;
+}
+
+.avaliacao-form{
+    background-color: var(--nude-light);
+    border-radius: 14px;
+    padding: 16px;
+    margin: 6px 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.avaliacao-estrelas{
+    display: flex;
+    gap: 6px;
+}
+
+.avaliacao-estrelas button{
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--sage);
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 0;
+}
+
+.avaliacao-estrelas button:hover,
+.avaliacao-estrelas button.selecionada{
+    color: var(--honey);
+}
+
+.avaliacao-form textarea{
+    border: 1px solid var(--sage);
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    resize: vertical;
+}
+
+.avaliacao-form textarea:focus{
+    outline: none;
+    border-color: var(--honey);
+}
+
+.avaliacao-mensagem{
+    font-size: 12px;
+    min-height: 14px;
+}
+
+.avaliacao-mensagem.erro{
+    color: #c0392b;
+}
+
+.avaliacao-form button.btn{
+    align-self: flex-start;
+    margin: 0;
+}
