@@ -1,4 +1,4 @@
-##🌿 Terra Fresca
+## Terra Fresca
 
 Marketplace criado para conectar produtores de assentamentos agroecológicos a consumidores urbanos.
 
@@ -55,7 +55,7 @@ TerraFresca/
 ├── privacidade/
 ├── supabase/
 └── package.json
-##👥 Tipos de usuário
+## Tipos de usuário:
 
 Comprador
 
@@ -70,19 +70,20 @@ Gerencia os produtos da própria loja
 Controla estoque
 Visualiza pedidos relacionados à sua loja
 
-##🔐 Segurança
+## Segurança:
 
 O projeto utiliza Row Level Security (RLS) para controlar o acesso aos dados diretamente no banco.
 
 O checkout também não confia nos preços enviados pelo navegador. O banco recalcula os valores, frete e descontos no momento da criação do pedido.
 
-##🎨 Identidade visual
+## Identidade visual:
 
 A identidade do Terra Fresca foi inspirada em xilogravura e literatura de cordel, utilizando elementos como traços marcantes, sombras sólidas e tipografias inspiradas em madeira entalhada.
 
 A proposta busca conectar a estética do projeto com a cultura e a origem dos produtores.
 
-##📌 Próximos passos
+##📌 Próximos Passos:
+
 Ativar o pagamento real com Mercado Pago
 Criar uma estrutura própria para as lojas
 Atualizar o visual dos painéis internos
