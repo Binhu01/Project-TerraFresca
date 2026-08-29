@@ -57,7 +57,7 @@ Não existe backend próprio em Node/Python — toda a lógica de servidor (aute
 | Fontes | Rye, Bevan e Work Sans (Google Fonts) |
 | Hospedagem sugerida | Netlify (deploy estático, sem build) |
 
-## Estrutura de pastas
+## Estrutura de pastas:
 
 ```
 Project-TerraFresca-main/
@@ -83,7 +83,7 @@ Project-TerraFresca-main/
 └── package.json
 ```
 
-## Papéis de usuário
+## Papéis de usuário:
 
 O sistema tem três papéis, todos usando a **mesma tabela de login** — o que diferencia é a presença de uma linha nas tabelas de controle:
 
@@ -93,25 +93,8 @@ O sistema tem três papéis, todos usando a **mesma tabela de login** — o que 
 | **Vendedor** | Um admin vincula o usuário a uma loja (tabela `vendedores`) | Cadastrar/editar produtos da própria loja, ver os pedidos que contêm produtos dela |
 | **Administrador** | Inserido manualmente na tabela `admins` (passo único, feito direto no SQL Editor) | Tudo do vendedor + gerenciar todas as lojas, todos os pedidos, cupons e frete |
 
-## Como rodar localmente
 
-Este projeto **não tem build** — é HTML/CSS/JS servido como arquivo estático (a única exceção é o `cardapio/`, que usa Tailwind e já vem com o CSS compilado em `cardapio/styles/output.css`).
-
-1. Clone o repositório.
-2. Configure seu próprio projeto Supabase (veja a seção abaixo) e edite `js/supabase-client.js` e `login/script.js` com a **Project URL** e a **anon key** do seu projeto.
-3. Sirva a pasta com qualquer servidor local — por exemplo, a extensão **Live Server** do VS Code, ou:
-   ```bash
-   python -m http.server
-   ```
-4. **Importante:** não abra os arquivos direto com duplo clique (`file://`). Login social e algumas chamadas de API exigem que o site esteja rodando em `http://` ou `https://` de verdade.
-
-Se for mexer no cardápio (Tailwind), depois de qualquer mudança de classe:
-```bash
-cd cardapio
-npx tailwindcss -i ./styles/style.css -o ./styles/output.css --minify
-```
-
-## Configuração do Supabase
+## Configuração do Supabase:
 
 O projeto depende de várias tabelas, funções e políticas de segurança criadas via SQL, na seguinte ordem lógica (migrações não versionadas neste repositório como arquivo — foram aplicadas diretamente pelo SQL Editor do Supabase ao longo do desenvolvimento):
 
@@ -126,12 +109,7 @@ O projeto depende de várias tabelas, funções e políticas de segurança criad
 9. **Cupom e Frete** — tabelas `cupons` e `config_frete`, e a função `validar_cupom()`; `finalizar_pedido()` foi atualizada para calcular frete por loja e aplicar cupom
 10. *(Opcional, pausado)* **Mercado Pago** — Edge Functions em `supabase/functions/` (`criar-pagamento` e `pagamento-webhook`), que criam a cobrança e recebem a confirmação de pagamento
 
-Você também vai precisar:
-- Ativar os provedores de login social desejados em **Authentication → Providers**
-- Adicionar seu domínio (local e de produção) em **Authentication → URL Configuration**
-- Rodar manualmente um `insert` para tornar seu primeiro usuário **admin** (instruções ficam comentadas junto da criação da tabela `admins`)
-
-## Segurança
+## Segurança:
 
 Pontos que valem destaque, porque não são óbvios:
 
@@ -140,7 +118,7 @@ Pontos que valem destaque, porque não são óbvios:
 - **`pagamentos` não aceita insert direto do navegador** quando o pagamento real (Mercado Pago) está ativo — só o webhook, autenticado com a chave de serviço, pode gravar um pagamento aprovado. (Hoje, com o pagamento simulado reativado como solução temporária, essa política foi temporariamente reaberta — ver `12_reverter_para_simulado.sql` no histórico do projeto.)
 - **Funções `SECURITY DEFINER` usadas com parcimônia** — só onde um usuário comum precisa de um resultado (ex: saber se é admin, validar um cupom) sem ter permissão de leitura direta na tabela envolvida.
 
-## Identidade visual
+## Identidade visual:
 
 O site institucional, o cardápio e a tela de login seguem uma identidade inspirada em **xilogravura e literatura de cordel** — traço grosso, sombra sólida deslocada (ao invés de sombra suave desfocada), tipografia entalhada (Rye e Bevan) — como uma extensão natural da logo original do projeto, que já é uma gravura em madeira. Mantém a paleta de cores original (verde-mata, nude, mel).
 
