@@ -19,22 +19,15 @@
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (!session) return;
 
-
-    // Registra token FCM no app nativo (Task 9 - Push Token Registration)
-    if (typeof window !== "undefined" && window.nativeBridge && typeof window.nativeBridge.registrarPushToken === "function") {
-        window.nativeBridge.registrarPushToken(user.id).catch(function(err) {
-            console.warn("[auth-nav] Push token registration failed:", err);
-        });
-    }
     const user = session.user;
     const nome = (user.user_metadata && user.user_metadata.full_name)
         ? user.user_metadata.full_name.split(" ")[0]
         : user.email.split("@")[0];
 
-    // Register FCM push token when running in native app
-    if (typeof window.nativeBridge?.registrarPushToken === 'function') {
-        window.nativeBridge.registrarPushToken(user.id).catch((e) => {
-            console.warn('[auth-nav] Push token registration failed:', e);
+    // Registra token FCM no app nativo (Task 9 - Push Token Registration)
+    if (typeof window !== "undefined" && window.nativeBridge && typeof window.nativeBridge.registrarPushToken === "function") {
+        window.nativeBridge.registrarPushToken(user.id).catch(function(err) {
+            console.warn("[auth-nav] Push token registration failed:", err);
         });
     }
 
