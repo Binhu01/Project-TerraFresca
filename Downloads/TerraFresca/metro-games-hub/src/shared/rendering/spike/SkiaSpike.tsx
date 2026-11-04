@@ -56,7 +56,8 @@ function generateSpriteData(): Uint8Array {
 export function SkiaSpike() {
   const [fps, setFps] = useState(0);
   const frameCount = useRef(0);
-  const lastTime = useRef(Date.now());
+  // Initialized lazily inside useEffect to avoid impure render-time call (react-hooks/purity).
+  const lastTime = useRef(0);
   const canvasRef = useCanvasRef();
 
   // Create SkImage from raw pixel data using Skia.MakeImage with SkData
@@ -77,6 +78,8 @@ export function SkiaSpike() {
   }, []);
 
   useEffect(() => {
+    // Initialize timestamp here to avoid impure render-time call (react-hooks/purity).
+    lastTime.current = Date.now();
     let animId: number;
     const tick = () => {
       frameCount.current++;

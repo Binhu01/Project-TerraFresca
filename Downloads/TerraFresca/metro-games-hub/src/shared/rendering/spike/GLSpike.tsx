@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { GLView } from 'expo-gl';
 import type { ExpoWebGLRenderingContext } from 'expo-gl';
@@ -65,7 +65,8 @@ void main() {
 export function GLSpike() {
   const [fps, setFps] = useState(0);
   const frameCount = useRef(0);
-  const lastTime = useRef(Date.now());
+  // Initialized lazily inside useEffect to avoid impure render-time call (react-hooks/purity).
+  const lastTime = useRef(0);
   const glRef = useRef<ExpoWebGLRenderingContext | null>(null);
   const programRef = useRef<WebGLProgram | null>(null);
   const textureRef = useRef<WebGLTexture | null>(null);
@@ -134,6 +135,7 @@ export function GLSpike() {
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 
     // Start render loop
+    lastTime.current = Date.now();
     const render = () => {
       gl.clearColor(0.1, 0.1, 0.18, 1.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
