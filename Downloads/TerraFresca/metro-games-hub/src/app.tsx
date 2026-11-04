@@ -5,9 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppNavigator } from './navigation/AppNavigator';
 import { GameRegistry } from './shared/games/GameRegistry';
 import { ChessGame } from './games/chess/ChessGame';
+import { CobrasEscadasModule } from './games/cobras-escadas';
 import { RotationPrompt } from './shared/ui/RotationPrompt';
 
 GameRegistry.register(ChessGame);
+GameRegistry.register(CobrasEscadasModule);
 
 export default function App() {
   useEffect(() => {
