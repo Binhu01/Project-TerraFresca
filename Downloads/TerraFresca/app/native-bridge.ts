@@ -2,9 +2,11 @@ import { Capacitor } from '@capacitor/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Geolocation } from '@capacitor/geolocation';
-import { BiometricAuth } from 'capacitor-native-biometric';
+import { NativeBiometric } from 'capacitor-native-biometric';
 import { PushNotifications } from '@capacitor/push-notifications';
-import { supabaseClient } from '../js/supabase-client.js';
+
+// supabase-client.js exposes a global var, not an ES module; access via window at runtime
+const supabaseClient: any = (typeof window !== 'undefined' ? (window as any).supabaseClient : null);
 
 let _pushListenersRegistered = false;
 let _currentUserId: string | null = null;
@@ -29,8 +31,16 @@ export async function tirarFotoProduto(): Promise<string | null> {
 export async function escanearCodigoBarras(): Promise<string | null> {
 	if (!isNative()) return null;
 	try {
-		const result = await BarcodeScanner.scanBarcode();
-		return result.content || null;
+		return new Promise<string | null>((resolve) => {
+			BarcodeScanner.start({}, (result, err) => {
+				if (err || !result?.content) {
+					resolve(null);
+				} else {
+					BarcodeScanner.stop().catch(() => {});
+					resolve(result.content);
+				}
+			});
+		});
 	} catch {
 		return null;
 	}
@@ -49,7 +59,7 @@ export async function obterLocalizacaoAtual(): Promise<{ lat: number; lng: numbe
 export async function autenticarBiometria(mensagem: string): Promise<boolean> {
 	if (!isNative()) return true;
 	try {
-		await BiometricAuth.verify({ reason: mensagem });
+		await NativeBiometric.verifyIdentity({ reason: mensagem });
 		return true;
 	} catch {
 		return false;
