@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--Fonte Awesome-->
+    <title>Terra Fresca — Direto da terra pra sua mesa</title>
+
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+
+    <meta name="description" content="Conectamos produtores de assentamentos agroecológicos a quem valoriza comida de verdade: frutas, verduras, mel e muito mais, direto do produtor pra sua casa.">
+    <meta property="og:title" content="Terra Fresca — Direto da terra pra sua mesa">
+    <meta property="og:description" content="Conectamos produtores de assentamentos agroecológicos a quem valoriza comida de verdade: frutas, verduras, mel e muito mais, direto do produtor pra sua casa.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+        <!--Link do CSS -->
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- Header-->
+    <header style="background-image: url('img/as.png');">
+        <!--Container-->
+<div class="container">
+<nav>
+    <a href="main.html">
+        <img src="./img/logo_terra_fresca__1.png" alt="">
+    </a>
+    <ul class="ul">
+    <a href="main.html">Tela inicial</a>
+    <a href="sobre.html">Sobre Nós</a>
+    <a href="servicos.html">Serviços</a>
+    <span class="nav-auth" id="nav-auth"><a class="btn" href="./login/index.html">Fazer Login</a></span>
+    <div class="fechar-icone" onclick="CloseMenu()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+
+    </div>
+    </ul>
+
+    <div class="menu-icon" onclick="OpenMenu()">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+
+    </div>
+</nav>
+<section class="banner">
+    <div class="banner-texto">
+        <h1>Terra Fresca</h1>
+        <p>Da nossa terra para a sua vida, com o cuidado que você merece.</p>
+        <a href="contato.html" class="btn animate-btn">FALE CONOSCO!</a>
+    </div>
+</section>
+</div>
+        <!--Container-->
+
+    </header>
+    <!--Fim do Header-->
+
+    <!-- Meio -->
+    <section class="meio">
+        <div class="container">
+            <!--Container-->
+            <div class="meio-texto">
+                <h3>Um breve resumo:</h3>
+                <p>
+                    Terra Fresca é uma empresa comprometida em conectar os consumidores urbanos às riquezas dos assentamentos brasileiros, oferecendo uma ampla variedade de produtos naturais e sustentáveis. Trabalhamos diretamente com agricultores familiares para garantir que cada item — como frutas frescas, grãos, mel, ervas e óleos essenciais — seja cultivado de forma agroecológica e com respeito ao meio ambiente. Nosso objetivo é transformar a produção dos assentamentos em um modelo de desenvolvimento sustentável, valorizando as práticas tradicionais e promovendo a inclusão social. Terra Fresca é mais que uma marca; é um movimento que une saúde, sabor e sustentabilidade, diretamente da terra para sua mesa.
+                </p>
+                <a href="sobre.html" class="btn">Saiba Mais</a>
+            </div>
+            <div class="meio-img">
+                <img src="img/img-1-removebg-preview.png" alt="">
+            </div>
+        </div>
+    <!-- Fim do Meio -->
+    </section>
+        <!-- Fim do Container-->
+         
+    <!-- Meio 2-->
+    <section class="meio">
+        <div class="container">
+            <div class="meio-img">
+                <img src="img/img-2-removebg-preview.png" alt="">
+            </div>
+            <!--Container 2-->
+            <div class="meio-texto">
+                <h3>Nosso Objetivo:</h3>
+                <p>
+                    Nosso objetivo é que através do nosso site, os vendedores sejam capazes de anunciar seus produtos In Natura, fazendo uma conexão com clientes de outras partes do país, assim, aumentando a diversificação de produtos orgânicos dos compradores e as vendas dos fornecedores.
+                </p>
+                <a href="sobre.html" class="btn">Saiba Mais</a>
+            </div>
+                   <!-- Fim do Container 2-->
+
+        </div>
+    </section>
+    <!-- Fim do Meio 2-->
+
+    <!--Depoimentos-->
+    <section class="depoimentos">
+<div class="container">
+    <h3>Depoimentos:</h3>
+    <p>Esses são alguns dos depoimentos de alguns dos nossos clientes</p>
+    <div class="cards" id="depoimentos-container">
+        <p style="text-align:center; color: var(--ink-soft);">Carregando depoimentos...</p>
+    </div>
+</div>
+    </section>
+    <!-- Fim dos Depoimentos-->
+
+    <!--Parcerias-->
+<section class="parcerias">
+    <div class="container">
+        <h3>Nossos Parceiros:</h3>
+    <p>Algumas das parcerias que fortalecem nosso querido projeto.</p>
+    <div class="parceiros-grid">
+        <div class="parceiro-card">
+            <i class="fa fa-leaf" aria-hidden="true"></i>
+            <span>Vida Pura</span>
+        </div>
+        <div class="parceiro-card">
+            <i class="fa fa-seedling" aria-hidden="true"></i>
+            <span>Da Terra</span>
+        </div>
+        <div class="parceiro-card">
+            <i class="fa fa-spa" aria-hidden="true"></i>
+            <span>BotaniCare</span>
+        </div>
+        <div class="parceiro-card">
+            <i class="fa fa-store" aria-hidden="true"></i>
+            <span>Feirinha do Village</span>
+        </div>
+        <a href="contato.html" class="parceiro-card parceiro-card--cta">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span>Seja Nosso<br>Parceiro</span>
+        </a>
+    </div>
+    </div>
+</section>
+    <!--Fim de Parcerias-->
+
+     <!-- Meio 3 -->
+     <section class="meio">
+        <div class="container">
+            <!--Container-->
+            <div class="meio-texto">
+                <h3>Transforme sua escolha em impacto positivo! </h3>
+                <p>
+                    Na Terra Fresca , acreditamos que cada compra pode mudar vidas e preservar o planeta. Ao escolher nossos produtos naturais, você não está apenas trazendo saúde e qualidade para sua mesa. Você está fortalecendo famílias de agricultores, promovendo práticas sustentáveis ​​e cultivando um futuro melhor para todos.
+
+<h2>Por que participar?</h2>
+
+<p>Produtos frescos, saudáveis ​​e sem agrotóxicos.</p>
+<p>Apoio direto às comunidades de assentamentos brasileiros.</p>
+<p>Um impacto real na preservação do meio ambiente.</p>
+<p>Junte-se a nós e faça parte dessa revolução verde! Seja consumidor, parceiro ou apenas alguém que acredite no poder da mudança.</p> <h1>A natureza agradece, as famílias agradecem e, acima de tudo, você se sentirá parte de algo grandioso. 🌿</h1>
+
+
+                </p>
+                <a href="sobre.html" class="btn animate-btn">Saiba Mais</a>
+            </div>
+            <div class="meio-img">
+                <img src="img/img-3__1_-removebg-preview.png" alt="">
+            </div>
+        </div>
+        <!-- Fim do Container-->
+    </section>
+            <!-- Fim do Meio 3 -->
+
+            <!-- Footer -->
+             
+            <footer class="footer">
+             <div class="container">
+                <div class="links">
+
+             <a href="https://www.instagram.com/o_glauberson/">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                  </a>
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                    <a href="https://github.com/Binhu01">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/glauber-cavalcanti-176039309/">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                   
+                </div>
+                <p><a href="privacidade/index.html">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
+             </div>
+             </footer>
+
+             <!--Fim do Footer-->
+             <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+             <script src="./js/supabase-client.js"></script>
+             <script src="./js/auth-nav.js"></script>
+             <script src="./js/main.js"></script>
+             <script src="./js/interacoes.js"></script>
+             <script src="./js/depoimentos.js"></script>
+
+</body>
+</html>
+
