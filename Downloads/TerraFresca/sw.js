@@ -33,29 +33,54 @@ self.addEventListener('activate', (event) => {
 	self.clients.claim();
 });
 
+const STATIC_EXTENSIONS = /\.(css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/;
+
 self.addEventListener('fetch', (event) => {
 	if (event.request.method !== 'GET') return;
 
-	event.respondWith(
-		caches.match(event.request).then((cached) => {
-			if (cached) return cached;
+	const url = new URL(event.request.url);
+	const isStatic = STATIC_EXTENSIONS.test(url.pathname);
 
-			return fetch(event.request)
-				.then((response) => {
-					if (!response || response.status !== 200 || response.type !== 'basic') {
+	if (isStatic) {
+		event.respondWith(
+			caches.match(event.request).then((cached) => {
+				if (cached) return cached;
+				return fetch(event.request)
+					.then((response) => {
+						if (!response || response.status !== 200 || response.type !== 'basic') {
+							return response;
+						}
+						const responseToCache = response.clone();
+						caches.open(CACHE_NAME).then((cache) => {
+							cache.put(event.request, responseToCache);
+						});
 						return response;
-					}
-					const responseToCache = response.clone();
-					caches.open(CACHE_NAME).then((cache) => {
-						cache.put(event.request, responseToCache);
+					})
+					.catch(() => {
+						if (event.request.destination === 'document') {
+							return caches.match('/offline.html');
+						}
 					});
-					return response;
-				})
-				.catch(() => {
-					if (event.request.destination === 'document') {
-						return caches.match('/offline.html');
-					}
-				});
-		})
-	);
+			})
+		);
+	} else {
+		event.respondWith(
+			caches.match(event.request).then((cached) => {
+				const fetchPromise = fetch(event.request)
+					.then((response) => {
+						if (!response || response.status !== 200 || response.type !== 'basic') {
+							return response;
+						}
+						const responseToCache = response.clone();
+						caches.open(CACHE_NAME).then((cache) => {
+							cache.put(event.request, responseToCache);
+						});
+						return response;
+					})
+					.catch(() => cached || (event.request.destination === 'document' ? caches.match('/offline.html') : undefined));
+
+				return cached || fetchPromise;
+			})
+		);
+	}
 });

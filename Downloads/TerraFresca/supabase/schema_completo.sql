@@ -494,7 +494,12 @@ CREATE POLICY "Vendedor insere propria entrega"
   ON entregas_localizacao FOR INSERT
   WITH CHECK (
     vendedor_id = auth.uid() AND
-    EXISTS (SELECT 1 FROM pedidos p WHERE p.id = pedido_id)
+    EXISTS (
+      SELECT 1 FROM pedidos p
+      JOIN pedido_itens pi ON pi.pedido_id = p.id
+      JOIN vendedores v ON v.loja = pi.loja
+      WHERE p.id = pedido_id AND v.user_id = auth.uid()
+    )
   );
 
 CREATE POLICY "Cliente le propria entrega"
@@ -508,11 +513,22 @@ CREATE POLICY "Cliente le propria entrega"
 -- ============================================================
 CREATE OR REPLACE FUNCTION notify_pedido_status_change()
 RETURNS TRIGGER AS $$
+DECLARE
+  v_supabase_url TEXT;
+  v_service_key TEXT;
 BEGIN
+  v_supabase_url := COALESCE(current_setting('app.supabase_url', true), '');
+  v_service_key := COALESCE(current_setting('app.service_role_key', true), '');
+
+  IF v_supabase_url = '' OR v_service_key = '' THEN
+    RAISE WARNING 'Push notification skipped: app.supabase_url or app.service_role_key not configured';
+    RETURN NEW;
+  END IF;
+
   PERFORM net.http_post(
-    url := current_setting('app.supabase_url') || '/functions/v1/notify-pedido',
+    url := v_supabase_url || '/functions/v1/notify-pedido',
     headers := jsonb_build_object(
-      'Authorization', 'Bearer ' || current_setting('app.service_role_key'),
+      'Authorization', 'Bearer ' || v_service_key,
       'Content-Type', 'application/json'
     ),
     body := jsonb_build_object(
@@ -544,12 +560,25 @@ CREATE OR REPLACE FUNCTION enviar_notificacao_manual(
 ) RETURNS VOID AS $$
 DECLARE
  v_user_id UUID;
+ v_is_vendor BOOLEAN;
 BEGIN
+ -- Verify caller is a vendor associated with this order's loja
+ SELECT EXISTS (
+ SELECT 1 FROM pedidos p
+ JOIN pedido_itens pi ON pi.pedido_id = p.id
+ JOIN vendedores v ON v.loja = pi.loja
+ WHERE p.id = p_pedido_id AND v.user_id = auth.uid()
+ ) INTO v_is_vendor;
+
+ IF NOT v_is_vendor THEN
+ RAISE EXCEPTION 'Not authorized to notify this order';
+ END IF;
+
  SELECT user_id INTO v_user_id FROM pedidos WHERE id = p_pedido_id;
  PERFORM net.http_post(
- url := current_setting('app.supabase_url') || '/functions/v1/notify-pedido',
+ url := COALESCE(current_setting('app.supabase_url', true), '') || '/functions/v1/notify-pedido',
  headers := jsonb_build_object(
- 'Authorization', 'Bearer ' || current_setting('app.service_role_key'),
+ 'Authorization', 'Bearer ' || COALESCE(current_setting('app.service_role_key', true), ''),
  'Content-Type', 'application/json'
  ),
  body := jsonb_build_object(

@@ -46,25 +46,23 @@ serve(async (req) => {
 		}
 
 		const fcmResponse = await fetch(
-			`https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`,
+			'https://fcm.googleapis.com/fcm/send',
 			{
 				method: 'POST',
 				headers: {
-					'Authorization': `Bearer ${fcmServerKey}`,
+					'Authorization': `key=${fcmServerKey}`,
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					message: {
-						token: perfil.fcm_token,
-						notification: {
-							title: 'Terra Fresca',
-							body,
-						},
-						data: {
-							pedido_id: String(pedido_id),
-							loja: String(loja),
-							status: String(novo_status),
-						},
+					to: perfil.fcm_token,
+					notification: {
+						title: 'Terra Fresca',
+						body,
+					},
+					data: {
+						pedido_id: String(pedido_id),
+						loja: String(loja),
+						status: String(novo_status),
 					},
 				}),
 			}

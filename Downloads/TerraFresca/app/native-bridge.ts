@@ -6,6 +6,9 @@ import { BiometricAuth } from 'capacitor-native-biometric';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { supabaseClient } from '../js/supabase-client.js';
 
+let _pushListenersRegistered = false;
+let _currentUserId: string | null = null;
+
 export function isNative(): boolean {
 	return Capacitor.isNativePlatform();
 }
@@ -44,7 +47,7 @@ export async function obterLocalizacaoAtual(): Promise<{ lat: number; lng: numbe
 }
 
 export async function autenticarBiometria(mensagem: string): Promise<boolean> {
-	if (!isNative()) return false;
+	if (!isNative()) return true;
 	try {
 		await BiometricAuth.verify({ reason: mensagem });
 		return true;
@@ -55,24 +58,29 @@ export async function autenticarBiometria(mensagem: string): Promise<boolean> {
 
 export async function registrarPushToken(userId: string): Promise<void> {
 	if (!isNative()) return;
+	_currentUserId = userId;
 	try {
 		const perm = await PushNotifications.requestPermissions();
 		if (perm.receive !== 'granted') return;
 		await PushNotifications.register();
-		PushNotifications.addListener('registration', async (token) => {
-			try {
-				await supabaseClient
-					.from('perfis_usuarios')
-					.update({ fcm_token: token.value })
-					.eq('id', userId);
-				console.log('[native-bridge] FCM token saved for user:', userId);
-			} catch (e) {
-				console.warn('[native-bridge] Failed to save FCM token:', e);
-			}
-		});
-		PushNotifications.addListener('registrationError', (err) => {
-			console.warn('[native-bridge] FCM registration error:', err);
-		});
+		if (!_pushListenersRegistered) {
+			PushNotifications.addListener('registration', async (token) => {
+				if (!_currentUserId) return;
+				try {
+					await supabaseClient
+						.from('perfis_usuarios')
+						.update({ fcm_token: token.value })
+						.eq('id', _currentUserId);
+					console.log('[native-bridge] FCM token saved for user:', _currentUserId);
+				} catch (e) {
+					console.warn('[native-bridge] Failed to save FCM token:', e);
+				}
+			});
+			PushNotifications.addListener('registrationError', (err) => {
+				console.warn('[native-bridge] FCM registration error:', err);
+			});
+			_pushListenersRegistered = true;
+		}
 	} catch (e) {
 		console.warn('[native-bridge] Push registration failed:', e);
 	}
