@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./styles/output.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Vida Pura — Cardápio | Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Verduras, legumes e bebidas fresquinhas da Vida Pura, direto da Feirinha do Village.">
+    <meta property="og:title" content="Vida Pura — Cardápio | Terra Fresca">
+    <meta property="og:description" content="Verduras, legumes e bebidas fresquinhas da Vida Pura, direto da Feirinha do Village.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://terrafresca.netlify.app/cardapio/vidapura.html">
+    <meta property="og:url" content="https://terrafresca.netlify.app/cardapio/vidapura.html">
+    <meta property="og:site_name" content="Terra Fresca">
+    <meta name="twitter:site" content="@terrafresca">
+</head>
+<body class="font-sans text-ink bg-cream" data-loja="vidapura">
+     <!-- Header -->
+    <header class="relative w-full min-h-[440px] overflow-hidden bg-forest border-b-[6px] border-honey">
+        <div class="absolute inset-0 header-photo header-vidapura"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-forest/80 via-forest/55 to-forest/90"></div>
+        <div class="absolute inset-0 contour-overlay"></div>
+
+        <div class="relative w-full h-full flex flex-col justify-center items-center text-center px-4 py-16">
+            <img
+            src="./assets/logo_vida_pura-removebg-preview.png"
+            alt="Logo Vida Pura"
+            class="w-28 h-28 rounded-full border-[3px] border-nude object-cover bg-cream shadow-[6px_6px_0_0_#B8863B] hover:scale-105 transition duration-300"
+            />
+            <h1 class="font-display text-4xl md:text-5xl text-cream mt-6 uppercase tracking-wide [text-shadow:4px_4px_0_rgba(30,51,32,0.5)]">
+                Vida Pura
+            </h1>
+
+            <span class="text-nude/80 font-medium mt-2 tracking-wide">Feirinha do Village, Vilage II</span>
+
+            <div class="inline-flex items-center gap-2 bg-green-600 px-5 py-2 rounded border-2 border-cream mt-6 shadow-[4px_4px_0_0_rgba(30,51,32,0.5)]" id="date-span">
+                <i class="fa fa-clock text-cream text-sm"></i>
+                <span class="text-cream font-semibold text-sm">
+                    Segunda à Domingo · 07:00 às 17:00
+                </span>
+            </div>
+        </div>
+    </header>
+    <!-- Fim do Header -->
+
+    <h2 class="font-serif text-3xl md:text-4xl text-center mt-16 mb-6 text-forest">
+        Lista de produtos
+    </h2>
+
+    <!-- Campo de busca -->
+    <div class="mx-auto max-w-6xl px-4 md:px-6 mb-10">
+        <div class="relative">
+            <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-forest/50 text-sm"></i>
+            <input
+                type="text"
+                id="busca-produtos"
+                placeholder="Buscar produtos..."
+                class="w-full border-[3px] border-forest rounded-lg py-3 pl-11 pr-4 bg-white text-forest font-medium placeholder:text-forest/40 focus:outline-none focus:border-honey focus:shadow-[4px_4px_0_0_#B8863B] transition duration-200"
+            />
+        </div>
+        <p id="busca-vazia" class="hidden text-center text-ink/60 mt-4">Nenhum produto encontrado para essa busca.</p>
+    </div>
+
+    <!-- Filtros e ordenação -->
+    <div class="mx-auto max-w-6xl px-4 md:px-6 mb-8 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-sm font-semibold text-forest">Categoria:</span>
+            <button type="button" data-filtro-categoria="todos" class="filtro-categoria-btn active bg-forest text-cream border-2 border-forest px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0_0_#B8863B] transition hover:-translate-y-0.5">Todos</button>
+            <button type="button" data-filtro-categoria="produtos" class="filtro-categoria-btn bg-white text-forest border-2 border-forest px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0_0_#B8863B] transition hover:-translate-y-0.5">Produtos</button>
+            <button type="button" data-filtro-categoria="bebidas" class="filtro-categoria-btn bg-white text-forest border-2 border-forest px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0_0_#B8863B] transition hover:-translate-y-0.5">Bebidas</button>
+        </div>
+        <div class="flex items-center gap-2">
+            <label for="ordenar-produtos" class="text-sm font-semibold text-forest">Ordenar:</label>
+            <select id="ordenar-produtos" class="border-2 border-forest rounded px-3 py-1.5 text-sm font-semibold text-forest bg-white shadow-[2px_2px_0_0_#B8863B] focus:outline-none focus:border-honey transition cursor-pointer">
+                <option value="nome">Nome (A-Z)</option>
+                <option value="preco-asc">Menor preço</option>
+                <option value="preco-desc">Maior preço</option>
+                <option value="avaliacao">Melhor avaliados</option>
+            </select>
+        </div>
+    </div>
+
+<!--Início Menu (id usado pelo script.js pra delegação de clique)-->
+<div id="menu">
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16" id="grid-produtos">
+        <p class="col-span-2 text-center text-ink/60">Carregando produtos...</p>
+    </main>
+
+    <div class="hidden" id="secao-bebidas">
+        <div class="mx-auto max-w-6xl px-4 md:px-6 my-2">
+            <h2 class="font-serif italic text-3xl md:text-4xl font-medium text-center mt-6 mb-8 text-forest">
+                Bebidas
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mx-auto max-w-6xl px-4 md:px-6 mb-16" id="grid-bebidas"></div>
+    </div>
+</div>
+<!--Fim Menu-->
+
+<!--Modal Cart / Checkout-->
+<div class="bg-forest/70 backdrop-blur-sm w-full h-full fixed top-0 left-0 z-[99] flex items-center justify-center hidden" id="cart-modal">
+    <div class="w-full max-w-[440px] mx-4">
+        <!-- Card principal do checkout -->
+        <div class="checkout-card">
+            <label class="checkout-title">CHECKOUT</label>
+            <div class="checkout-steps">
+                <!-- Itens do carrinho -->
+                <div class="step">
+                    <span class="checkout-step-label">SEU CARRINHO</span>
+                    <div id="cart-items" class="flex flex-col gap-2 max-h-[180px] overflow-y-auto"></div>
+                </div>
+
+                <hr class="checkout-divider">
+
+                <!-- Endereço de entrega -->
+                <div class="step">
+                    <span class="checkout-step-label">ENDEREÇO DE ENTREGA</span>
+                    <input
+                        type="text"
+                        placeholder="Digite seu endereço completo"
+                        id="address"
+                        class="checkout-input"
+                    />
+                    <p class="text-red-500 hidden text-xs mt-1" id="address-warn">Digite seu endereço completo!</p>
+                </div>
+
+                <hr class="checkout-divider">
+
+                <!-- Método de pagamento -->
+                <div class="step">
+                    <span class="checkout-step-label">MÉTODO DE PAGAMENTO</span>
+                    <div class="checkout-payment-options" id="payment-options">
+                        <div class="checkout-payment-option selected" data-method="pix">
+                            <i class="fa-brands fa-pix"></i>
+                            <span>PIX</span>
+                        </div>
+                        <div class="checkout-payment-option" data-method="credito">
+                            <i class="fa-regular fa-credit-card"></i>
+                            <span>Crédito</span>
+                        </div>
+                        <div class="checkout-payment-option" data-method="debito">
+                            <i class="fa-solid fa-money-check-dollar"></i>
+                            <span>Débito</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="checkout-divider">
+
+                <!-- Cupom -->
+                <div class="step checkout-promo">
+                    <span class="checkout-step-label">VOCÊ TEM CUPOM?</span>
+                    <form id="cupom-form" onsubmit="return false;">
+                        <input class="checkout-input" id="cupom-input" placeholder="Digite o cupom aqui." type="text">
+                        <button type="button" class="checkout-promo-btn" id="btn-aplicar-cupom">Aplicar</button>
+                    </form>
+                    <p class="text-xs mt-1 min-h-[16px]" id="cupom-mensagem"></p>
+                </div>
+
+                <hr class="checkout-divider">
+
+                <!-- Resumo de valores -->
+                <div class="step">
+                    <span class="checkout-step-label">RESUMO</span>
+                    <div class="checkout-details">
+                        <span>Subtotal:</span>
+                        <span id="valor-subtotal">R$ 0,00</span>
+                        <span id="linha-desconto-label" class="hidden">Desconto:</span>
+                        <span id="valor-desconto" class="hidden text-honey">- R$ 0,00</span>
+                        <span>Frete:</span>
+                        <span id="valor-frete">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rodapé com total e botão -->
+        <div class="checkout-footer-card">
+            <label class="checkout-total-price" id="cart-total">R$ 0,00</label>
+            <div class="flex flex-col items-end gap-1">
+                <button id="checkout-btn" class="checkout-finalize-btn">Finalizar Pedido</button>
+                <button id="close-modal-btn" class="text-cream/80 text-xs font-medium hover:text-cream transition mt-1">Fechar</button>
+            </div>
+        </div>
+
+        <p class="hidden text-sm mt-3 font-semibold text-center text-cream" id="checkout-status"></p>
+    </div>
+</div>
+<!-- Fim Modal Cart / Checkout-->
+
+<!-- Button Footer-->
+<footer class="w-full bg-forest py-3 fixed bottom-0 flex items-center justify-center shadow-[0_-6px_20px_-8px_rgba(30,51,32,0.5)]">
+    <button class="flex items-center gap-2 text-cream font-semibold" id="cart-btn">
+        <span class="bg-honey text-forest text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" id="cart-count">0</span>
+        Ver meu carrinho
+        <i class="fa fa-cart-plus text-cream"></i>
+    </button>
+</footer>
+ <!-- Fim Button Footer-->
+
+ <!-- Modal de Confirmação de Pedido -->
+<div id="confirm-modal" class="bg-forest/70 backdrop-blur-sm w-full h-full fixed top-0 left-0 z-[100] flex items-center justify-center hidden">
+    <div class="w-full max-w-[440px] mx-4 bg-white border-[3px] border-forest rounded-lg shadow-[6px_6px_0_0_#B8863B] p-6">
+        <h2 class="font-serif text-2xl text-forest mb-4">Confirmar Pedido</h2>
+        <p class="text-sm text-ink/70 mb-4">Revise os detalhes abaixo antes de confirmar:</p>
+
+        <div id="confirm-itens" class="flex flex-col gap-2 max-h-[160px] overflow-y-auto mb-4 border-b border-nude pb-3"></div>
+
+        <div class="flex flex-col gap-1 text-sm mb-4">
+            <div class="flex justify-between"><span class="text-ink/70">Endereço:</span><span id="confirm-endereco" class="font-semibold text-forest text-right max-w-[60%] truncate"></span></div>
+            <div class="flex justify-between"><span class="text-ink/70">Pagamento:</span><span id="confirm-pagamento" class="font-semibold text-forest"></span></div>
+            <div class="flex justify-between mt-2 pt-2 border-t border-nude"><span class="font-bold text-forest">Total:</span><span id="confirm-total" class="font-bold text-forest text-lg"></span></div>
+        </div>
+
+        <div class="flex gap-3">
+            <button id="confirm-cancel-btn" class="flex-1 py-3 rounded border-2 border-forest text-forest font-bold uppercase tracking-wide hover:bg-cream transition">Voltar</button>
+            <button id="confirm-ok-btn" class="flex-1 py-3 rounded bg-forest text-cream font-bold uppercase tracking-wide shadow-[3px_3px_0_0_#B8863B] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#B8863B] transition">Confirmar</button>
+        </div>
+    </div>
+</div>
+<!-- Fim Modal de Confirmação -->
+
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="produtos.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
