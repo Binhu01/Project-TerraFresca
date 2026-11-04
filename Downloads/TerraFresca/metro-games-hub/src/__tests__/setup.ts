@@ -31,3 +31,16 @@ jest.mock('@react-navigation/stack', () => ({
     Screen: ({ children }: { children: React.ReactNode }) => children,
   }),
 }));
+
+jest.mock('@shopify/react-native-skia', () => ({
+  Canvas: ({ children }: { children: React.ReactNode }) => children,
+  Image: () => null,
+  useCanvasRef: () => ({ current: null }),
+  Skia: { Image: { MakeFromEncoded: () => null } },
+  FilterMode: { Nearest: 0, Linear: 1 },
+}));
+
+jest.mock('expo-gl', () => ({
+  GLView: ({ children }: { children: React.ReactNode }) => children,
+  createContextAsync: jest.fn(),
+}));
