@@ -469,3 +469,66 @@ ALTER TABLE lojas ADD COLUMN IF NOT EXISTS fonte_heading TEXT DEFAULT 'Bevan';
 ALTER TABLE lojas ADD COLUMN IF NOT EXISTS fonte_body TEXT DEFAULT 'Inter';
 
 CREATE INDEX IF NOT EXISTS idx_lojas_dominio_custom ON lojas(dominio_custom) WHERE dominio_custom IS NOT NULL;
+
+-- ============================================================
+-- App Mobile: FCM token para push notifications
+-- ============================================================
+ALTER TABLE perfis_usuarios ADD COLUMN IF NOT EXISTS fcm_token TEXT;
+
+-- ============================================================
+-- App Mobile: Entregas localizacao para rastreamento em tempo real
+-- ============================================================
+CREATE TABLE IF NOT EXISTS entregas_localizacao (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  pedido_id UUID NOT NULL REFERENCES pedidos(id) ON DELETE CASCADE,
+  vendedor_id UUID NOT NULL REFERENCES auth.users(id),
+  latitude DECIMAL(10, 7) NOT NULL,
+  longitude DECIMAL(10, 7) NOT NULL,
+  marco TEXT NOT NULL CHECK (marco IN ('saiu_entrega', 'entregue')),
+  criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE entregas_localizacao ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Vendedor insere propria entrega"
+  ON entregas_localizacao FOR INSERT
+  WITH CHECK (
+    vendedor_id = auth.uid() AND
+    EXISTS (SELECT 1 FROM pedidos p WHERE p.id = pedido_id)
+  );
+
+CREATE POLICY "Cliente le propria entrega"
+  ON entregas_localizacao FOR SELECT
+  USING (
+    EXISTS (SELECT 1 FROM pedidos p WHERE p.id = pedido_id AND p.user_id = auth.uid())
+  );
+
+-- ============================================================
+-- App Mobile: Trigger para push notifications on status change
+-- ============================================================
+CREATE OR REPLACE FUNCTION notify_pedido_status_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  PERFORM net.http_post(
+    url := current_setting('app.supabase_url') || '/functions/v1/notify-pedido',
+    headers := jsonb_build_object(
+      'Authorization', 'Bearer ' || current_setting('app.service_role_key'),
+      'Content-Type', 'application/json'
+    ),
+    body := jsonb_build_object(
+      'pedido_id', NEW.pedido_id,
+      'loja', NEW.loja,
+      'novo_status', NEW.status,
+      'user_id', (SELECT user_id FROM pedidos WHERE id = NEW.pedido_id)
+    )
+  );
+  RETURN NEW;
+EXCEPTION WHEN OTHERS THEN
+  RAISE WARNING 'Push notification failed: %', SQLERRM;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER trg_notify_pedido_status
+AFTER INSERT OR UPDATE ON pedido_loja_status
+FOR EACH ROW EXECUTE FUNCTION notify_pedido_status_change();
