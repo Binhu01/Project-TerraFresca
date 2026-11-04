@@ -6,6 +6,7 @@
 
 import type { SpriteSpec } from '../rendering/PixelRenderer';
 import { generateBoardCell } from './templates/board-cell.svg';
+import { generateCheckerPiece } from './templates/checker-piece.svg';
 import { generateDiceFace } from './templates/dice-face.svg';
 import { generateLadder } from './templates/ladder.svg';
 import { generatePawn } from './templates/pawn.svg';
@@ -37,6 +38,7 @@ interface TemplateEntry {
 
 const TEMPLATES: Record<string, TemplateEntry> = {
   'board-cell': { fn: generateBoardCell, dims: [48, 48] },
+  'checker-piece': { fn: generateCheckerPiece, dims: [32, 32] },
   'dice-face': { fn: generateDiceFace, dims: [96, 96] },
   'ladder': { fn: generateLadder, dims: [48, 240] },
   'pawn': { fn: generatePawn, dims: [32, 32] },
