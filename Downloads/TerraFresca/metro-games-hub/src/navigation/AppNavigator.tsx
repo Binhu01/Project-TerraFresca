@@ -1,11 +1,19 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SkiaSpike } from '../shared/rendering/spike/SkiaSpike';
 import { GLSpike } from '../shared/rendering/spike/GLSpike';
 
-const Stack = createStackNavigator();
+type RootStackParamList = {
+  Home: undefined;
+  SkiaSpike: undefined;
+  GLSpike: undefined;
+};
 
-function HomeScreen({ navigation }: { navigation: any }) {
+const Stack = createStackNavigator<RootStackParamList>();
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+function HomeScreen({ navigation }: { navigation: HomeScreenNavigationProp }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Metro Games Hub</Text>
