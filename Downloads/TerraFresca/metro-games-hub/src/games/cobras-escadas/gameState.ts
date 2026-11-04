@@ -16,7 +16,7 @@ export interface GameState {
   players: Player[];
   currentPlayerIndex: number;
   boardConfig: BoardConfig;
-  phase: 'waiting-roll' | 'moving' | 'snake-ladder' | 'game-over';
+  phase: 'waiting-roll' | 'rolling' | 'moving' | 'snake-ladder' | 'game-over';
   winner: number | null;
   diceValue: number | null;
 }
@@ -61,9 +61,42 @@ export function createInitialState(playerCount: number, boardConfig: BoardConfig
 }
 
 /**
+ * Start a dice roll: transitions from 'waiting-roll' to 'rolling'.
+ * Determines the dice value immediately (for DiceRoller animation coordination).
+ * Accepts an optional forcedValue for deterministic testing; otherwise uses mulberry32 PRNG.
+ */
+export function startRoll(state: GameState, forcedValue?: number): RollResult {
+  if (state.phase !== 'waiting-roll') {
+    throw new Error(`startRoll called in invalid phase: ${state.phase}`);
+  }
+
+  let diceValue: number;
+  if (forcedValue !== undefined) {
+    diceValue = forcedValue;
+  } else {
+    const seed = Date.now() * 1000 + (rollCounter++) + state.currentPlayerIndex;
+    const rng = mulberry32(seed);
+    diceValue = Math.floor(rng() * 6) + 1;
+  }
+
+  const newPlayers = state.players.map((p) => ({ ...p }));
+
+  return {
+    diceValue,
+    state: {
+      ...state,
+      players: newPlayers,
+      phase: 'rolling',
+      diceValue,
+    },
+  };
+}
+
+/**
  * Roll the dice for the current player. Sets phase to 'moving' and stores the dice value.
  * Accepts an optional forcedValue for deterministic testing; otherwise uses mulberry32 PRNG
  * seeded by Date.now() + currentPlayerIndex.
+ * @deprecated Use startRoll() for the rolling animation flow. Kept for backward compatibility.
  */
 export function rollDice(state: GameState, forcedValue?: number): RollResult {
   let diceValue: number;
