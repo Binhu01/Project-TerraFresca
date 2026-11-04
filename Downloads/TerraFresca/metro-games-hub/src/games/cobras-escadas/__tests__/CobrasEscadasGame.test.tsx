@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 import { CobrasEscadasGame } from '../CobrasEscadasGame';
 
 // Mock dependencies
@@ -8,10 +8,16 @@ jest.mock('../../../shared/rendering/PixelRendererFactory', () => ({
 }));
 jest.mock('../../../shared/audio/AudioManager', () => ({
   AudioManager: {
+    init: jest.fn().mockResolvedValue(undefined),
     playMusic: jest.fn(),
     stopMusic: jest.fn(),
-    playSFX: jest.fn(),
+    playSfx: jest.fn(),
     cleanup: jest.fn(),
+  },
+}));
+jest.mock('../../../shared/audio/SoundRegistry', () => ({
+  SoundRegistry: {
+    resolve: jest.fn((name: string) => `mock://${name}`),
   },
 }));
 jest.mock('../../../shared/assets/SpriteGenerator', () => ({
@@ -35,7 +41,9 @@ test('shows dice interaction area', async () => {
 test('calls AudioManager.playMusic on mount', async () => {
   const { AudioManager } = require('../../../shared/audio/AudioManager');
   await render(<CobrasEscadasGame playerCount={2} />);
-  expect(AudioManager.playMusic).toHaveBeenCalled();
+  await waitFor(() => {
+    expect(AudioManager.playMusic).toHaveBeenCalled();
+  });
 });
 
 test('calls AudioManager.cleanup on unmount', async () => {

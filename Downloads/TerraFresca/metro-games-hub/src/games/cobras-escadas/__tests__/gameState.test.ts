@@ -1,13 +1,9 @@
 import { createInitialState, rollDice, startRoll, movePawn, applySnakeOrLadder, checkWin, advanceTurn } from '../gameState';
+import { generateBoard } from '../board';
 import type { BoardConfig } from '../board';
 
-const mockBoard: BoardConfig = {
-  snakes: { 16: 6, 47: 26, 49: 11, 56: 53, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 98: 78 },
-  ladders: { 1: 38, 4: 14, 9: 31, 20: 38, 28: 84, 40: 59, 51: 67, 63: 81 },
-};
-
-// Note: use a board config that satisfies constraints for testing.
-// The exact values above are illustrative — adjust to match generateBoard output or use hand-crafted valid config.
+// Use generateBoard with a fixed seed to get a valid board configuration
+const mockBoard: BoardConfig = generateBoard(42);
 
 test('createInitialState sets up players at position 1', () => {
   const state = createInitialState(2, mockBoard);

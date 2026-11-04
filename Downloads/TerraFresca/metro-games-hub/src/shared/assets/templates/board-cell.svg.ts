@@ -17,8 +17,8 @@ export function generateBoardCell(seed: number, palette: string[], overrides?: B
 
   // Use cellNumber for positional color variation if provided, otherwise derive from seed
   const baseIdx = overrides?.cellNumber !== undefined
-    ? 12 + (overrides.cellNumber % 4)
-    : 12 + Math.floor(rng() * 4);
+    ? (overrides.cellNumber % palette.length)
+    : Math.floor(rng() * palette.length);
   const baseColor = palette[baseIdx] ?? '#F0E6D2';
 
   // Subtle shade variation from seed

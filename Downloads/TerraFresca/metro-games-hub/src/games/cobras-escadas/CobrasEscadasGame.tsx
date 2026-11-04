@@ -17,11 +17,11 @@ import {
 import type { GameState } from './gameState';
 import { SpriteGenerator } from '../../shared/assets/SpriteGenerator';
 import { AudioManager } from '../../shared/audio/AudioManager';
+import { SoundRegistry } from '../../shared/audio/SoundRegistry';
 import { DiceRoller } from './DiceRoller';
 
 const CELL_SIZE = 48;
 const BOARD_SIZE = CELL_SIZE * 10;
-const SEED = Date.now();
 const PALETTE = ['#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2'];
 
 interface CobrasEscadasGameProps {
@@ -29,14 +29,24 @@ interface CobrasEscadasGameProps {
 }
 
 export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
+  const [seed] = useState(() => Date.now());
   const [gameState, setGameState] = useState<GameState>(() =>
-    createInitialState(playerCount, generateBoard(SEED))
+    createInitialState(playerCount, generateBoard(seed))
   );
 
-  // Audio lifecycle
+  // Audio lifecycle — init must complete before playMusic; resolve symbolic names via SoundRegistry
   useEffect(() => {
-    AudioManager.playMusic('board-game');
+    let cancelled = false;
+    (async () => {
+      await AudioManager.init();
+      if (cancelled) return;
+      const musicUri = SoundRegistry.resolve('board-game');
+      if (musicUri) {
+        await AudioManager.playMusic(musicUri);
+      }
+    })();
     return () => {
+      cancelled = true;
       AudioManager.cleanup();
     };
   }, []);
@@ -116,7 +126,7 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
           return (
             <Image
               key={`pawn-${player.id}`}
-              source={{ uri: SpriteGenerator.generate('pawn', { seed: SEED, palette: PALETTE, overrides: { color: player.color } }).uri }}
+              source={{ uri: SpriteGenerator.generate('pawn', { seed, palette: PALETTE, overrides: { color: player.color } }).uri }}
               style={[
                 styles.pawn,
                 {
@@ -210,18 +220,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 32,
     height: 32,
-  },
-  diceArea: {
-    marginTop: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    backgroundColor: '#40916c',
-    borderRadius: 8,
-  },
-  diceText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
   winOverlay: {
     ...StyleSheet.absoluteFill,

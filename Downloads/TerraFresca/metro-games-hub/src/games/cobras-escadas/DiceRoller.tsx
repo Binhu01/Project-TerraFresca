@@ -8,6 +8,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SpriteGenerator } from '../../shared/assets/SpriteGenerator';
 import { AudioManager } from '../../shared/audio/AudioManager';
+import { SoundRegistry } from '../../shared/audio/SoundRegistry';
 
 const DICE_SIZE = 96;
 const SEED = 42;
@@ -120,7 +121,10 @@ export function DiceRoller({
     let lastFaceChangeTime = 0;
 
     // Play dice-roll SFX at start
-    AudioManager.playSfx('dice-roll');
+    const rollUri = SoundRegistry.resolve('dice-roll');
+    if (rollUri) {
+      AudioManager.playSfx(rollUri);
+    }
 
     const animate = (now: number) => {
       if (!mountedRef.current) return;
@@ -170,7 +174,10 @@ export function DiceRoller({
 
         // Play dice-land SFX at start of landing phase
         if (bounceElapsed < 20) {
-          AudioManager.playSfx('dice-land');
+          const landUri = SoundRegistry.resolve('dice-land');
+          if (landUri) {
+            AudioManager.playSfx(landUri);
+          }
         }
       }
 
