@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import { GameRegistry } from '../shared/games/GameRegistry';
 import { SpriteGenerator } from '../shared/assets/SpriteGenerator';
 import type { RootStackParamList } from '../navigation/AppNavigator';
 
+/** Scale factor for game icon sprites in the hub grid. */
+const ICON_SCALE_FACTOR = 2;
+
 /** Metro-themed palette for hub sprites — warm transit tones, not generic purple. */
-const STATION_PALETTE = [
+export const STATION_PALETTE = [
   '#2B2D42', // dark steel
   '#8D99AE', // platform grey
   '#EDF2F4', // tile white
@@ -23,7 +26,7 @@ interface MetroHubProps {
 }
 
 export function MetroHub({ navigation }: MetroHubProps) {
-  const games = GameRegistry.getAll();
+  const games = useMemo(() => GameRegistry.getAll(), []);
 
   const handleSelectGame = (gameId: string) => {
     navigation.navigate('GameScreen', { gameId });
@@ -51,7 +54,7 @@ export function MetroHub({ navigation }: MetroHubProps) {
             >
               <Image
                 source={{ uri: iconSprite.uri }}
-                style={[styles.icon, { width: iconSprite.width * 2, height: iconSprite.height * 2 }]}
+                style={[styles.icon, { width: iconSprite.width * ICON_SCALE_FACTOR, height: iconSprite.height * ICON_SCALE_FACTOR }]}
                 resizeMode="contain"
               />
               <Text style={styles.gameName}>{game.metadata.name}</Text>

@@ -4,6 +4,7 @@ import { MetroHub } from '../MetroHub';
 import { GameRegistry } from '../../shared/games/GameRegistry';
 import type { GameModule } from '../../shared/games/GameModule';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Test mock: only navigate/goBack are exercised by MetroHub.
 const mockNavigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),

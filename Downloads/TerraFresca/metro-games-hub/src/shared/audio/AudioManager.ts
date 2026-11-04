@@ -57,6 +57,10 @@ export const AudioManager = {
     });
   },
 
+  /**
+   * Set master volume (0–1). Setting to 0 is equivalent to mute but does NOT
+   * store the pre-mute level — use mute()/unmute() for toggle semantics.
+   */
   setVolume(level: number): void {
     volume = Math.max(0, Math.min(1, level));
     if (volume > 0) {
@@ -68,11 +72,13 @@ export const AudioManager = {
     return volume;
   },
 
+  /** Store current volume and set to 0. Idempotent if already muted. */
   mute(): void {
     previousVolume = volume || previousVolume;
     volume = 0;
   },
 
+  /** Restore volume to the level saved before mute(). No-op if not muted. */
   unmute(): void {
     volume = previousVolume;
   },

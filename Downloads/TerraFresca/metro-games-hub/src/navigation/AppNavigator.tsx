@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import type { StackNavigationProp } from '@react-navigation/stack';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SkiaSpike } from '../shared/rendering/spike/SkiaSpike';
 import { GLSpike } from '../shared/rendering/spike/GLSpike';
@@ -15,6 +16,8 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+type HomeScreenNavProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
 export function AppNavigator() {
   return (
     <Stack.Navigator>
@@ -27,7 +30,7 @@ export function AppNavigator() {
   );
 }
 
-function HomeScreen({ navigation }: { navigation: any }) {
+function HomeScreen({ navigation }: { navigation: HomeScreenNavProp }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Metro Games Hub</Text>

@@ -1,5 +1,10 @@
 import type { GameModule } from './GameModule';
 
+/**
+ * Module-level singleton Map — intentional pattern.
+ * The registry lives for the entire app lifetime and is shared across all imports.
+ * Use clear() only in tests to reset state between cases.
+ */
 const registry = new Map<string, GameModule>();
 
 export const GameRegistry = {

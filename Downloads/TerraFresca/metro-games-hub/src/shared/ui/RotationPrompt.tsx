@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import type { OrientationChangeEvent } from 'expo-screen-orientation';
 
 const LANDSCAPE_ORIENTATIONS = new Set([
   ScreenOrientation.Orientation.LANDSCAPE_LEFT,
@@ -8,7 +9,8 @@ const LANDSCAPE_ORIENTATIONS = new Set([
 ]);
 
 export function RotationPrompt() {
-  const [isLandscape, setIsLandscape] = useState(true);
+  // Fail-visible: default to non-landscape so the prompt shows until orientation is confirmed.
+  const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -24,7 +26,7 @@ export function RotationPrompt() {
     });
 
     const subscription = ScreenOrientation.addOrientationChangeListener(
-      (event: { orientationInfo: { orientation: ScreenOrientation.Orientation } }) => {
+      (event: OrientationChangeEvent) => {
         updateOrientation(event.orientationInfo.orientation);
       }
     );
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: '#000000',
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 9999,

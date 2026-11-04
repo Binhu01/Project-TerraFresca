@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 import { RotationPrompt } from '../RotationPrompt';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
@@ -8,7 +8,7 @@ test('shows prompt when orientation is portrait', async () => {
     ScreenOrientation.Orientation.PORTRAIT_UP
   );
   const { getByText } = await render(<RotationPrompt />);
-  expect(getByText(/gire o dispositivo/i)).toBeTruthy();
+  await waitFor(() => expect(getByText(/gire o dispositivo/i)).toBeTruthy());
 });
 
 test('hides prompt when orientation is landscape', async () => {
@@ -16,5 +16,5 @@ test('hides prompt when orientation is landscape', async () => {
     ScreenOrientation.Orientation.LANDSCAPE_LEFT
   );
   const { queryByText } = await render(<RotationPrompt />);
-  expect(queryByText(/gire o dispositivo/i)).toBeNull();
+  await waitFor(() => expect(queryByText(/gire o dispositivo/i)).toBeNull());
 });
