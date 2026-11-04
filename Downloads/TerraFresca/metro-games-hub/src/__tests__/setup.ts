@@ -4,9 +4,16 @@
 jest.mock('expo-screen-orientation', () => ({
   lockAsync: jest.fn(),
   unlockAsync: jest.fn(),
-  getOrientationAsync: jest.fn(),
-  addOrientationChangeListener: jest.fn(),
+  getOrientationAsync: jest.fn().mockResolvedValue(3),
+  addOrientationChangeListener: jest.fn(() => ({ remove: jest.fn() })),
   removeOrientationChangeListener: jest.fn(),
+  Orientation: {
+    PORTRAIT_UP: 1,
+    PORTRAIT_DOWN: 2,
+    LANDSCAPE_LEFT: 3,
+    LANDSCAPE_RIGHT: 4,
+    UNKNOWN: 0,
+  },
   OrientationLock: {
     DEFAULT: 0,
     ALL: 1,

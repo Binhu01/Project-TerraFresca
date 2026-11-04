@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppNavigator } from './navigation/AppNavigator';
 import { GameRegistry } from './shared/games/GameRegistry';
 import { ChessGame } from './games/chess/ChessGame';
+import { RotationPrompt } from './shared/ui/RotationPrompt';
 
 GameRegistry.register(ChessGame);
 
@@ -14,9 +15,12 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <AppNavigator />
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <AppNavigator />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+      <RotationPrompt />
+    </>
   );
 }
