@@ -50,11 +50,11 @@ export const AudioManager = {
     activeSfx.add(sound);
 
     // Auto-cleanup when done playing
-    sound.getStatusAsync().then((status) => {
+    sound.setOnPlaybackStatusUpdate((status) => {
       if ('didJustFinish' in status && status.didJustFinish) {
         sound.unloadAsync().then(() => activeSfx.delete(sound)).catch(() => {});
       }
-    }).catch(() => {});
+    });
   },
 
   setVolume(level: number): void {
