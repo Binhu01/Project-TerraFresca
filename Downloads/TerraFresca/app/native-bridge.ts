@@ -4,6 +4,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { Geolocation } from '@capacitor/geolocation';
 import { BiometricAuth } from 'capacitor-native-biometric';
 import { PushNotifications } from '@capacitor/push-notifications';
+import { supabaseClient } from '../js/supabase-client.js';
 
 export function isNative(): boolean {
 	return Capacitor.isNativePlatform();
@@ -59,8 +60,15 @@ export async function registrarPushToken(userId: string): Promise<void> {
 		if (perm.receive !== 'granted') return;
 		await PushNotifications.register();
 		PushNotifications.addListener('registration', async (token) => {
-			// Token will be sent to Supabase by the caller or a separate handler
-			console.log('[native-bridge] FCM token registered for user:', userId, token.value);
+			try {
+				await supabaseClient
+					.from('perfis_usuarios')
+					.update({ fcm_token: token.value })
+					.eq('id', userId);
+				console.log('[native-bridge] FCM token saved for user:', userId);
+			} catch (e) {
+				console.warn('[native-bridge] Failed to save FCM token:', e);
+			}
 		});
 		PushNotifications.addListener('registrationError', (err) => {
 			console.warn('[native-bridge] FCM registration error:', err);
