@@ -32,8 +32,7 @@ const TEMPLATES: Record<string, TemplateEntry> = {
 
 /** Cache key builder. */
 function cacheKey(template: string, seed: number, palette: string[]): string {
-  // Use first 3 palette entries + length as a lightweight fingerprint
-  const palId = `${palette.length}:${palette[0]}:${palette[1]}:${palette[2]}`;
+  const palId = palette.join(',');
   return `${template}:${seed}:${palId}`;
 }
 
