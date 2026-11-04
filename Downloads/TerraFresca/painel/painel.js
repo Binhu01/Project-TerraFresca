@@ -669,6 +669,34 @@ function criarCardPedidoVendedor(pedido, itens, emailComprador, statusPorPedido)
         rodape.appendChild(entregaActions);
     }
 
+    // Manual notification button (native app only)
+    if (typeof window.nativeBridge !== 'undefined') {
+        const btnNotify = document.createElement("button");
+        btnNotify.type = "button";
+        btnNotify.className = "btn btn-secondary";
+        btnNotify.style.cssText = "margin-top:8px;width:100%;font-size:13px;padding:8px;";
+        btnNotify.textContent = "🔔 Notificar cliente";
+        btnNotify.addEventListener("click", async () => {
+            const mensagem = prompt("Digite a mensagem para o cliente:");
+            if (!mensagem || !mensagem.trim()) return;
+            btnNotify.disabled = true;
+            try {
+                await supabaseClient.rpc("enviar_notificacao_manual", {
+                    p_pedido_id: pedido.id,
+                    p_loja: lojaAtual,
+                    p_mensagem: mensagem.trim(),
+                });
+                alert("Notificação enviada com sucesso!");
+            } catch (e) {
+                console.error("[painel] Erro ao enviar notificação:", e);
+                alert("Erro ao enviar notificação: " + e.message);
+            } finally {
+                btnNotify.disabled = false;
+            }
+        });
+        rodape.appendChild(btnNotify);
+    }
+
     card.appendChild(topo);
     card.appendChild(itensLista);
     card.appendChild(rodape);
