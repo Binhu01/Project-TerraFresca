@@ -58,9 +58,53 @@ async function carregarLoja() {
     }
 
     lojaAtual = loja;
+    aplicarBrandingWhiteLabel(loja);
     renderizarLoja(loja);
     atualizarSEO(loja);
     carregarProdutos(loja.slug);
+}
+
+// ======================================================
+// White-label: aplicar branding customizado da loja
+// ======================================================
+function aplicarBrandingWhiteLabel(loja) {
+    const root = document.documentElement;
+
+    // Cores customizadas (com fallback para as cores padrão do Terra Fresca)
+    if (loja.cor_primaria) {
+        root.style.setProperty("--forest", loja.cor_primaria);
+    }
+    if (loja.cor_secundaria) {
+        root.style.setProperty("--honey", loja.cor_secundaria);
+    }
+    if (loja.cor_fundo) {
+        root.style.setProperty("--cream", loja.cor_fundo);
+    }
+
+    // Fontes customizadas via Google Fonts (carregamento dinâmico)
+    const fontesParaCarregar = [];
+    if (loja.fonte_heading && loja.fonte_heading !== "Bevan") {
+        fontesParaCarregar.push(loja.fonte_heading);
+        root.style.setProperty("--font-heading", `"${loja.fonte_heading}", serif`);
+    }
+    if (loja.fonte_body && loja.fonte_body !== "Inter") {
+        fontesParaCarregar.push(loja.fonte_body);
+        root.style.setProperty("--font-body", `"${loja.fonte_body}", sans-serif`);
+    }
+
+    if (fontesParaCarregar.length > 0) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = `https://fonts.googleapis.com/css2?${fontesParaCarregar.map(f => `family=${encodeURIComponent(f)}:wght@400;700`).join("&")}&display=swap`;
+        document.head.appendChild(link);
+    }
+
+    // Título da página com nome da loja como marca principal
+    if (loja.dominio_custom) {
+        document.title = loja.nome;
+    } else {
+        document.title = `${loja.nome} - Terra Fresca`;
+    }
 }
 
 function mostrarNaoEncontrada() {

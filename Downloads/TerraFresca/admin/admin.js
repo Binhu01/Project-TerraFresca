@@ -808,5 +808,189 @@ async function atualizarStatusLoja(lojaId, novoStatus, motivo) {
     carregarSolicitacoesLojas();
 }
 
+// ======================================================
+// White-Label: configuração de branding por loja (admin)
+// ======================================================
+const adminWlLojaSelect = document.getElementById("admin-wl-loja-select");
+const adminWlForm = document.getElementById("admin-wl-form");
+const adminWlCorPrimaria = document.getElementById("admin-wl-cor-primaria");
+const adminWlCorSecundaria = document.getElementById("admin-wl-cor-secundaria");
+const adminWlCorFundo = document.getElementById("admin-wl-cor-fundo");
+const adminWlFonteHeading = document.getElementById("admin-wl-fonte-heading");
+const adminWlFonteBody = document.getElementById("admin-wl-fonte-body");
+const adminWlDominio = document.getElementById("admin-wl-dominio");
+const adminWlMensagem = document.getElementById("admin-wl-mensagem");
+const adminBtnSalvarWl = document.getElementById("admin-btn-salvar-wl");
+const adminBtnResetarWl = document.getElementById("admin-btn-resetar-wl");
+
+const ADMIN_WL_PADRAO = {
+    cor_primaria: "#1e3320",
+    cor_secundaria: "#b8860b",
+    cor_fundo: "#fbf8f2",
+    fonte_heading: "Bevan",
+    fonte_body: "Inter",
+    dominio_custom: "",
+};
+
+let adminLojaSelecionada = null;
+
+async function carregarLojasParaWL() {
+    const { data, error } = await supabaseClient
+        .from("lojas")
+        .select("id, nome, slug, status, cor_primaria, cor_secundaria, cor_fundo, fonte_heading, fonte_body, dominio_custom")
+        .eq("status", "aprovada")
+        .order("nome");
+
+    if (error || !data) return;
+
+    adminWlLojaSelect.innerHTML = '<option value="">-- Escolha uma loja --</option>';
+    data.forEach((loja) => {
+        const option = document.createElement("option");
+        option.value = loja.id;
+        option.textContent = loja.nome;
+        option.dataset.loja = JSON.stringify(loja);
+        adminWlLojaSelect.appendChild(option);
+    });
+}
+
+adminWlLojaSelect.addEventListener("change", () => {
+    const selectedOption = adminWlLojaSelect.options[adminWlLojaSelect.selectedIndex];
+    if (!selectedOption.value) {
+        adminWlForm.classList.add("hidden");
+        adminLojaSelecionada = null;
+        return;
+    }
+
+    const loja = JSON.parse(selectedOption.dataset.loja);
+    adminLojaSelecionada = loja;
+    adminWlForm.classList.remove("hidden");
+    adminWlMensagem.classList.add("hidden");
+
+    adminWlCorPrimaria.value = loja.cor_primaria || ADMIN_WL_PADRAO.cor_primaria;
+    adminWlCorSecundaria.value = loja.cor_secundaria || ADMIN_WL_PADRAO.cor_secundaria;
+    adminWlCorFundo.value = loja.cor_fundo || ADMIN_WL_PADRAO.cor_fundo;
+    adminWlFonteHeading.value = loja.fonte_heading || ADMIN_WL_PADRAO.fonte_heading;
+    adminWlFonteBody.value = loja.fonte_body || ADMIN_WL_PADRAO.fonte_body;
+    adminWlDominio.value = loja.dominio_custom || "";
+
+    atualizarAdminWlHexLabels();
+    atualizarAdminWlPreview();
+});
+
+function atualizarAdminWlHexLabels() {
+    document.getElementById("admin-wl-cor-primaria-hex").textContent = adminWlCorPrimaria.value;
+    document.getElementById("admin-wl-cor-secundaria-hex").textContent = adminWlCorSecundaria.value;
+    document.getElementById("admin-wl-cor-fundo-hex").textContent = adminWlCorFundo.value;
+}
+
+function atualizarAdminWlPreview() {
+    const preview = document.getElementById("admin-wl-preview");
+    const header = preview.querySelector(".wl-preview-header");
+    const cards = preview.querySelectorAll(".wl-preview-card");
+    const precos = preview.querySelectorAll(".wl-preview-card-preco");
+    const botoes = preview.querySelectorAll(".wl-preview-btn");
+    const nomeCard = preview.querySelector(".wl-preview-card-nome");
+
+    const corPrimaria = adminWlCorPrimaria.value;
+    const corSecundaria = adminWlCorSecundaria.value;
+    const corFundo = adminWlCorFundo.value;
+    const fonteH = adminWlFonteHeading.value;
+    const fonteB = adminWlFonteBody.value;
+
+    preview.style.backgroundColor = corFundo;
+    header.style.backgroundColor = corPrimaria;
+    header.querySelector("h4").style.color = corFundo;
+    header.querySelector("h4").style.fontFamily = `"${fonteH}", serif`;
+    header.querySelector("p").style.color = corFundo;
+    header.querySelector("p").style.fontFamily = `"${fonteB}", sans-serif`;
+
+    cards.forEach((card) => {
+        card.style.borderColor = corPrimaria;
+    });
+
+    precos.forEach((preco) => {
+        preco.style.color = corSecundaria;
+    });
+
+    botoes.forEach((btn) => {
+        btn.style.color = corPrimaria;
+        btn.style.borderColor = corPrimaria;
+    });
+
+    if (nomeCard) {
+        nomeCard.style.fontFamily = `"${fonteB}", sans-serif`;
+    }
+}
+
+[adminWlCorPrimaria, adminWlCorSecundaria, adminWlCorFundo].forEach((input) => {
+    input.addEventListener("input", () => {
+        atualizarAdminWlHexLabels();
+        atualizarAdminWlPreview();
+    });
+});
+
+[adminWlFonteHeading, adminWlFonteBody].forEach((select) => {
+    select.addEventListener("change", atualizarAdminWlPreview);
+});
+
+adminWlForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!adminLojaSelecionada) return;
+
+    adminBtnSalvarWl.disabled = true;
+    adminWlMensagem.textContent = "Salvando...";
+    adminWlMensagem.className = "painel-mensagem";
+    adminWlMensagem.classList.remove("hidden");
+
+    const { error } = await supabaseClient
+        .from("lojas")
+        .update({
+            cor_primaria: adminWlCorPrimaria.value,
+            cor_secundaria: adminWlCorSecundaria.value,
+            cor_fundo: adminWlCorFundo.value,
+            fonte_heading: adminWlFonteHeading.value,
+            fonte_body: adminWlFonteBody.value,
+            dominio_custom: adminWlDominio.value.trim() || null,
+            atualizado_em: new Date().toISOString(),
+        })
+        .eq("id", adminLojaSelecionada.id);
+
+    adminBtnSalvarWl.disabled = false;
+
+    if (error) {
+        adminWlMensagem.textContent = "Erro ao salvar: " + error.message;
+        adminWlMensagem.className = "painel-mensagem erro";
+        return;
+    }
+
+    adminWlMensagem.textContent = "Configurações salvas com sucesso!";
+    adminWlMensagem.className = "painel-mensagem sucesso";
+
+    // Atualizar dados no select para refletir mudanças
+    const option = adminWlLojaSelect.options[adminWlLojaSelect.selectedIndex];
+    const lojaAtualizada = { ...adminLojaSelecionada,
+        cor_primaria: adminWlCorPrimaria.value,
+        cor_secundaria: adminWlCorSecundaria.value,
+        cor_fundo: adminWlCorFundo.value,
+        fonte_heading: adminWlFonteHeading.value,
+        fonte_body: adminWlFonteBody.value,
+        dominio_custom: adminWlDominio.value.trim() || null,
+    };
+    option.dataset.loja = JSON.stringify(lojaAtualizada);
+    adminLojaSelecionada = lojaAtualizada;
+});
+
+adminBtnResetarWl.addEventListener("click", () => {
+    adminWlCorPrimaria.value = ADMIN_WL_PADRAO.cor_primaria;
+    adminWlCorSecundaria.value = ADMIN_WL_PADRAO.cor_secundaria;
+    adminWlCorFundo.value = ADMIN_WL_PADRAO.cor_fundo;
+    adminWlFonteHeading.value = ADMIN_WL_PADRAO.fonte_heading;
+    adminWlFonteBody.value = ADMIN_WL_PADRAO.fonte_body;
+    adminWlDominio.value = "";
+    atualizarAdminWlHexLabels();
+    atualizarAdminWlPreview();
+});
+
 iniciarAdmin();
 carregarSolicitacoesLojas();
+carregarLojasParaWL();

@@ -894,7 +894,170 @@ function iniciarPollingPedidos() {
 }
 
 // ======================================================
+// White-Label: configuração de branding da loja
+// ======================================================
+const whiteLabelSection = document.getElementById("white-label-section");
+const wlForm = document.getElementById("white-label-form");
+const wlCorPrimaria = document.getElementById("wl-cor-primaria");
+const wlCorSecundaria = document.getElementById("wl-cor-secundaria");
+const wlCorFundo = document.getElementById("wl-cor-fundo");
+const wlFonteHeading = document.getElementById("wl-fonte-heading");
+const wlFonteBody = document.getElementById("wl-fonte-body");
+const wlDominio = document.getElementById("wl-dominio");
+const wlMensagem = document.getElementById("wl-mensagem");
+const btnSalvarWL = document.getElementById("btn-salvar-whitelabel");
+const btnResetarWL = document.getElementById("btn-resetar-whitelabel");
+
+const WL_PADRAO = {
+    cor_primaria: "#1e3320",
+    cor_secundaria: "#b8860b",
+    cor_fundo: "#fbf8f2",
+    fonte_heading: "Bevan",
+    fonte_body: "Inter",
+    dominio_custom: "",
+};
+
+let lojaCustomAtual = null;
+
+async function carregarWhiteLabel() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return;
+
+    const { data: loja } = await supabaseClient
+        .from("lojas")
+        .select("*")
+        .eq("owner_id", session.user.id)
+        .eq("status", "aprovada")
+        .maybeSingle();
+
+    if (!loja) {
+        whiteLabelSection.classList.add("hidden");
+        return;
+    }
+
+    lojaCustomAtual = loja;
+    whiteLabelSection.classList.remove("hidden");
+
+    // Preencher formulário com valores atuais (ou padrões)
+    wlCorPrimaria.value = loja.cor_primaria || WL_PADRAO.cor_primaria;
+    wlCorSecundaria.value = loja.cor_secundaria || WL_PADRAO.cor_secundaria;
+    wlCorFundo.value = loja.cor_fundo || WL_PADRAO.cor_fundo;
+    wlFonteHeading.value = loja.fonte_heading || WL_PADRAO.fonte_heading;
+    wlFonteBody.value = loja.fonte_body || WL_PADRAO.fonte_body;
+    wlDominio.value = loja.dominio_custom || "";
+
+    atualizarHexLabels();
+    atualizarPreviewWL();
+}
+
+function atualizarHexLabels() {
+    document.getElementById("wl-cor-primaria-hex").textContent = wlCorPrimaria.value;
+    document.getElementById("wl-cor-secundaria-hex").textContent = wlCorSecundaria.value;
+    document.getElementById("wl-cor-fundo-hex").textContent = wlCorFundo.value;
+}
+
+function atualizarPreviewWL() {
+    const preview = document.getElementById("wl-preview");
+    const header = preview.querySelector(".wl-preview-header");
+    const cards = preview.querySelectorAll(".wl-preview-card");
+    const precos = preview.querySelectorAll(".wl-preview-card-preco");
+    const botoes = preview.querySelectorAll(".wl-preview-btn");
+    const nomeCard = preview.querySelector(".wl-preview-card-nome");
+
+    const corPrimaria = wlCorPrimaria.value;
+    const corSecundaria = wlCorSecundaria.value;
+    const corFundo = wlCorFundo.value;
+    const fonteH = wlFonteHeading.value;
+    const fonteB = wlFonteBody.value;
+
+    preview.style.backgroundColor = corFundo;
+    header.style.backgroundColor = corPrimaria;
+    header.querySelector("h4").style.color = corFundo;
+    header.querySelector("h4").style.fontFamily = `"${fonteH}", serif`;
+    header.querySelector("p").style.color = corFundo;
+    header.querySelector("p").style.fontFamily = `"${fonteB}", sans-serif`;
+
+    cards.forEach((card) => {
+        card.style.borderColor = corPrimaria;
+    });
+
+    precos.forEach((preco) => {
+        preco.style.color = corSecundaria;
+    });
+
+    botoes.forEach((btn) => {
+        btn.style.color = corPrimaria;
+        btn.style.borderColor = corPrimaria;
+    });
+
+    if (nomeCard) {
+        nomeCard.style.fontFamily = `"${fonteB}", sans-serif`;
+    }
+}
+
+// Listeners para preview ao vivo
+[wlCorPrimaria, wlCorSecundaria, wlCorFundo].forEach((input) => {
+    input.addEventListener("input", () => {
+        atualizarHexLabels();
+        atualizarPreviewWL();
+    });
+});
+
+[wlFonteHeading, wlFonteBody].forEach((select) => {
+    select.addEventListener("change", atualizarPreviewWL);
+});
+
+// Salvar configurações white-label
+wlForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!lojaCustomAtual) return;
+
+    btnSalvarWL.disabled = true;
+    wlMensagem.textContent = "Salvando...";
+    wlMensagem.className = "painel-mensagem";
+    wlMensagem.classList.remove("hidden");
+
+    const { error } = await supabaseClient
+        .from("lojas")
+        .update({
+            cor_primaria: wlCorPrimaria.value,
+            cor_secundaria: wlCorSecundaria.value,
+            cor_fundo: wlCorFundo.value,
+            fonte_heading: wlFonteHeading.value,
+            fonte_body: wlFonteBody.value,
+            dominio_custom: wlDominio.value.trim() || null,
+            atualizado_em: new Date().toISOString(),
+        })
+        .eq("id", lojaCustomAtual.id);
+
+    btnSalvarWL.disabled = false;
+
+    if (error) {
+        wlMensagem.textContent = "Erro ao salvar: " + error.message;
+        wlMensagem.className = "painel-mensagem erro";
+        return;
+    }
+
+    wlMensagem.textContent = "Personalização salva com sucesso!";
+    wlMensagem.className = "painel-mensagem sucesso";
+});
+
+// Restaurar padrão
+btnResetarWL.addEventListener("click", () => {
+    wlCorPrimaria.value = WL_PADRAO.cor_primaria;
+    wlCorSecundaria.value = WL_PADRAO.cor_secundaria;
+    wlCorFundo.value = WL_PADRAO.cor_fundo;
+    wlFonteHeading.value = WL_PADRAO.fonte_heading;
+    wlFonteBody.value = WL_PADRAO.fonte_body;
+    wlDominio.value = "";
+    atualizarHexLabels();
+    atualizarPreviewWL();
+});
+
+// ======================================================
 // Início
 // ======================================================
 iniciarPainel();
 iniciarPollingPedidos();
+carregarWhiteLabel();

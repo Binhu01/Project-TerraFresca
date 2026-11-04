@@ -525,3 +525,206 @@
         justify-content: flex-end;
     }
 }
+
+/* ============================================================
+   White-Label — Configuração de Branding da Loja
+   ============================================================ */
+
+.white-label-section h2 i{
+    color: var(--honey);
+    margin-right: 8px;
+}
+
+.color-input-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-input-wrapper input[type="color"]{
+    width: 48px;
+    height: 40px;
+    border: 2px solid var(--forest);
+    border-radius: 6px;
+    padding: 2px;
+    cursor: pointer;
+    background: none;
+    box-shadow: 3px 3px 0 var(--honey);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.color-input-wrapper input[type="color"]:hover{
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--honey);
+}
+
+.color-input-wrapper input[type="color"]::-webkit-color-swatch-wrapper{
+    padding: 2px;
+}
+
+.color-input-wrapper input[type="color"]::-webkit-color-swatch{
+    border: none;
+    border-radius: 3px;
+}
+
+.color-hex{
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background-color: var(--nude-light);
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 70px;
+    text-align: center;
+}
+
+.campo-ajuda{
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+}
+
+/* Preview ao vivo do white-label */
+.wl-preview-container{
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 2px dashed var(--nude);
+}
+
+.wl-preview-container h3{
+    font-family: "Bevan", serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--forest);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+}
+
+.wl-preview{
+    border: 3px solid var(--forest);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--honey);
+    background-color: var(--cream);
+    transition: background-color 0.3s ease;
+}
+
+.wl-preview-header{
+    padding: 20px 24px;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.wl-preview-header h4{
+    font-size: 20px;
+    margin: 0 0 4px;
+    transition: font-family 0.3s ease, color 0.3s ease;
+}
+
+.wl-preview-header p{
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 0;
+    transition: font-family 0.3s ease;
+}
+
+.wl-preview-body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px 24px 24px;
+}
+
+.wl-preview-card{
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: rgba(255,255,255,0.7);
+    transition: border-color 0.3s ease;
+}
+
+.wl-preview-card-nome{
+    font-size: 13px;
+    font-weight: 600;
+    transition: font-family 0.3s ease;
+}
+
+.wl-preview-card-preco{
+    font-size: 15px;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.wl-preview-btn{
+    border: 2px solid currentColor;
+    background: transparent;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: default;
+    align-self: flex-start;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.painel-form-acoes{
+    display: flex;
+    gap: 14px;
+    margin-top: 24px;
+    align-items: center;
+}
+
+.painel-form-acoes .btn-secondary{
+    background: none;
+    border: 2px solid var(--forest);
+    color: var(--forest);
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--honey);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s, color 0.2s;
+}
+
+.painel-form-acoes .btn-secondary:hover{
+    background-color: var(--nude-light);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--honey);
+}
+
+.painel-mensagem{
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 6px;
+}
+
+.painel-mensagem.sucesso{
+    background-color: rgba(76, 107, 69, 0.15);
+    color: var(--moss);
+    border: 2px solid var(--moss);
+}
+
+.painel-mensagem.erro{
+    background-color: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
+    border: 2px solid #c0392b;
+}
+
+@media(max-width: 600px){
+    .wl-preview-body{
+        grid-template-columns: 1fr;
+    }
+
+    .painel-form-acoes{
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

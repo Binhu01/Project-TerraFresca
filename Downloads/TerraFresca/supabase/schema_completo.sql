@@ -310,6 +310,13 @@ CREATE TABLE IF NOT EXISTS lojas (
     plano TEXT NOT NULL DEFAULT 'basico'
         CHECK (plano IN ('basico', 'profissional', 'premium')),
     motivo_rejeicao TEXT,
+    -- White-label: branding customizado por loja
+    dominio_custom TEXT,
+    cor_primaria TEXT DEFAULT '#1e3320',
+    cor_secundaria TEXT DEFAULT '#b8860b',
+    cor_fundo TEXT DEFAULT '#fbf8f2',
+    fonte_heading TEXT DEFAULT 'Bevan',
+    fonte_body TEXT DEFAULT 'Inter',
     criado_em TIMESTAMPTZ NOT NULL DEFAULT now(),
     atualizado_em TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -317,10 +324,11 @@ CREATE TABLE IF NOT EXISTS lojas (
 CREATE INDEX IF NOT EXISTS idx_lojas_status ON lojas(status);
 CREATE INDEX IF NOT EXISTS idx_lojas_owner ON lojas(owner_id);
 CREATE INDEX IF NOT EXISTS idx_lojas_slug ON lojas(slug);
+CREATE INDEX IF NOT EXISTS idx_lojas_dominio ON lojas(dominio_custom) WHERE dominio_custom IS NOT NULL;
 
 ALTER TABLE lojas ENABLE ROW LEVEL SECURITY;
 
--- Leitura pública apenas de lojas aprovadas
+-- Leitura pública apenas de lojas aprovadas (inclui resolução por domínio custom)
 DROP POLICY IF EXISTS "leitura_publica_lojas_aprovadas" ON lojas;
 CREATE POLICY "leitura_publica_lojas_aprovadas"
     ON lojas FOR SELECT USING (status = 'aprovada');
@@ -448,3 +456,16 @@ CREATE POLICY "Owner apaga imagem da propria loja"
         bucket_id = 'lojas'
         AND EXISTS (SELECT 1 FROM lojas l WHERE l.owner_id = auth.uid() AND l.slug = (storage.foldername(name))[1])
     );
+
+-- ============================================================
+-- 16. MIGRAÇÃO WHITE-LABEL — Colunas de branding customizado
+-- ============================================================
+
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS dominio_custom TEXT;
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS cor_primaria TEXT DEFAULT '#1e3320';
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS cor_secundaria TEXT DEFAULT '#b8860b';
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS cor_fundo TEXT DEFAULT '#fbf8f2';
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS fonte_heading TEXT DEFAULT 'Bevan';
+ALTER TABLE lojas ADD COLUMN IF NOT EXISTS fonte_body TEXT DEFAULT 'Inter';
+
+CREATE INDEX IF NOT EXISTS idx_lojas_dominio_custom ON lojas(dominio_custom) WHERE dominio_custom IS NOT NULL;
