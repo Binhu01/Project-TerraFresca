@@ -1,0 +1,82 @@
+import { Capacitor } from '@capacitor/core';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { Geolocation } from '@capacitor/geolocation';
+import { BiometricAuth } from 'capacitor-native-biometric';
+import { PushNotifications } from '@capacitor/push-notifications';
+
+export function isNative(): boolean {
+	return Capacitor.isNativePlatform();
+}
+
+export async function tirarFotoProduto(): Promise<string | null> {
+	if (!isNative()) return null;
+	try {
+		const photo = await Camera.getPhoto({
+			quality: 80,
+			resultType: CameraResultType.Base64,
+		});
+		return photo.base64String || null;
+	} catch {
+		return null;
+	}
+}
+
+export async function escanearCodigoBarras(): Promise<string | null> {
+	if (!isNative()) return null;
+	try {
+		const result = await BarcodeScanner.scanBarcode();
+		return result.content || null;
+	} catch {
+		return null;
+	}
+}
+
+export async function obterLocalizacaoAtual(): Promise<{ lat: number; lng: number } | null> {
+	if (!isNative()) return null;
+	try {
+		const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+		return { lat: pos.coords.latitude, lng: pos.coords.longitude };
+	} catch {
+		return null;
+	}
+}
+
+export async function autenticarBiometria(mensagem: string): Promise<boolean> {
+	if (!isNative()) return false;
+	try {
+		await BiometricAuth.verify({ reason: mensagem });
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export async function registrarPushToken(userId: string): Promise<void> {
+	if (!isNative()) return;
+	try {
+		const perm = await PushNotifications.requestPermissions();
+		if (perm.receive !== 'granted') return;
+		await PushNotifications.register();
+		PushNotifications.addListener('registration', async (token) => {
+			// Token will be sent to Supabase by the caller or a separate handler
+			console.log('[native-bridge] FCM token registered for user:', userId, token.value);
+		});
+		PushNotifications.addListener('registrationError', (err) => {
+			console.warn('[native-bridge] FCM registration error:', err);
+		});
+	} catch (e) {
+		console.warn('[native-bridge] Push registration failed:', e);
+	}
+}
+
+if (typeof window !== 'undefined') {
+	(window as any).nativeBridge = {
+		isNative,
+		tirarFotoProduto,
+		escanearCodigoBarras,
+		obterLocalizacaoAtual,
+		autenticarBiometria,
+		registrarPushToken,
+	};
+}
