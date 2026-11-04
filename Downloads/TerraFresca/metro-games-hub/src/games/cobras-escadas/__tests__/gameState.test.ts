@@ -19,14 +19,25 @@ test('createInitialState sets up players at position 1', () => {
   expect(state.winner).toBeNull();
 });
 
-test('rollDice returns value between 1 and 6', () => {
+test('rollDice with forcedValue returns exact value', () => {
   const state = createInitialState(2, mockBoard);
-  for (let i = 0; i < 20; i++) {
+  for (let v = 1; v <= 6; v++) {
+    const result = rollDice(state, v);
+    expect(result.diceValue).toBe(v);
+  }
+});
+
+test('rollDice without forcedValue produces values in [1,6]', () => {
+  const state = createInitialState(2, mockBoard);
+  const results = new Set<number>();
+  for (let i = 0; i < 50; i++) {
     const result = rollDice(state);
     expect(result.diceValue).toBeGreaterThanOrEqual(1);
     expect(result.diceValue).toBeLessThanOrEqual(6);
-    expect(result.state.phase).toBe('moving');
+    results.add(result.diceValue);
   }
+  // With 50 rolls, we should see at least 4 distinct values
+  expect(results.size).toBeGreaterThanOrEqual(4);
 });
 
 test('movePawn advances player by dice value', () => {

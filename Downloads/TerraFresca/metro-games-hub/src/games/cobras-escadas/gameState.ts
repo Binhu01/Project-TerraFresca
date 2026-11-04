@@ -16,7 +16,7 @@ export interface GameState {
   players: Player[];
   currentPlayerIndex: number;
   boardConfig: BoardConfig;
-  phase: 'waiting-roll' | 'rolling' | 'moving' | 'snake-ladder' | 'game-over';
+  phase: 'waiting-roll' | 'moving' | 'snake-ladder' | 'game-over';
   winner: number | null;
   diceValue: number | null;
 }
@@ -32,6 +32,9 @@ export interface MoveResult {
 }
 
 const PLAYER_COLORS: Player['color'][] = ['red', 'blue', 'green', 'yellow'];
+
+/** Monotonic counter to ensure unique PRNG seeds even within the same millisecond. */
+let rollCounter = 0;
 
 /**
  * Create initial game state for N players with the given board configuration.
@@ -67,7 +70,8 @@ export function rollDice(state: GameState, forcedValue?: number): RollResult {
   if (forcedValue !== undefined) {
     diceValue = forcedValue;
   } else {
-    const rng = mulberry32(Date.now() + state.currentPlayerIndex);
+    const seed = Date.now() * 1000 + (rollCounter++) + state.currentPlayerIndex;
+    const rng = mulberry32(seed);
     diceValue = Math.floor(rng() * 6) + 1;
   }
 
