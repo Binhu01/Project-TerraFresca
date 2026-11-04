@@ -40,6 +40,14 @@ const SOUND_MAP: Record<string, AssetRef | null> = {
   'chess-promotion': null, // TODO: require('../../assets/sounds/chess-promotion.mp3')
   'chess-checkmate': null, // TODO: require('../../assets/sounds/chess-checkmate.mp3')
   'chess-stalemate': null, // TODO: require('../../assets/sounds/chess-stalemate.mp3')
+
+  // Corrida Pixel
+  'race-engine': null, // TODO: require('../../assets/sounds/race-engine.mp3')
+  'race-collision': null, // TODO: require('../../assets/sounds/race-collision.mp3')
+  'race-lap': null, // TODO: require('../../assets/sounds/race-lap.mp3')
+  'race-countdown': null, // TODO: require('../../assets/sounds/race-countdown.mp3')
+  'race-finish': null, // TODO: require('../../assets/sounds/race-finish.mp3')
+  'race-bg': null, // TODO: require('../../assets/sounds/race-bg.mp3')
 };
 
 export const SoundRegistry = {

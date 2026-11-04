@@ -8,12 +8,14 @@ import { ChessModule } from './games/chess';
 import { CobrasEscadasModule } from './games/cobras-escadas';
 import { DamasModule } from './games/damas';
 import { LudoModule } from './games/ludo';
+import { CorridaPixelModule } from './games/corrida';
 import { RotationPrompt } from './shared/ui/RotationPrompt';
 
 GameRegistry.register(ChessModule);
 GameRegistry.register(CobrasEscadasModule);
 GameRegistry.register(DamasModule);
 GameRegistry.register(LudoModule);
+GameRegistry.register(CorridaPixelModule);
 
 export default function App() {
   useEffect(() => {
