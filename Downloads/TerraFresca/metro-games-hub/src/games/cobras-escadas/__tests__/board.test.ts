@@ -42,20 +42,20 @@ test('different seeds produce different configs', () => {
   expect(a).not.toEqual(b);
 });
 
-test('no snake head at 100, no snake tail at 1', () => {
-  const config = generateBoard(42);
+test.each([42, 99, 7])('no snake head at 100, no snake tail at 1 (seed %i)', (seed) => {
+  const config = generateBoard(seed);
   expect(config.snakes[100]).toBeUndefined();
   expect(Object.values(config.snakes)).not.toContain(1);
 });
 
-test('no ladder base at 100, no ladder top at 1', () => {
-  const config = generateBoard(42);
+test.each([42, 99, 7])('no ladder base at 100, no ladder top at 1 (seed %i)', (seed) => {
+  const config = generateBoard(seed);
   expect(config.ladders[100]).toBeUndefined();
   expect(Object.values(config.ladders)).not.toContain(1);
 });
 
-test('minimum 5-cell distance between connected cells', () => {
-  const config = generateBoard(42);
+test.each([42, 99, 7])('minimum 5-cell distance between connected cells (seed %i)', (seed) => {
+  const config = generateBoard(seed);
   for (const [head, tail] of Object.entries(config.snakes)) {
     expect(Math.abs(Number(head) - tail)).toBeGreaterThanOrEqual(5);
   }

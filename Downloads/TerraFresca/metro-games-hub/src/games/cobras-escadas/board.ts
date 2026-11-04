@@ -4,10 +4,15 @@
 
 import { mulberry32 } from '../../shared/utils/prng';
 
-/** Board configuration with snake and ladder positions. */
+/**
+ * Board configuration with snake and ladder placements.
+ * Keys and values are cell numbers in range [2, 99].
+ * Snake keys are heads (higher number), values are tails (lower number).
+ * Ladder keys are bases (lower number), values are tops (higher number).
+ */
 export interface BoardConfig {
-  snakes: Record<number, number>; // { head: tail }
-  ladders: Record<number, number>; // { base: top }
+  snakes: Record<number, number>;
+  ladders: Record<number, number>;
 }
 
 /**
@@ -49,8 +54,15 @@ export function generateBoard(seed: number): BoardConfig {
   };
 
   // Generate 8 snakes (head > tail, going down)
+  const MAX_ITERATIONS = 1000;
   let snakeCount = 0;
+  let snakeIterations = 0;
   while (snakeCount < 8) {
+    if (++snakeIterations > MAX_ITERATIONS) {
+      throw new Error(
+        `Failed to generate 8 snakes within ${MAX_ITERATIONS} iterations (seed: ${seed})`
+      );
+    }
     const head = Math.floor(rng() * 98) + 2; // 2-99, never 1 or 100
     const tail = Math.floor(rng() * 98) + 2; // 2-99
     if (head > tail && isValidSnake(head, tail)) {
@@ -63,7 +75,13 @@ export function generateBoard(seed: number): BoardConfig {
 
   // Generate 8 ladders (base < top, going up)
   let ladderCount = 0;
+  let ladderIterations = 0;
   while (ladderCount < 8) {
+    if (++ladderIterations > MAX_ITERATIONS) {
+      throw new Error(
+        `Failed to generate 8 ladders within ${MAX_ITERATIONS} iterations (seed: ${seed})`
+      );
+    }
     const base = Math.floor(rng() * 98) + 2; // 2-99
     const top = Math.floor(rng() * 98) + 2; // 2-99
     if (top > base && isValidLadder(base, top)) {
