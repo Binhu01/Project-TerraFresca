@@ -407,6 +407,15 @@ if(cart.length === 0) return;
 
 }
 
+// Biometric authentication before payment confirmation (app only)
+if (typeof window.nativeBridge?.autenticarBiometria === 'function') {
+    const aprovado = await window.nativeBridge.autenticarBiometria('Confirmar pagamento');
+    if (!aprovado) {
+        mostrarStatusCheckout("Pagamento não autorizado.", "erro");
+        return;
+    }
+}
+
 setCheckoutLoading(true);
 
 // Se é a primeira tentativa (não veio de um "Tentar novamente"),
