@@ -593,6 +593,82 @@ function criarCardPedidoVendedor(pedido, itens, emailComprador, statusPorPedido)
     rodape.className = "pedido-card-rodape";
     rodape.innerHTML = `<p class="pedido-endereco">${pedido.endereco}</p>`;
 
+    // GPS delivery tracking buttons (native app only, status 'pago')
+    if (statusAtualLoja === 'pago' && typeof window.nativeBridge?.obterLocalizacaoAtual === 'function') {
+        const entregaActions = document.createElement("div");
+        entregaActions.className = "pedido-entrega-actions";
+        entregaActions.style.cssText = "display:flex;gap:8px;margin-top:12px;";
+
+        const btnSaiu = document.createElement("button");
+        btnSaiu.type = "button";
+        btnSaiu.className = "btn btn-secondary";
+        btnSaiu.style.cssText = "flex:1;font-size:14px;padding:10px;";
+        btnSaiu.textContent = "🚚 Saí pra entrega";
+        btnSaiu.addEventListener("click", async () => {
+            const loc = await window.nativeBridge.obterLocalizacaoAtual();
+            if (!loc) {
+                alert("GPS indisponível. Ative a localização e tente novamente.");
+                return;
+            }
+            btnSaiu.disabled = true;
+            try {
+                await supabaseClient.from("entregas_localizacao").insert({
+                    pedido_id: pedido.id,
+                    vendedor_id: (await supabaseClient.auth.getUser()).data.user.id,
+                    latitude: loc.lat,
+                    longitude: loc.lng,
+                    marco: "saiu_entrega",
+                });
+                await supabaseClient.functions.invoke("atualizar-status-loja", {
+                    body: { pedido_id: pedido.id, loja: lojaAtual, novo_status: "enviado" },
+                });
+                selectStatus.value = "enviado";
+                btnSaiu.textContent = "✅ Registrado";
+                btnEntregue.classList.remove("hidden");
+            } catch (e) {
+                console.error("[painel] Erro ao registrar saída:", e);
+                alert("Erro ao registrar saída. Tente novamente.");
+                btnSaiu.disabled = false;
+            }
+        });
+
+        const btnEntregue = document.createElement("button");
+        btnEntregue.type = "button";
+        btnEntregue.className = "btn btn-primary hidden";
+        btnEntregue.style.cssText = "flex:1;font-size:14px;padding:10px;";
+        btnEntregue.textContent = "✅ Entregue";
+        btnEntregue.addEventListener("click", async () => {
+            const loc = await window.nativeBridge.obterLocalizacaoAtual();
+            if (!loc) {
+                alert("GPS indisponível. Ative a localização e tente novamente.");
+                return;
+            }
+            btnEntregue.disabled = true;
+            try {
+                await supabaseClient.from("entregas_localizacao").insert({
+                    pedido_id: pedido.id,
+                    vendedor_id: (await supabaseClient.auth.getUser()).data.user.id,
+                    latitude: loc.lat,
+                    longitude: loc.lng,
+                    marco: "entregue",
+                });
+                await supabaseClient.functions.invoke("atualizar-status-loja", {
+                    body: { pedido_id: pedido.id, loja: lojaAtual, novo_status: "entregue" },
+                });
+                selectStatus.value = "entregue";
+                btnEntregue.textContent = "✅ Concluído";
+            } catch (e) {
+                console.error("[painel] Erro ao registrar entrega:", e);
+                alert("Erro ao registrar entrega. Tente novamente.");
+                btnEntregue.disabled = false;
+            }
+        });
+
+        entregaActions.appendChild(btnSaiu);
+        entregaActions.appendChild(btnEntregue);
+        rodape.appendChild(entregaActions);
+    }
+
     card.appendChild(topo);
     card.appendChild(itensLista);
     card.appendChild(rodape);

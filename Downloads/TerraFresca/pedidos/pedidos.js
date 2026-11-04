@@ -170,6 +170,40 @@ function criarCardPedido(pedido, numero) {
     rodape.appendChild(resumo);
     rodape.appendChild(total);
 
+    // GPS delivery tracking timeline (async enrichment)
+    const timelineContainer = document.createElement("div");
+    timelineContainer.className = "pedido-entrega-timeline";
+    timelineContainer.style.cssText = "margin-top:12px;padding-top:12px;border-top:1px dashed #ccc;font-size:13px;color:#555;";
+    rodape.appendChild(timelineContainer);
+
+    // Fetch milestones asynchronously and populate timeline
+    supabaseClient
+        .from("entregas_localizacao")
+        .select("marco, criado_em, latitude, longitude")
+        .eq("pedido_id", pedido.id)
+        .order("criado_em", { ascending: true })
+        .then(({ data }) => {
+            if (!data || data.length === 0) return;
+            const MARCO_LABELS = {
+                saiu_entrega: "🚚 Saiu para entrega",
+                entregue: "✅ Entregue",
+            };
+            let html = '<div style="display:flex;flex-direction:column;gap:6px;">';
+            data.forEach((m) => {
+                const hora = new Date(m.criado_em).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+                const label = MARCO_LABELS[m.marco] || m.marco;
+                const mapLink = `https://www.google.com/maps?q=${m.latitude},${m.longitude}`;
+                html += `<div style="display:flex;align-items:center;gap:8px;">`;
+                html += `<span>${label}</span>`;
+                html += `<span style="color:#999;">${hora}</span>`;
+                html += `<a href="${mapLink}" target="_blank" rel="noopener" style="color:#b8860b;text-decoration:none;font-size:12px;">📍 ver no mapa</a>`;
+                html += `</div>`;
+            });
+            html += '</div>';
+            timelineContainer.innerHTML = html;
+        })
+        .catch((e) => console.warn("[pedidos] Failed to load delivery milestones:", e));
+
     card.appendChild(topo);
     card.appendChild(itensLista);
     card.appendChild(rodape);
