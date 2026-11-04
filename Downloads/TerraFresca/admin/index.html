@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../painel/painel.css">
+    <link rel="stylesheet" href="../pedidos/pedidos.css">
+    <link rel="stylesheet" href="./admin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
+    <title>Painel Administrativo - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Gestão de vendedores e pedidos da plataforma Terra Fresca.">
+    <meta property="og:title" content="Painel Administrativo - Terra Fresca">
+    <meta property="og:description" content="Gestão de vendedores e pedidos da plataforma Terra Fresca.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body data-home="../main.html">
+    <header class="painel-header">
+        <div class="container">
+            <nav>
+                <a href="../main.html">
+                    <img src="../img/logo_terra_fresca__1.png" alt="">
+                </a>
+                <ul class="ul">
+                    <a href="../main.html">Tela inicial</a>
+                    <a href="../sobre.html">Sobre Nós</a>
+                    <a href="../servicos.html">Serviços</a>
+                    <span class="nav-auth" id="nav-auth"><a class="btn" href="../login/index.html">Fazer Login</a></span>
+                    <div class="fechar-icone" onclick="CloseMenu()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </ul>
+                <div class="menu-icon" onclick="OpenMenu()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+            </nav>
+
+            <div class="painel-titulo">
+                <h1>Painel Administrativo</h1>
+                <p>Gerencie vendedores e acompanhe todos os pedidos da plataforma.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="painel-estado" id="estado-carregando">
+        <p>Verificando sua conta...</p>
+    </div>
+
+    <div class="painel-estado hidden" id="estado-sem-acesso">
+        <p>Essa conta não tem acesso ao painel administrativo.</p>
+    </div>
+
+    <main class="painel-conteudo hidden" id="admin-conteudo">
+        <div class="container">
+
+            <div class="admin-stats" id="admin-stats"></div>
+
+            <section class="painel-card">
+                <h2>Desempenho de vendas</h2>
+                <p class="painel-card-subtitulo">Considera só pedidos pagos, enviados ou entregues.</p>
+
+                <div class="admin-graficos">
+                    <div class="admin-grafico-card">
+                        <h3 class="admin-subtitulo">Vendas nos últimos 14 dias</h3>
+                        <div id="vendas-vazio" class="painel-vazio hidden">Nenhuma venda paga registrada ainda.</div>
+                        <canvas id="grafico-vendas-dia" height="220"></canvas>
+                    </div>
+                    <div class="admin-grafico-card">
+                        <h3 class="admin-subtitulo">Produtos mais vendidos</h3>
+                        <div id="produtos-vazio" class="painel-vazio hidden">Nenhum produto vendido ainda.</div>
+                        <canvas id="grafico-top-produtos" height="220"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="painel-card">
+                <h2>Cupons de desconto</h2>
+
+                <form id="form-cupom" class="admin-form-cupom">
+                    <input type="text" id="cupom-codigo" placeholder="CÓDIGO" required maxlength="20" style="text-transform:uppercase">
+                    <select id="cupom-tipo">
+                        <option value="percentual">% percentual</option>
+                        <option value="fixo">R$ fixo</option>
+                    </select>
+                    <input type="number" id="cupom-valor" placeholder="Valor" step="0.01" min="0.01" required>
+                    <select id="cupom-loja">
+                        <option value="">Qualquer loja</option>
+                        <option value="vidapura">Vida Pura</option>
+                        <option value="daterra">Da Terra</option>
+                        <option value="botanicare">BotaniCare</option>
+                    </select>
+                    <input type="number" id="cupom-usos-maximos" placeholder="Usos máx. (opcional)" min="1">
+                    <input type="date" id="cupom-validade" title="Válido até (opcional)">
+                    <button type="submit" class="btn">Criar cupom</button>
+                </form>
+                <p class="auth-message" id="cupom-form-mensagem"></p>
+
+                <h3 class="admin-subtitulo">Cupons cadastrados</h3>
+                <div id="lista-cupons" class="painel-lista">
+                    <p class="painel-vazio">Carregando cupons...</p>
+                </div>
+            </section>
+
+            <section class="painel-card">
+                <h2>Frete por loja</h2>
+                <p class="painel-card-subtitulo">Valor fixo cobrado na entrega de cada loja.</p>
+                <div id="lista-fretes" class="admin-fretes">
+                    <p class="painel-vazio">Carregando...</p>
+                </div>
+            </section>
+
+            <section class="painel-card">
+                <h2>Gerenciar vendedores</h2>
+
+                <div class="admin-busca">
+                    <input type="email" id="busca-email" placeholder="Buscar usuário por e-mail">
+                    <button type="button" class="btn" id="btn-buscar">Buscar</button>
+                </div>
+
+                <div id="resultado-busca" class="admin-resultado-busca"></div>
+
+                <h3 class="admin-subtitulo">Vendedores atuais</h3>
+                <div id="lista-vendedores" class="painel-lista">
+                    <p class="painel-vazio">Carregando...</p>
+                </div>
+            </section>
+
+            <section class="painel-card">
+                <h2>Todos os pedidos</h2>
+                <p class="painel-card-subtitulo">O total já inclui frete e desconto de cupom, quando houver.</p>
+                <div id="admin-pedidos-lista" class="pedidos-lista">
+                    <p class="painel-vazio">Carregando pedidos...</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="links">
+                <a href="https://www.instagram.com/o_glauberson/">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <a href="https://github.com/Binhu01">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/glauber-cavalcanti-176039309/">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p><a href="../privacidade/index.html">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
+        </div>
+    </footer>
+
+    <script src="../js/auth-nav.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="./admin.js"></script>
+</body>
+</html>
