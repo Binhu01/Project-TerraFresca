@@ -1169,3 +1169,33 @@ nav .fechar-icone{
     background-color: var(--honey);
     color: var(--cream) !important;
 }
+
+/* ============================================
+   Capacitor App — Bottom Nav & Touch Optimized
+   (Task 12: Bottom Navigation Bar)
+   ============================================ */
+.capacitor-app .btn { padding: 14px 24px; font-size: 16px; min-height: 48px; }
+.capacitor-app input, .capacitor-app select, .capacitor-app textarea { font-size: 16px; }
+.capacitor-app .cardapio-item { padding: 16px; gap: 12px; }
+.capacitor-app nav.ul { display: none; }
+.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--forest); padding: 8px 0 env(safe-area-inset-bottom, 8px); z-index: 1000; }
+.capacitor-app .bottom-nav { display: flex; justify-content: space-around; }
+.bottom-nav-item { color: var(--cream); text-align: center; font-size: 10px; text-decoration: none; padding: 4px 8px; min-width: 48px; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
+.bottom-nav-item.active { color: var(--honey); }
+.capacitor-app main { padding-bottom: 70px; }
+
+
+/* ============================================================
+   App Mobile: Bottom Navigation & Touch-Optimized Styles
+   ============================================================ */
+.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--forest, #1e3320); padding: 8px 0 env(safe-area-inset-bottom, 8px); z-index: 1000; }
+.capacitor-app .bottom-nav { display: flex; justify-content: space-around; }
+.bottom-nav-item { color: var(--cream, #fbf8f2); text-align: center; font-size: 10px; text-decoration: none; padding: 4px 8px; }
+.bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
+.bottom-nav-item.active { color: var(--honey, #b8860b); }
+.capacitor-app main { padding-bottom: 70px; }
+.capacitor-app .btn { padding: 14px 24px; font-size: 16px; min-height: 48px; }
+.capacitor-app input, .capacitor-app select, .capacitor-app textarea { font-size: 16px; }
+.capacitor-app .cardapio-item { padding: 16px; gap: 12px; }
+.capacitor-app nav ul { display: none; }
