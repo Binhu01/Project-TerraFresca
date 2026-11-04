@@ -280,3 +280,149 @@
 .pedido-loja-itens{
     padding-left: 4px;
 }
+
+/* ============================================================
+ Compras Recorrentes
+ ============================================================ */
+
+.compras-recorrentes{
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px dashed var(--nude);
+}
+
+.compras-recorrentes-titulo{
+    font-family: "Bevan", serif;
+    font-size: 22px;
+    color: var(--forest);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.compras-recorrentes-titulo i{
+    color: var(--honey);
+    font-size: 20px;
+}
+
+.compras-recorrentes-subtitulo{
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+}
+
+.recorrentes-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.recorrente-card{
+    background-color: var(--white);
+    border: 2px solid var(--forest);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 3px 3px 0 var(--honey);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.recorrente-card:hover{
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--honey);
+}
+
+.recorrente-card-topo{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.recorrente-card-img{
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 2px solid var(--nude-light);
+    flex-shrink: 0;
+}
+
+.recorrente-card-info{
+    flex: 1;
+    min-width: 0;
+}
+
+.recorrente-card-nome{
+    font-family: "Bevan", serif;
+    font-size: 14px;
+    color: var(--forest);
+    line-height: 1.2;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recorrente-card-loja{
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.recorrente-card-meta{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+.recorrente-card-vezes{
+    font-weight: 600;
+    color: var(--moss);
+}
+
+.recorrente-card-preco{
+    font-weight: 700;
+    color: var(--forest);
+}
+
+.recorrente-card-btn{
+    border: 2px solid var(--forest);
+    background-color: var(--moss);
+    color: var(--cream);
+    font-family: "Bevan", serif;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 8px 14px;
+    border-radius: 6px;
+    box-shadow: 3px 3px 0 var(--honey);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s;
+    text-align: center;
+}
+
+.recorrente-card-btn:hover{
+    background-color: #2e7d32;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--forest);
+}
+
+.recorrente-card-btn:disabled{
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 3px 3px 0 var(--honey);
+}
+
+@media(max-width: 640px){
+    .recorrentes-grid{
+        grid-template-columns: 1fr;
+    }
+}

@@ -74,6 +74,9 @@ async function carregarPedidos() {
     data.forEach((pedido, index) => {
         listaEl.appendChild(criarCardPedido(pedido, data.length - index));
     });
+
+    // Renderizar seção de compras recorrentes
+    renderizarComprasRecorrentes(data);
 }
 
 function criarCardPedido(pedido, numero) {
@@ -295,6 +298,147 @@ function criarFormularioAvaliacao(item, wrapperItem) {
     });
 
     return form;
+}
+
+// ======================================================
+// Compras Recorrentes — agrega produtos comprados >1 vez
+// ======================================================
+const comprasRecorrentesEl = document.getElementById("compras-recorrentes");
+const recorrentesGridEl = document.getElementById("recorrentes-grid");
+
+function agregarProdutosRecorrentes(pedidos) {
+    const mapa = {};
+
+    pedidos.forEach((pedido) => {
+        (pedido.pedido_itens || []).forEach((item) => {
+            if (!item.produto_id) return;
+
+            if (!mapa[item.produto_id]) {
+                mapa[item.produto_id] = {
+                    produto_id: item.produto_id,
+                    nome_produto: item.nome_produto,
+                    loja: item.loja,
+                    preco_unitario: item.preco_unitario,
+                    quantidade_total: 0,
+                    vezes: 0,
+                };
+            }
+
+            mapa[item.produto_id].quantidade_total += item.quantidade;
+            mapa[item.produto_id].vezes += 1;
+        });
+    });
+
+    // Filtrar apenas produtos comprados mais de uma vez
+    return Object.values(mapa)
+        .filter((p) => p.vezes > 1)
+        .sort((a, b) => b.vezes - a.vezes);
+}
+
+function renderizarComprasRecorrentes(pedidos) {
+    const recorrentes = agregarProdutosRecorrentes(pedidos);
+
+    if (recorrentes.length === 0) {
+        comprasRecorrentesEl.classList.add("hidden");
+        return;
+    }
+
+    comprasRecorrentesEl.classList.remove("hidden");
+    recorrentesGridEl.innerHTML = "";
+
+    recorrentes.forEach((produto) => {
+        const card = document.createElement("div");
+        card.className = "recorrente-card";
+
+        const topo = document.createElement("div");
+        topo.className = "recorrente-card-topo";
+
+        // Placeholder visual já que não temos imagem no pedido_itens
+        const imgPlaceholder = document.createElement("div");
+        imgPlaceholder.className = "recorrente-card-img";
+        imgPlaceholder.style.backgroundColor = "var(--nude-light)";
+        imgPlaceholder.style.display = "flex";
+        imgPlaceholder.style.alignItems = "center";
+        imgPlaceholder.style.justifyContent = "center";
+        imgPlaceholder.innerHTML = '<i class="fa fa-shopping-basket" style="color:var(--forest);font-size:20px;"></i>';
+
+        const info = document.createElement("div");
+        info.className = "recorrente-card-info";
+
+        const nome = document.createElement("div");
+        nome.className = "recorrente-card-nome";
+        nome.textContent = produto.nome_produto;
+
+        const loja = document.createElement("div");
+        loja.className = "recorrente-card-loja";
+        loja.textContent = NOMES_LOJA[produto.loja] || produto.loja;
+
+        info.appendChild(nome);
+        info.appendChild(loja);
+
+        topo.appendChild(imgPlaceholder);
+        topo.appendChild(info);
+
+        const meta = document.createElement("div");
+        meta.className = "recorrente-card-meta";
+
+        const vezes = document.createElement("span");
+        vezes.className = "recorrente-card-vezes";
+        vezes.textContent = produto.vezes + "x comprado";
+
+        const preco = document.createElement("span");
+        preco.className = "recorrente-card-preco";
+        preco.textContent = formatarPreco(produto.preco_unitario);
+
+        meta.appendChild(vezes);
+        meta.appendChild(preco);
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "recorrente-card-btn";
+        btn.textContent = "Adicionar ao carrinho";
+        btn.addEventListener("click", () => adicionarRecorrenteAoCarrinho(produto, btn));
+
+        card.appendChild(topo);
+        card.appendChild(meta);
+        card.appendChild(btn);
+
+        recorrentesGridEl.appendChild(card);
+    });
+}
+
+function adicionarRecorrenteAoCarrinho(produto, btn) {
+    const item = {
+        id: produto.produto_id,
+        nome: produto.nome_produto,
+        preco: parseFloat(produto.preco_unitario),
+        imagem: "",
+        loja: produto.loja,
+        quantidade: 1,
+    };
+
+    let carrinho = JSON.parse(localStorage.getItem("tf_carrinho") || "[]");
+
+    const existente = carrinho.find((c) => c.id === item.id);
+    if (existente) {
+        existente.quantidade += 1;
+    } else {
+        carrinho.push(item);
+    }
+
+    localStorage.setItem("tf_carrinho", JSON.stringify(carrinho));
+
+    const textoOriginal = btn.textContent;
+    btn.textContent = "Adicionado!";
+    btn.disabled = true;
+    setTimeout(() => {
+        btn.textContent = textoOriginal;
+        btn.disabled = false;
+    }, 1200);
+
+    if (typeof window.atualizarContadorCarrinho === "function") {
+        window.atualizarContadorCarrinho();
+    }
 }
 
 carregarPedidos();
