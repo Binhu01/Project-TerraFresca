@@ -23,6 +23,14 @@ const SOUND_MAP: Record<string, AssetRef | null> = {
   'damas-capture': null, // TODO: require('../../assets/sounds/damas-capture.mp3')
   'damas-promote': null, // TODO: require('../../assets/sounds/damas-promote.mp3')
   'damas-win': null, // TODO: require('../../assets/sounds/damas-win.mp3')
+
+  // Ludo
+  'ludo-roll': null, // TODO: require('../../assets/sounds/ludo-roll.mp3')
+  'ludo-move': null, // TODO: require('../../assets/sounds/ludo-move.mp3')
+  'ludo-capture': null, // TODO: require('../../assets/sounds/ludo-capture.mp3')
+  'ludo-enter-home': null, // TODO: require('../../assets/sounds/ludo-enter-home.mp3')
+  'ludo-finish': null, // TODO: require('../../assets/sounds/ludo-finish.mp3')
+  'ludo-win': null, // TODO: require('../../assets/sounds/ludo-win.mp3')
 };
 
 export const SoundRegistry = {

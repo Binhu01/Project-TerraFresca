@@ -7,11 +7,13 @@ import { GameRegistry } from './shared/games/GameRegistry';
 import { ChessGame } from './games/chess/ChessGame';
 import { CobrasEscadasModule } from './games/cobras-escadas';
 import { DamasModule } from './games/damas';
+import { LudoModule } from './games/ludo';
 import { RotationPrompt } from './shared/ui/RotationPrompt';
 
 GameRegistry.register(ChessGame);
 GameRegistry.register(CobrasEscadasModule);
 GameRegistry.register(DamasModule);
+GameRegistry.register(LudoModule);
 
 export default function App() {
   useEffect(() => {
