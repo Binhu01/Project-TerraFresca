@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./loja.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Loja - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <!-- SEO dinâmico preenchido via JS -->
+    <meta name="description" content="Produtos orgânicos e naturais no Terra Fresca.">
+    <meta property="og:title" content="Loja - Terra Fresca">
+    <meta property="og:description" content="Produtos orgânicos e naturais no Terra Fresca.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body data-home="../main.html">
+    <header class="painel-header loja-header">
+        <div class="container">
+            <nav>
+                <a href="../main.html">
+                    <img src="../img/logo_terra_fresca__1.png" alt="Terra Fresca">
+                </a>
+                <ul class="ul">
+                    <a href="../main.html">Tela inicial</a>
+                    <a href="../sobre.html">Sobre Nós</a>
+                    <a href="../servicos.html">Serviços</a>
+                    <span class="nav-auth" id="nav-auth"><a class="btn" href="../login/index.html">Fazer Login</a></span>
+                    <div class="fechar-icone" onclick="CloseMenu()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </ul>
+                <div class="menu-icon" onclick="OpenMenu()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Estado: carregando -->
+    <div class="loja-estado" id="loja-carregando">
+        <p>Carregando loja...</p>
+    </div>
+
+    <!-- Estado: loja não encontrada -->
+    <div class="loja-estado hidden" id="loja-nao-encontrada">
+        <i class="fa fa-search loja-estado-icone" aria-hidden="true"></i>
+        <h2>Loja não encontrada</h2>
+        <p>A loja que você procura não existe ou ainda não foi aprovada.</p>
+        <a href="../main.html" class="btn">Voltar ao início</a>
+    </div>
+
+    <!-- Conteúdo da loja -->
+    <main class="loja-conteudo hidden" id="loja-conteudo">
+        <div class="loja-banner" id="loja-banner">
+            <div class="loja-banner-overlay">
+                <div class="container loja-banner-info">
+                    <img id="loja-logo" class="loja-logo hidden" alt="">
+                    <div>
+                        <h1 id="loja-nome"></h1>
+                        <p id="loja-descricao"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container loja-produtos-container">
+            <div class="loja-filtros">
+                <input type="text" id="loja-busca" placeholder="Buscar produtos...">
+                <select id="loja-categoria">
+                    <option value="">Todas as categorias</option>
+                    <option value="produtos">Produtos</option>
+                    <option value="bebidas">Bebidas</option>
+                </select>
+            </div>
+
+            <div id="loja-produtos-grid" class="cardapio-grid">
+                <p class="painel-vazio">Carregando produtos...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="links">
+                <a href="https://www.instagram.com/o_glauberson/">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <a href="https://github.com/Binhu01">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/glauber-cavalcanti-176039309/">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p><a href="../privacidade/index.html">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
+        </div>
+    </footer>
+
+    <script src="../js/auth-nav.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="./loja.js"></script>
+</body>
+</html>

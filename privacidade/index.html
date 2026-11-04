@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./privacidade.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Privacidade e Termos de Uso - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Como o Terra Fresca coleta, usa e protege seus dados, e as regras de uso da plataforma.">
+    <meta property="og:title" content="Privacidade e Termos de Uso - Terra Fresca">
+    <meta property="og:description" content="Como o Terra Fresca coleta, usa e protege seus dados, e as regras de uso da plataforma.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body data-home="../main.html">
+    <header class="privacidade-header">
+        <div class="container">
+            <nav>
+                <a href="../main.html">
+                    <img src="../img/logo_terra_fresca__1.png" alt="">
+                </a>
+                <ul class="ul">
+                    <a href="../main.html">Tela inicial</a>
+                    <a href="../sobre.html">Sobre Nós</a>
+                    <a href="../servicos.html">Serviços</a>
+                    <span class="nav-auth" id="nav-auth"><a class="btn" href="../login/index.html">Fazer Login</a></span>
+                    <div class="fechar-icone" onclick="CloseMenu()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </ul>
+                <div class="menu-icon" onclick="OpenMenu()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+            </nav>
+
+            <div class="privacidade-titulo">
+                <h1>Privacidade e Termos de Uso</h1>
+                <p>Última atualização: 24 de agosto de 2026</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="privacidade-conteudo">
+        <div class="container">
+
+            <nav class="privacidade-indice" aria-label="Navegação rápida">
+                <a href="#privacidade">Política de Privacidade</a>
+                <a href="#termos">Termos de Uso</a>
+            </nav>
+
+            <section id="privacidade" class="privacidade-card">
+                <h2>Política de Privacidade</h2>
+
+                <p>Esta política explica como o <strong>Terra Fresca</strong> coleta, usa, compartilha e protege os
+                dados das pessoas que usam a plataforma, em conformidade com a Lei Geral de Proteção de Dados
+                (LGPD — Lei nº 13.709/2018).</p>
+
+                <h3>1. Quem somos</h3>
+                <p>O Terra Fresca é um projeto que conecta produtores de assentamentos agroecológicos a
+                consumidores, funcionando como um pequeno marketplace com várias lojas parceiras. Para dúvidas
+                sobre seus dados, você pode falar com a gente pela <a href="../contato.html">página de Contato</a>.</p>
+
+                <h3>2. Quais dados coletamos</h3>
+                <ul>
+                    <li><strong>Dados de cadastro:</strong> nome, e-mail e, se você usar login social, as
+                    informações básicas de perfil que o provedor (Google, GitHub, Facebook ou LinkedIn)
+                    compartilha com a gente.</li>
+                    <li><strong>Dados de pedido:</strong> endereço de entrega e histórico de compras.</li>
+                    <li><strong>Dados de uso:</strong> produtos favoritados, avaliações que você escreve, e itens
+                    salvos no carrinho.</li>
+                    <li><strong>Dados de pagamento:</strong> quando o pagamento real estiver ativo, os dados do
+                    cartão/PIX são processados diretamente pelo Mercado Pago — o Terra Fresca não armazena
+                    número de cartão nem dado financeiro sensível em seu próprio banco de dados.</li>
+                </ul>
+
+                <h3>3. Como usamos esses dados</h3>
+                <ul>
+                    <li>Criar e manter sua conta, e permitir login nas visitas seguintes;</li>
+                    <li>Processar pedidos e viabilizar a entrega, compartilhando com o vendedor responsável só o
+                    necessário (itens comprados e endereço de entrega);</li>
+                    <li>Mostrar seu histórico de pedidos e favoritos;</li>
+                    <li>Permitir avaliações — só de produtos que você realmente recebeu;</li>
+                    <li>Cumprir obrigações legais, quando aplicável.</li>
+                </ul>
+
+                <h3>4. Com quem compartilhamos</h3>
+                <p>Não vendemos seus dados. Compartilhamos apenas o necessário com:</p>
+                <ul>
+                    <li><strong>Supabase</strong> — infraestrutura de banco de dados, autenticação e
+                    armazenamento de arquivos que hospeda os dados da plataforma;</li>
+                    <li><strong>O vendedor da loja</strong> de onde você comprou — recebe seu e-mail, itens do
+                    pedido e endereço de entrega, só o suficiente pra cumprir aquele pedido específico;</li>
+                    <li><strong>Provedores de login social</strong> (Google, GitHub, Facebook, LinkedIn), se você
+                    optar por entrar dessa forma;</li>
+                    <li><strong>Mercado Pago</strong>, quando o pagamento real estiver ativo, para processar a
+                    cobrança.</li>
+                </ul>
+
+                <h3>5. Cookies e armazenamento local</h3>
+                <p>Usamos o armazenamento local do navegador para manter sua sessão logada entre visitas. Não
+                usamos cookies de rastreamento publicitário nem compartilhamos dados de navegação com redes de
+                anúncio.</p>
+
+                <h3>6. Segurança</h3>
+                <p>O acesso aos dados é protegido por regras de segurança em nível de linha (Row Level Security)
+                no banco de dados — ou seja, cada pessoa só consegue ver e alterar o que é dela, e essas regras
+                são aplicadas pelo próprio banco, não só pela interface do site. A comunicação entre seu
+                navegador e nossos servidores é criptografada (HTTPS).</p>
+
+                <h3>7. Por quanto tempo guardamos seus dados</h3>
+                <p>Mantemos seus dados enquanto sua conta estiver ativa. Se você pedir a exclusão da conta,
+                apagamos os dados pessoais associados a ela, exceto informações que precisemos manter por
+                obrigação legal (como registros fiscais de pedidos já concluídos, quando aplicável).</p>
+
+                <h3>8. Seus direitos</h3>
+                <p>De acordo com o Artigo 18 da LGPD, você tem direito a:</p>
+                <ul>
+                    <li>Confirmar se tratamos algum dado seu, e acessar esses dados;</li>
+                    <li>Corrigir dados incompletos, inexatos ou desatualizados;</li>
+                    <li>Solicitar a exclusão dos seus dados;</li>
+                    <li>Solicitar a portabilidade dos seus dados para outro serviço;</li>
+                    <li>Revogar seu consentimento a qualquer momento;</li>
+                    <li>Saber com quem compartilhamos seus dados.</li>
+                </ul>
+
+                <h3>9. Como exercer esses direitos</h3>
+                <p>Fale com a gente pela <a href="../contato.html">página de Contato</a> informando o pedido —
+                respondemos o quanto antes.</p>
+
+                <h3>10. Alterações nesta política</h3>
+                <p>Podemos atualizar esta política de tempos em tempos. Mudanças relevantes serão indicadas pela
+                data de "última atualização" no topo desta página.</p>
+            </section>
+
+            <section id="termos" class="privacidade-card">
+                <h2>Termos de Uso</h2>
+
+                <h3>1. Aceitação dos termos</h3>
+                <p>Ao criar uma conta ou usar o Terra Fresca, você concorda com estes termos. Se não concordar,
+                pedimos que não utilize a plataforma.</p>
+
+                <h3>2. O que é o Terra Fresca</h3>
+                <p>O Terra Fresca é uma plataforma que conecta produtores agroecológicos (vendedores) a
+                consumidores (compradores), reunindo várias lojas parceiras num só lugar.</p>
+
+                <h3>3. Cadastro e conta</h3>
+                <p>Você é responsável por manter a segurança da sua conta e por todas as atividades realizadas
+                nela. Use um e-mail e senha que só você conheça, e nos avise se suspeitar de acesso não
+                autorizado.</p>
+
+                <h3>4. Papel do vendedor</h3>
+                <p>Vendedores são responsáveis por: cadastrar produtos com informações verdadeiras (preço,
+                descrição, estoque), manter o estoque atualizado, e cumprir os pedidos recebidos dentro do prazo
+                combinado. O Terra Fresca não se responsabiliza pela qualidade dos produtos vendidos por
+                terceiros na plataforma.</p>
+
+                <h3>5. Papel do comprador</h3>
+                <p>Compradores são responsáveis por fornecer um endereço de entrega correto e por avaliar
+                produtos de forma honesta, baseada numa compra real.</p>
+
+                <h3>6. Pedidos e pagamento</h3>
+                <p>Ao finalizar uma compra, um pedido é criado com o valor calculado a partir do preço vigente de
+                cada produto no momento da compra. O pagamento pode ser processado por um gateway externo
+                (Mercado Pago); nesses casos, as condições de pagamento (cartão, PIX, prazos de estorno) seguem
+                as regras do próprio Mercado Pago.</p>
+
+                <h3>7. Avaliações</h3>
+                <p>Só é possível avaliar um produto depois que o pedido correspondente for marcado como
+                entregue — essa regra é aplicada pelo próprio banco de dados, não apenas pela interface.</p>
+
+                <h3>8. Propriedade intelectual</h3>
+                <p>O nome, a logo e o layout do Terra Fresca pertencem ao projeto. Fotos e descrições de produtos
+                enviadas por vendedores continuam de responsabilidade de quem as enviou.</p>
+
+                <h3>9. Limitação de responsabilidade</h3>
+                <p>O Terra Fresca atua como intermediário entre produtores e consumidores. Não nos
+                responsabilizamos por disputas relacionadas à qualidade do produto, atraso na entrega ou
+                divergências entre comprador e vendedor — nesses casos, buscamos ajudar a mediar, mas a
+                responsabilidade final é de quem vendeu ou comprou.</p>
+
+                <h3>10. Alterações nestes termos</h3>
+                <p>Estes termos podem ser atualizados conforme a plataforma evolui. O uso continuado do site após
+                uma alteração significa que você concorda com os novos termos.</p>
+
+                <h3>11. Legislação aplicável</h3>
+                <p>Estes termos são regidos pelas leis brasileiras.</p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="links">
+                <a href="https://www.instagram.com/o_glauberson/">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <a href="https://github.com/Binhu01">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/glauber-cavalcanti-176039309/">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p><a href="#privacidade">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
+        </div>
+    </footer>
+
+    <script src="../js/auth-nav.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
