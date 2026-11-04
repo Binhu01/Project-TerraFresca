@@ -103,3 +103,7 @@ app/src/main/res/xml/config.xml
 # Release signing secrets
 release-signing.properties
 *.keystore
+
+# Release signing secrets
+release-signing.properties
+*.keystore
