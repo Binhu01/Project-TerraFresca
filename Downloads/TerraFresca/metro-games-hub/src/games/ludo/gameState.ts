@@ -8,6 +8,7 @@ import {
   BASE_POSITION,
   FINISH_POSITION,
   MAIN_TRACK_LENGTH,
+  PLAYER_OFFSETS,
   createInitialBoard,
   getAbsolutePosition,
   getAllPlayers,
@@ -70,7 +71,7 @@ export function createInitialState(playerCount: number): GameState {
  * If no valid moves exist for this roll, skip the turn and advance to next player.
  */
 export function rollDice(state: GameState): GameState {
-  const seed = state.moveHistory.length + Date.now();
+  const seed = state.moveHistory.length * 2654435761;
   const rng = mulberry32(seed);
   const value = Math.floor(rng() * 6) + 1;
 
@@ -87,6 +88,7 @@ export function rollDice(state: GameState): GameState {
       ...stateWithRoll,
       phase: 'waiting-roll',
       currentPlayer: getNextActivePlayer(state.currentPlayer, state.pieces),
+      lastRoll: null,
     };
   }
 
@@ -199,17 +201,7 @@ function getLogicalFromState(player: Player, position: number): number {
     return position;
   }
   // Main track: convert absolute to logical
-  return (position - getPlayerOffset(player) + MAIN_TRACK_LENGTH) % MAIN_TRACK_LENGTH;
-}
-
-function getPlayerOffset(player: Player): number {
-  const offsets: Record<Player, number> = {
-    red: 0,
-    green: 13,
-    yellow: 26,
-    blue: 39,
-  };
-  return offsets[player];
+  return (position - PLAYER_OFFSETS[player] + MAIN_TRACK_LENGTH) % MAIN_TRACK_LENGTH;
 }
 
 /**
@@ -312,8 +304,7 @@ export function executeMove(state: GameState, move: Move): GameState {
 function rebuildBoard(pieces: Record<Player, Piece[]>): Map<number, Piece[]> {
   const board = new Map<number, Piece[]>();
 
-  const allPlayers: Player[] = ['red', 'green', 'yellow', 'blue'];
-  for (const player of allPlayers) {
+  for (const player of getAllPlayers()) {
     for (const piece of pieces[player]) {
       // Only place main-track pieces on the shared board
       if (piece.position >= 0 && piece.position < MAIN_TRACK_LENGTH) {
@@ -330,9 +321,7 @@ function rebuildBoard(pieces: Record<Player, Piece[]>): Map<number, Piece[]> {
  * Check if any player has won by getting all 4 pieces to the finish position.
  */
 export function checkWinCondition(state: GameState): Player | null {
-  const allPlayers: Player[] = ['red', 'green', 'yellow', 'blue'];
-
-  for (const player of allPlayers) {
+  for (const player of getAllPlayers()) {
     const playerPieces = state.pieces[player];
     if (playerPieces.length === 0) continue;
 

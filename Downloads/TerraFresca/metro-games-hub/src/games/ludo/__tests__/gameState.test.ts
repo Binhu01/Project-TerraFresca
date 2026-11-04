@@ -226,43 +226,6 @@ describe('getValidMoves', () => {
     expect(moveForRed0!.capturesPiece).toEqual({ player: 'green', pieceId: 0 });
   });
 
-  it('safe square prevents capture even when opponent present', () => {
-    const state = createInitialState(2);
-    // Position 0 is a safe square (red's start)
-    const safePos = 0;
-    expect(isSafeSquare(safePos)).toBe(true);
-
-    const stateWithPieces: GameState = {
-      ...state,
-      pieces: {
-        ...state.pieces,
-        red: [
-          { id: 0, player: 'red', position: getAbsolutePosition('red', 49) },
-          ...state.pieces.red.slice(1),
-        ],
-        green: [
-          { id: 0, player: 'green', position: safePos },
-          ...state.pieces.green.slice(1),
-        ],
-      },
-      board: new Map([[safePos, [{ id: 0, player: 'green', position: safePos }]]]),
-      lastRoll: { value: 3 },
-      phase: 'selecting-piece',
-    };
-
-    const moves = getValidMoves(stateWithPieces);
-    const moveForRed0 = moves.find((m) => m.pieceId === 0);
-    expect(moveForRed0).toBeDefined();
-    // Logical 49 + 3 = 52 → home stretch, not main track. Let me adjust.
-    // Actually logical 49 + 3 = 52 which is home stretch entry. Let me use a different setup.
-    // Red at logical 50 would be abs (50+0)%52 = 50. Roll 2 → logical 52 → home stretch.
-    // Let's instead put red at logical 47 (abs 47, which IS a safe square).
-    // Roll 5 → logical 52 → home stretch. Not useful for testing safe square capture prevention.
-    // Better: red at logical 3 (abs 3), roll 5 → logical 8 (abs 8, safe square).
-    // Green at abs 8.
-    // Re-test with corrected positions below.
-  });
-
   it('safe square prevents capture (corrected positions)', () => {
     const state = createInitialState(2);
     // abs 8 is a safe square
