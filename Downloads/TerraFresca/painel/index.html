@@ -60,7 +60,32 @@
         <p>Verificando sua conta...</p>
     </div>
 
-    <!-- Estado: não é vendedor de nenhuma loja -->
+    <!-- Estado: não tem loja cadastrada -->
+    <div class="painel-estado hidden" id="estado-sem-loja">
+        <i class="fa fa-store painel-estado-icone" aria-hidden="true"></i>
+        <h2>Você ainda não tem uma loja</h2>
+        <p>Crie sua loja no Terra Fresca e comece a vender produtos orgânicos e naturais.</p>
+        <a href="../vendedor/cadastro.html" class="btn painel-estado-btn">Criar minha loja</a>
+    </div>
+
+    <!-- Estado: loja pendente de aprovação -->
+    <div class="painel-estado hidden" id="estado-pendente">
+        <i class="fa fa-clock-o painel-estado-icone" aria-hidden="true"></i>
+        <h2>Sua loja está aguardando aprovação</h2>
+        <p>Nossa equipe está analisando sua solicitação. Você receberá uma resposta em breve.</p>
+        <div class="painel-estado-dados" id="dados-loja-pendente"></div>
+        <p class="painel-estado-sub">Enquanto isso, você pode preparar seus produtos e imagens.</p>
+    </div>
+
+    <!-- Estado: loja rejeitada -->
+    <div class="painel-estado hidden" id="estado-rejeitada">
+        <i class="fa fa-times-circle painel-estado-icone painel-estado-icone--erro" aria-hidden="true"></i>
+        <h2>Sua solicitação foi rejeitada</h2>
+        <p id="motivo-rejeicao">Infelizmente não foi possível aprovar sua loja neste momento.</p>
+        <a href="../vendedor/cadastro.html" class="btn painel-estado-btn">Tentar novamente</a>
+    </div>
+
+    <!-- Estado: não é vendedor (fallback legado) -->
     <div class="painel-estado hidden" id="estado-sem-acesso">
         <p>Essa conta ainda não é vendedora de nenhuma loja.</p>
         <p class="painel-estado-sub">Se você acredita que isso é um engano, fale com o administrador do site.</p>

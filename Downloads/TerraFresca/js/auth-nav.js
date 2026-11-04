@@ -35,10 +35,16 @@
         if (error) console.error("Erro ao salvar profile:", error);
     });
 
-    const { data: lojas } = await supabaseClient
+    const { data: vinculosLegados } = await supabaseClient
         .from("vendedores")
         .select("loja")
         .eq("user_id", user.id);
+
+    const { data: lojaCustom } = await supabaseClient
+        .from("lojas")
+        .select("slug, status")
+        .eq("owner_id", user.id)
+        .maybeSingle();
 
     const { data: souAdmin } = await supabaseClient.rpc("is_admin");
 
@@ -65,11 +71,29 @@
     linkPedidos.textContent = "Pedidos";
     menuDropdown.appendChild(linkPedidos);
 
-    if (lojas && lojas.length > 0) {
+    // Loja customizada aprovada → link para a storefront
+    if (lojaCustom && lojaCustom.status === "aprovada") {
+        const lojaHref = home.replace("main.html", `loja/index.html?slug=${lojaCustom.slug}`);
+        const linkLoja = document.createElement("a");
+        linkLoja.href = lojaHref;
+        linkLoja.textContent = "Minha Loja";
+        menuDropdown.appendChild(linkLoja);
+    }
+
+    // Painel do vendedor (se tem loja custom ou vínculos legados)
+    const temVinculoLegado = vinculosLegados && vinculosLegados.length > 0;
+    if (lojaCustom || temVinculoLegado) {
         const linkPainel = document.createElement("a");
         linkPainel.href = painelHref;
         linkPainel.textContent = "Painel do Vendedor";
         menuDropdown.appendChild(linkPainel);
+    } else if (!lojaCustom) {
+        // Sem loja: oferecer criação
+        const cadastroHref = home.replace("main.html", "vendedor/cadastro.html");
+        const linkCriar = document.createElement("a");
+        linkCriar.href = cadastroHref;
+        linkCriar.textContent = "Criar Loja";
+        menuDropdown.appendChild(linkCriar);
     }
 
     if (souAdmin) {

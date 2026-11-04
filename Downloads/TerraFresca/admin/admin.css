@@ -362,3 +362,207 @@
     color: #721c24;
     border-color: #721c24;
 }
+
+/* ============================================================
+   Solicitações de Loja — Aprovação / Rejeição
+   ============================================================ */
+
+.admin-badge{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    margin-left: 10px;
+    font-family: "Bevan", serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--cream);
+    background-color: #c62828;
+    border-radius: 12px;
+    vertical-align: middle;
+}
+
+.admin-abas{
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--forest);
+}
+
+.admin-aba{
+    padding: 10px 24px;
+    font-family: "Bevan", serif;
+    font-size: 13px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 2px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    position: relative;
+    bottom: -2px;
+}
+
+.admin-aba:hover{
+    color: var(--forest);
+    background-color: rgba(30, 51, 32, 0.05);
+}
+
+.admin-aba.ativa{
+    color: var(--forest);
+    background-color: var(--white);
+    border-color: var(--forest);
+    border-bottom-color: var(--white);
+}
+
+.admin-solicitacoes-lista{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.admin-solicitacao-card{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 2px solid var(--forest);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0 var(--honey);
+    background-color: var(--white);
+}
+
+.admin-solicitacao-info{
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-solicitacao-logo{
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid var(--nude-light);
+    flex-shrink: 0;
+}
+
+.admin-solicitacao-info .nome{
+    font-family: "Bevan", serif;
+    font-size: 16px;
+    color: var(--forest);
+    margin-bottom: 4px;
+}
+
+.admin-solicitacao-info .detalhes{
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+}
+
+.admin-solicitacao-info .descricao{
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.admin-solicitacao-info .data{
+    font-size: 12px;
+    color: var(--ink-soft);
+    opacity: 0.8;
+}
+
+.admin-solicitacao-info .status-decisao{
+    font-family: "Bevan", serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+}
+
+.admin-solicitacao-info .status-decisao.status-aprovada{
+    color: #2e7d32;
+}
+
+.admin-solicitacao-info .status-decisao.status-rejeitada{
+    color: #c62828;
+}
+
+.admin-solicitacao-acoes{
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.admin-solicitacao-acoes .btn-aprovar{
+    border: 2px solid var(--forest);
+    background-color: var(--moss);
+    color: var(--cream);
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-family: "Bevan", serif;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--honey);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s;
+}
+
+.admin-solicitacao-acoes .btn-aprovar:hover{
+    background-color: #2e7d32;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--forest);
+}
+
+.admin-solicitacao-acoes .btn-rejeitar{
+    border: 2px solid #c62828;
+    background-color: transparent;
+    color: #c62828;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-family: "Bevan", serif;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #ef9a9a;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s, color 0.2s;
+}
+
+.admin-solicitacao-acoes .btn-rejeitar:hover{
+    background-color: #c62828;
+    color: var(--cream);
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #721c24;
+}
+
+@media(max-width: 640px){
+    .admin-solicitacao-card{
+        flex-direction: column;
+    }
+
+    .admin-solicitacao-acoes{
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .admin-aba{
+        padding: 8px 14px;
+        font-size: 11px;
+    }
+}

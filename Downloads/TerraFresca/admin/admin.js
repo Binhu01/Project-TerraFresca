@@ -678,4 +678,135 @@ async function dispararNotificacaoEmail(pedidoId, novoStatus) {
     }
 }
 
+// ======================================================
+// Solicitações de Loja — Aprovação / Rejeição
+// ======================================================
+const listaSolicitacoesPendentes = document.getElementById("lista-solicitacoes-pendentes");
+const listaSolicitacoesHistorico = document.getElementById("lista-solicitacoes-historico");
+const badgeSolicitacoes = document.getElementById("badge-solicitacoes");
+const abasSolicitacoes = document.querySelectorAll(".admin-aba");
+
+abasSolicitacoes.forEach((aba) => {
+    aba.addEventListener("click", () => {
+        abasSolicitacoes.forEach((a) => a.classList.remove("ativa"));
+        aba.classList.add("ativa");
+
+        if (aba.dataset.aba === "pendentes") {
+            listaSolicitacoesPendentes.classList.remove("hidden");
+            listaSolicitacoesHistorico.classList.add("hidden");
+        } else {
+            listaSolicitacoesPendentes.classList.add("hidden");
+            listaSolicitacoesHistorico.classList.remove("hidden");
+        }
+    });
+});
+
+async function carregarSolicitacoesLojas() {
+    const { data, error } = await supabaseClient
+        .from("lojas")
+        .select("*")
+        .order("criado_em", { ascending: false });
+
+    if (error) {
+        console.error("Erro ao carregar solicitações:", error);
+        return;
+    }
+
+    const pendentes = (data || []).filter((l) => l.status === "pendente");
+    const historico = (data || []).filter((l) => l.status !== "pendente");
+
+    // Atualizar badge
+    if (pendentes.length > 0) {
+        badgeSolicitacoes.textContent = pendentes.length;
+        badgeSolicitacoes.classList.remove("hidden");
+    } else {
+        badgeSolicitacoes.classList.add("hidden");
+    }
+
+    // Renderizar pendentes
+    if (pendentes.length === 0) {
+        listaSolicitacoesPendentes.innerHTML = '<p class="painel-vazio">Nenhuma solicitação pendente.</p>';
+    } else {
+        listaSolicitacoesPendentes.innerHTML = "";
+        pendentes.forEach((loja) => {
+            listaSolicitacoesPendentes.appendChild(criarCardSolicitacao(loja, true));
+        });
+    }
+
+    // Renderizar histórico
+    if (historico.length === 0) {
+        listaSolicitacoesHistorico.innerHTML = '<p class="painel-vazio">Nenhum histórico de solicitações.</p>';
+    } else {
+        listaSolicitacoesHistorico.innerHTML = "";
+        historico.forEach((loja) => {
+            listaSolicitacoesHistorico.appendChild(criarCardSolicitacao(loja, false));
+        });
+    }
+}
+
+function criarCardSolicitacao(loja, mostrarAcoes) {
+    const card = document.createElement("div");
+    card.className = "admin-solicitacao-card";
+
+    const planoLabel = { basico: "Básico", profissional: "Profissional", premium: "Premium" };
+    const statusLabel = { aprovada: "Aprovada", rejeitada: "Rejeitada" };
+
+    let html = `
+        <div class="admin-solicitacao-info">
+            ${loja.logo_url ? `<img src="${loja.logo_url}" alt="${loja.nome}" class="admin-solicitacao-logo">` : ""}
+            <div>
+                <p class="nome">${loja.nome}</p>
+                <p class="detalhes">URL: /loja/${loja.slug} · Plano: ${planoLabel[loja.plano] || loja.plano}</p>
+                ${loja.descricao ? `<p class="descricao">${loja.descricao}</p>` : ""}
+                <p class="data">Solicitado em: ${formatarData(loja.criado_em)}</p>
+                ${!mostrarAcoes && loja.status !== "pendente" ? `<p class="status-decisao status-${loja.status}">${statusLabel[loja.status] || loja.status}${loja.motivo_rejeicao ? " — " + loja.motivo_rejeicao : ""}</p>` : ""}
+            </div>
+        </div>
+    `;
+
+    if (mostrarAcoes) {
+        html += `
+            <div class="admin-solicitacao-acoes">
+                <button type="button" class="btn btn-aprovar" data-id="${loja.id}">Aprovar</button>
+                <button type="button" class="btn btn-rejeitar" data-id="${loja.id}">Rejeitar</button>
+            </div>
+        `;
+    }
+
+    card.innerHTML = html;
+
+    if (mostrarAcoes) {
+        card.querySelector(".btn-aprovar").addEventListener("click", async () => {
+            await atualizarStatusLoja(loja.id, "aprovada");
+        });
+
+        card.querySelector(".btn-rejeitar").addEventListener("click", async () => {
+            const motivo = window.prompt("Motivo da rejeição (opcional):");
+            await atualizarStatusLoja(loja.id, "rejeitada", motivo);
+        });
+    }
+
+    return card;
+}
+
+async function atualizarStatusLoja(lojaId, novoStatus, motivo) {
+    const dados = { status: novoStatus, atualizado_em: new Date().toISOString() };
+    if (novoStatus === "rejeitada" && motivo) {
+        dados.motivo_rejeicao = motivo;
+    }
+
+    const { error } = await supabaseClient
+        .from("lojas")
+        .update(dados)
+        .eq("id", lojaId);
+
+    if (error) {
+        alert("Erro ao atualizar: " + error.message);
+        return;
+    }
+
+    carregarSolicitacoesLojas();
+}
+
 iniciarAdmin();
+carregarSolicitacoesLojas();

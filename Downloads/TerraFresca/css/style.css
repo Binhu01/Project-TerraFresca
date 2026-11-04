@@ -1078,3 +1078,94 @@ nav .fechar-icone{
         transform: none !important;
     }
 }
+
+/* ======================================================
+   Nossas Lojas — Seção da homepage (marketplace)
+   ====================================================== */
+
+.nossas-lojas{
+    background-color: var(--nude-light);
+    padding: 60px 0;
+}
+
+.nossas-lojas h3{
+    text-align: center;
+    font-family: "Bevan", serif;
+    font-size: 32px;
+    color: var(--forest);
+    margin-bottom: 8px;
+}
+
+.nossas-lojas > .container > p{
+    text-align: center;
+    color: var(--ink-soft);
+    margin-bottom: 30px;
+}
+
+.lojas-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.loja-card{
+    background-color: var(--white);
+    border: 3px solid var(--forest);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: var(--stamp-shadow);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.loja-card:hover{
+    transform: translate(-3px, -3px);
+    box-shadow: 10px 10px 0 var(--honey);
+}
+
+.loja-card-logo{
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid var(--nude);
+    margin: 0 auto 14px;
+    display: block;
+}
+
+.loja-card-nome{
+    font-family: "Bevan", serif;
+    font-size: 18px;
+    color: var(--forest);
+    margin-bottom: 6px;
+}
+
+.loja-card-desc{
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Link "Quero vender" na navbar */
+.nav-quero-vender{
+    font-family: "Bevan", serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--honey) !important;
+    border: 2px solid var(--honey);
+    border-radius: 6px;
+    padding: 6px 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-quero-vender:hover{
+    background-color: var(--honey);
+    color: var(--cream) !important;
+}

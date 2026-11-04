@@ -2,6 +2,9 @@
 // Elementos da página
 // ======================================================
 const estadoCarregando = document.getElementById("estado-carregando");
+const estadoSemLoja = document.getElementById("estado-sem-loja");
+const estadoPendente = document.getElementById("estado-pendente");
+const estadoRejeitada = document.getElementById("estado-rejeitada");
 const estadoSemAcesso = document.getElementById("estado-sem-acesso");
 const painelConteudo = document.getElementById("painel-conteudo");
 
@@ -65,7 +68,7 @@ campoImagemArquivo.addEventListener("change", () => {
 });
 
 // ======================================================
-// Passo 1: checar sessão e quais lojas o usuário gerencia
+// Passo 1: checar sessão e determinar estado da loja
 // ======================================================
 async function iniciarPainel() {
     const { data: { session } } = await supabaseClient.auth.getSession();
@@ -75,19 +78,58 @@ async function iniciarPainel() {
         return;
     }
 
-    const { data, error } = await supabaseClient
+    // Buscar loja customizada do usuário na tabela `lojas`
+    const { data: lojaCustom, error: erroLoja } = await supabaseClient
+        .from("lojas")
+        .select("*")
+        .eq("owner_id", session.user.id)
+        .maybeSingle();
+
+    // Buscar vínculos legados na tabela `vendedores` (lojas originais)
+    const { data: vinculosLegados, error: erroVinculos } = await supabaseClient
         .from("vendedores")
-        .select("loja")
+        .select("loja, loja_id")
         .eq("user_id", session.user.id);
 
     estadoCarregando.classList.add("hidden");
 
-    if (error || !data || data.length === 0) {
-        estadoSemAcesso.classList.remove("hidden");
-        return;
+    // --- Loja customizada existe ---
+    if (lojaCustom && !erroLoja) {
+        if (lojaCustom.status === "pendente") {
+            mostrarEstadoPendente(lojaCustom);
+            return;
+        }
+        if (lojaCustom.status === "rejeitada") {
+            mostrarEstadoRejeitada(lojaCustom);
+            return;
+        }
+        // Aprovada: tratar como loja ativa
+        // Se também tem vínculo legado, incluir ambas
+        const lojasLegadas = (vinculosLegados || [])
+            .filter((v) => v.loja && !v.loja_id)
+            .map((v) => v.loja);
+        lojasDoVendedor = [...lojasLegadas];
+        // A loja custom aprovada usa o slug como identificador interno
+        // mas produtos ainda usam o campo `loja` com nome/slug
+        // Por ora, se não tem lojas legadas, usar o slug da loja custom
+        if (lojasDoVendedor.length === 0) {
+            lojasDoVendedor = [lojaCustom.slug];
+        }
+    } else {
+        // Sem loja custom — verificar vínculos legados
+        const lojasLegadas = (vinculosLegados || [])
+            .filter((v) => v.loja && !v.loja_id)
+            .map((v) => v.loja);
+
+        if (lojasLegadas.length > 0) {
+            lojasDoVendedor = lojasLegadas;
+        } else {
+            // Nenhum vínculo: oferecer criação de loja
+            estadoSemLoja.classList.remove("hidden");
+            return;
+        }
     }
 
-    lojasDoVendedor = data.map((linha) => linha.loja);
     lojaAtual = lojasDoVendedor[0];
 
     montarSeletorDeLoja();
@@ -95,6 +137,25 @@ async function iniciarPainel() {
     carregarDashboard();
     carregarProdutosDoVendedor();
     carregarPedidosDaLoja();
+}
+
+function mostrarEstadoPendente(loja) {
+    estadoPendente.classList.remove("hidden");
+    const dadosEl = document.getElementById("dados-loja-pendente");
+    const planoLabel = { basico: "Básico", profissional: "Profissional", premium: "Premium" };
+    dadosEl.innerHTML = `
+        <p><strong>Nome:</strong> ${loja.nome}</p>
+        <p><strong>URL:</strong> terrafresca.netlify.app/loja/${loja.slug}</p>
+        <p><strong>Plano:</strong> ${planoLabel[loja.plano] || loja.plano}</p>
+        <p><strong>Solicitado em:</strong> ${new Date(loja.criado_em).toLocaleDateString("pt-BR")}</p>
+    `;
+}
+
+function mostrarEstadoRejeitada(loja) {
+    estadoRejeitada.classList.remove("hidden");
+    if (loja.motivo_rejeicao) {
+        document.getElementById("motivo-rejeicao").textContent = loja.motivo_rejeicao;
+    }
 }
 
 function montarSeletorDeLoja() {

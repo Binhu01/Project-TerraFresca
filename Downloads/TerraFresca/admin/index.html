@@ -125,6 +125,24 @@
             </section>
 
             <section class="painel-card">
+                <h2>Solicitações de Loja <span class="admin-badge hidden" id="badge-solicitacoes">0</span></h2>
+                <p class="painel-card-subtitulo">Aprove ou rejeite solicitações de novas lojas no marketplace.</p>
+
+                <div class="admin-abas">
+                    <button type="button" class="admin-aba ativa" data-aba="pendentes">Pendentes</button>
+                    <button type="button" class="admin-aba" data-aba="historico">Histórico</button>
+                </div>
+
+                <div id="lista-solicitacoes-pendentes" class="admin-solicitacoes-lista">
+                    <p class="painel-vazio">Carregando solicitações...</p>
+                </div>
+
+                <div id="lista-solicitacoes-historico" class="admin-solicitacoes-lista hidden">
+                    <p class="painel-vazio">Carregando histórico...</p>
+                </div>
+            </section>
+
+            <section class="painel-card">
                 <h2>Gerenciar vendedores</h2>
 
                 <div class="admin-busca">

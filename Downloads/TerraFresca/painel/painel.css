@@ -53,6 +53,52 @@
     margin-top: 8px;
 }
 
+.painel-estado h2{
+    font-size: 24px;
+    color: var(--forest);
+    margin-bottom: 12px;
+}
+
+.painel-estado-icone{
+    font-size: 56px;
+    color: var(--honey);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.painel-estado-icone--erro{
+    color: #c62828;
+}
+
+.painel-estado-btn{
+    display: inline-block;
+    margin-top: 24px;
+    padding: 14px 32px;
+    font-size: 16px;
+}
+
+.painel-estado-dados{
+    background: var(--white);
+    border: 1px solid var(--nude-light);
+    border-radius: 10px;
+    padding: 20px 28px;
+    margin: 20px auto 0;
+    max-width: 400px;
+    text-align: left;
+}
+
+.painel-estado-dados p{
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: var(--ink-soft) !important;
+    margin-bottom: 6px;
+}
+
+.painel-estado-dados strong{
+    color: var(--forest);
+    font-weight: 600;
+}
+
 .painel-conteudo{
     background-color: var(--cream);
     padding: 60px 0 90px;

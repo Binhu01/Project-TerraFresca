@@ -70,6 +70,7 @@
     <a href="main.html">Tela inicial</a>
     <a href="sobre.html">Sobre Nós</a>
     <a href="servicos.html">Serviços</a>
+    <a href="./vendedor/cadastro.html" class="nav-quero-vender">Quero vender</a>
     <span class="nav-auth" id="nav-auth"><a class="btn" href="./login/index.html">Fazer Login</a></span>
     <div class="fechar-icone" onclick="CloseMenu()">
         <i class="fa fa-times" aria-hidden="true"></i>
@@ -202,6 +203,20 @@
     </section>
     <!-- Fim dos Depoimentos-->
 
+    <!-- Nossas Lojas -->
+    <section class="nossas-lojas">
+        <div class="container">
+            <h3>Nossas Lojas</h3>
+            <p>Conheça os produtores que fazem parte do marketplace Terra Fresca.</p>
+            <div id="lojas-grid" class="lojas-grid">
+                <p class="painel-vazio">Carregando lojas...</p>
+            </div>
+            <div style="text-align:center;margin-top:24px;">
+                <a href="./vendedor/cadastro.html" class="btn">Quero vender no Terra Fresca</a>
+            </div>
+        </div>
+    </section>
+
     <!--Parcerias-->
 <section class="parcerias">
     <div class="container">
@@ -285,6 +300,43 @@
              <script src="./js/auth-nav.js"></script>
              <script src="./js/main.js"></script>
              <script src="./js/interacoes.js"></script>
+
+             <script>
+             // Carregar lojas aprovadas para a seção "Nossas Lojas"
+             (async function () {
+                 const grid = document.getElementById("lojas-grid");
+                 if (!grid) return;
+
+                 const { data, error } = await supabaseClient
+                     .from("lojas")
+                     .select("nome, slug, descricao, logo_url")
+                     .eq("status", "aprovada")
+                     .order("criado_em", { ascending: false });
+
+                 if (error || !data || data.length === 0) {
+                     grid.innerHTML = '<p class="painel-vazio">Em breve novas lojas estarão disponíveis.</p>';
+                     return;
+                 }
+
+                 grid.innerHTML = "";
+                 data.forEach(function (loja) {
+                     var card = document.createElement("a");
+                     card.className = "loja-card";
+                     card.href = "./loja/index.html?slug=" + loja.slug;
+
+                     var html = "";
+                     if (loja.logo_url) {
+                         html += '<img src="' + loja.logo_url + '" alt="' + loja.nome + '" class="loja-card-logo">';
+                     }
+                     html += '<div class="loja-card-nome">' + loja.nome + '</div>';
+                     if (loja.descricao) {
+                         html += '<div class="loja-card-desc">' + loja.descricao + '</div>';
+                     }
+                     card.innerHTML = html;
+                     grid.appendChild(card);
+                 });
+             })();
+             </script>
 
 </body>
 </html>
