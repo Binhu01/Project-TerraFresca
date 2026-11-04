@@ -16,6 +16,10 @@ import { generateChessRook } from './templates/chess-rook.svg';
 import { generateDiceFace } from './templates/dice-face.svg';
 import { generateLadder } from './templates/ladder.svg';
 import { generatePawn } from './templates/pawn.svg';
+import { generateRaceCar } from './templates/race-car.svg';
+import { generateRaceTileAsphalt } from './templates/race-tile-asphalt.svg';
+import { generateRaceTileBarrier } from './templates/race-tile-barrier.svg';
+import { generateRaceTileGrass } from './templates/race-tile-grass.svg';
 import { generateSnake } from './templates/snake.svg';
 import { generateStationBg } from './templates/station-bg.svg';
 import { generateTrainBase } from './templates/train-base.svg';
@@ -54,6 +58,10 @@ const TEMPLATES: Record<string, TemplateEntry> = {
   'dice-face': { fn: generateDiceFace, dims: [96, 96] },
   'ladder': { fn: generateLadder, dims: [48, 240] },
   'pawn': { fn: generatePawn, dims: [32, 32] },
+  'race-car': { fn: generateRaceCar, dims: [32, 32] },
+  'race-tile-asphalt': { fn: generateRaceTileAsphalt, dims: [32, 32] },
+  'race-tile-barrier': { fn: generateRaceTileBarrier, dims: [32, 32] },
+  'race-tile-grass': { fn: generateRaceTileGrass, dims: [32, 32] },
   'snake': { fn: generateSnake, dims: [48, 240] },
   'station-bg': { fn: generateStationBg, dims: [480, 270] },
   'train-base': { fn: generateTrainBase, dims: [64, 48] },
