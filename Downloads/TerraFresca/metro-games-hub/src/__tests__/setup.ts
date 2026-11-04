@@ -45,3 +45,21 @@ jest.mock('expo-gl', () => ({
   GLView: ({ children }: { children: React.ReactNode }) => children,
   createContextAsync: jest.fn(),
 }));
+
+jest.mock('expo-av', () => {
+  const mockSound = {
+    playAsync: jest.fn().mockResolvedValue({ isPlaying: true }),
+    stopAsync: jest.fn().mockResolvedValue({ isPlaying: false }),
+    unloadAsync: jest.fn().mockResolvedValue(undefined),
+    setVolumeAsync: jest.fn().mockResolvedValue(undefined),
+    setIsLoopingAsync: jest.fn().mockResolvedValue(undefined),
+    getStatusAsync: jest.fn().mockResolvedValue({ isLoaded: true }),
+  };
+  return {
+    Audio: {
+      Sound: {
+        createAsync: jest.fn().mockResolvedValue({ sound: mockSound, status: { isLoaded: true } }),
+      },
+    },
+  };
+});
