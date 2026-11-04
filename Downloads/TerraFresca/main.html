@@ -338,6 +338,15 @@
              })();
              </script>
 
+
+<script>
+if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+  document.body.classList.add("capacitor-app");
+  var s = document.createElement("script");
+  s.src = "/app/native-bridge.js";
+  document.head.appendChild(s);
+}
+</script>
 </body>
 </html>
 

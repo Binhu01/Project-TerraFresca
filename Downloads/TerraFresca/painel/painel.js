@@ -27,6 +27,22 @@ const campoImagemAtual = document.getElementById("campo-imagem-atual");
 const previewImagem = document.getElementById("preview-imagem");
 const previewImagemImg = document.getElementById("preview-imagem-img");
 const campoDescricao = document.getElementById("campo-descricao");
+const btnScanBarcode = document.getElementById("btn-scan-barcode");
+
+// Show barcode scan button only when native bridge is available
+if (btnScanBarcode && typeof window.nativeBridge?.escanearCodigoBarras === 'function') {
+    btnScanBarcode.classList.remove("hidden");
+    btnScanBarcode.addEventListener("click", async () => {
+        try {
+            const codigo = await window.nativeBridge.escanearCodigoBarras();
+            if (codigo) {
+                campoNome.value = codigo;
+            }
+        } catch (e) {
+            console.warn('[painel] Barcode scan failed:', e);
+        }
+    });
+}
 
 const listaProdutos = document.getElementById("lista-produtos");
 const listaPedidosVendedor = document.getElementById("lista-pedidos-vendedor");
@@ -58,13 +74,39 @@ function resolverSrcImagem(imagem) {
     return imagem.startsWith("http") ? imagem : "../cardapio/assets/" + imagem;
 }
 
-campoImagemArquivo.addEventListener("change", () => {
-    const arquivo = campoImagemArquivo.files[0];
-    if (!arquivo) return;
-
+async function mostrarPreviewImagem(arquivo) {
     const url = URL.createObjectURL(arquivo);
     previewImagemImg.src = url;
     previewImagem.classList.remove("hidden");
+}
+
+campoImagemArquivo.addEventListener("change", async () => {
+    // Native camera takes priority when available
+    if (typeof window.nativeBridge?.tirarFotoProduto === 'function') {
+        try {
+            const base64 = await window.nativeBridge.tirarFotoProduto();
+            if (base64) {
+                const byteString = atob(base64);
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+                const blob = new Blob([ab], { type: 'image/jpeg' });
+                const file = new File([blob], 'foto-produto.jpg', { type: 'image/jpeg' });
+                // Store file reference on input for later upload
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                campoImagemArquivo.files = dt.files;
+                await mostrarPreviewImagem(file);
+                return;
+            }
+        } catch (e) {
+            console.warn('[painel] Native camera failed, falling back to file input:', e);
+        }
+    }
+    // Fallback: standard file input
+    const arquivo = campoImagemArquivo.files[0];
+    if (!arquivo) return;
+    await mostrarPreviewImagem(arquivo);
 });
 
 // ======================================================
