@@ -17,13 +17,18 @@ const PIP_POSITIONS: Record<number, [number, number][]> = {
   6: [[28, 28], [68, 28], [28, 48], [68, 48], [28, 68], [68, 68]],
 };
 
-export function generateDiceFace(seed: number, palette: string[]): string {
+/** Overrides for dice-face template. */
+export interface DiceFaceOverrides {
+  face?: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+export function generateDiceFace(seed: number, palette: string[], overrides?: DiceFaceOverrides): string {
   const rng = mulberry32(seed);
   const W = 96;
   const H = 96;
 
-  // Derive face value 1-6 from seed
-  const face = 1 + Math.floor(rng() * 6);
+  // Use explicit face override if provided, otherwise derive from seed
+  const face = overrides?.face ?? (1 + Math.floor(rng() * 6));
 
   // Die body color — light with subtle variation
   const bodyColor = palette[1] ?? '#FFFFFF';

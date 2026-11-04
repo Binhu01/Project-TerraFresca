@@ -14,19 +14,24 @@ import { generateStationBg } from './templates/station-bg.svg';
 import { generateTrainBase } from './templates/train-base.svg';
 
 /** Parameters for sprite generation. */
-export interface GenerateParams {
+export interface GenerateParams<TOverrides = Record<string, unknown>> {
   seed: number;
   palette: string[];
+  overrides?: TOverrides;
 }
 
-/** Template function signature. */
-type TemplateFn = (seed: number, palette: string[]) => string;
+/** Template function signature with optional overrides. */
+export type TemplateFn<TOverrides = Record<string, unknown>> = (
+  seed: number,
+  palette: string[],
+  overrides?: TOverrides
+) => string;
 
 /** Template dimensions: [width, height]. */
 type TemplateDims = [number, number];
 
 interface TemplateEntry {
-  fn: TemplateFn;
+  fn: TemplateFn<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   dims: TemplateDims;
 }
 
@@ -41,9 +46,10 @@ const TEMPLATES: Record<string, TemplateEntry> = {
 };
 
 /** Cache key builder. */
-function cacheKey(template: string, seed: number, palette: string[]): string {
+function cacheKey(template: string, seed: number, palette: string[], overrides?: Record<string, unknown>): string {
   const palId = palette.join(',');
-  return `${template}:${seed}:${palId}`;
+  const overrideId = overrides ? JSON.stringify(overrides) : '';
+  return `${template}:${seed}:${palId}:${overrideId}`;
 }
 
 const cache = new Map<string, SpriteSpec>();
@@ -59,13 +65,13 @@ export const SpriteGenerator = {
       throw new Error(`Unknown sprite template: "${template}". Available: ${Object.keys(TEMPLATES).join(', ')}`);
     }
 
-    const key = cacheKey(template, params.seed, params.palette);
+    const key = cacheKey(template, params.seed, params.palette, params.overrides);
     const cached = cache.get(key);
     if (cached) {
       return cached;
     }
 
-    const svgString = entry.fn(params.seed, params.palette);
+    const svgString = entry.fn(params.seed, params.palette, params.overrides);
     const encoded = typeof btoa === 'function'
       ? btoa(svgString)
       : Buffer.from(svgString, 'utf-8').toString('base64');

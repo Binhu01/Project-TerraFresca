@@ -13,14 +13,19 @@ const PAWN_COLORS: Record<string, [string, string]> = {
   yellow: ['#FFD700', '#CCA800'],
 };
 
-export function generatePawn(seed: number, palette: string[]): string {
+/** Overrides for pawn template. */
+export interface PawnOverrides {
+  color?: 'red' | 'blue' | 'green' | 'yellow';
+}
+
+export function generatePawn(seed: number, palette: string[], overrides?: PawnOverrides): string {
   const rng = mulberry32(seed);
   const W = 32;
   const H = 32;
 
-  // Pick color from seed — cycle through the 4 pawn colors
+  // Use explicit color override if provided, otherwise derive from seed
   const colorKeys = Object.keys(PAWN_COLORS) as Array<keyof typeof PAWN_COLORS>;
-  const colorKey = colorKeys[Math.floor(rng() * colorKeys.length)];
+  const colorKey = overrides?.color ?? colorKeys[Math.floor(rng() * colorKeys.length)];
   const [mainColor, shadowColor] = PAWN_COLORS[colorKey];
 
   // Outline color

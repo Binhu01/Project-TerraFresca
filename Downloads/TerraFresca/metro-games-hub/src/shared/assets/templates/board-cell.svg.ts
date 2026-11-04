@@ -5,13 +5,20 @@
 
 import { mulberry32 } from '../../utils/prng';
 
-export function generateBoardCell(seed: number, palette: string[]): string {
+/** Overrides for board-cell template. */
+export interface BoardCellOverrides {
+  cellNumber?: number;
+}
+
+export function generateBoardCell(seed: number, palette: string[], overrides?: BoardCellOverrides): string {
   const rng = mulberry32(seed);
   const W = 48;
   const H = 48;
 
-  // Base checkerboard-ish pattern using palette indices 12-15
-  const baseIdx = 12 + Math.floor(rng() * 4);
+  // Use cellNumber for positional color variation if provided, otherwise derive from seed
+  const baseIdx = overrides?.cellNumber !== undefined
+    ? 12 + (overrides.cellNumber % 4)
+    : 12 + Math.floor(rng() * 4);
   const baseColor = palette[baseIdx] ?? '#F0E6D2';
 
   // Subtle shade variation from seed
