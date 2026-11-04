@@ -17,6 +17,12 @@ const SOUND_MAP: Record<string, AssetRef | null> = {
   // SFX
   'dice-roll': null, // TODO: require('../../assets/sounds/dice-roll.mp3')
   'dice-land': null, // TODO: require('../../assets/sounds/dice-land.mp3')
+
+  // Damas Brasileiras
+  'damas-move': null, // TODO: require('../../assets/sounds/damas-move.mp3')
+  'damas-capture': null, // TODO: require('../../assets/sounds/damas-capture.mp3')
+  'damas-promote': null, // TODO: require('../../assets/sounds/damas-promote.mp3')
+  'damas-win': null, // TODO: require('../../assets/sounds/damas-win.mp3')
 };
 
 export const SoundRegistry = {
