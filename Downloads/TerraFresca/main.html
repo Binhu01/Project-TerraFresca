@@ -347,6 +347,14 @@ if (window.Capacitor && window.Capacitor.isNativePlatform()) {
   document.head.appendChild(s);
 }
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/sw.js").catch(console.error);
+  });
+}
+</script>
 </body>
 </html>
 
