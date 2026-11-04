@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /painel/
+Disallow: /login/
+Disallow: /pedidos/
+Disallow: /favoritos/
+
+Sitemap: https://terrafresca.netlify.app/sitemap.xml
