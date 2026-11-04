@@ -3,16 +3,7 @@
  * Generates a 480x270 metro station scene parameterized by seed and palette.
  */
 
-/** Mulberry32 PRNG — deterministic from seed. */
-function mulberry32(seed: number): () => number {
-  let s = seed | 0;
-  return (): number => {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+import { mulberry32 } from '../../utils/prng';
 
 export function generateStationBg(seed: number, palette: string[]): string {
   const rng = mulberry32(seed);
