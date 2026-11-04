@@ -532,3 +532,33 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER trg_notify_pedido_status
 AFTER INSERT OR UPDATE ON pedido_loja_status
 FOR EACH ROW EXECUTE FUNCTION notify_pedido_status_change();
+
+
+-- ============================================================
+-- App Mobile: RPC para notificacao manual do vendedor
+-- ============================================================
+CREATE OR REPLACE FUNCTION enviar_notificacao_manual(
+ p_pedido_id UUID,
+ p_loja TEXT,
+ p_mensagem TEXT
+) RETURNS VOID AS $$
+DECLARE
+ v_user_id UUID;
+BEGIN
+ SELECT user_id INTO v_user_id FROM pedidos WHERE id = p_pedido_id;
+ PERFORM net.http_post(
+ url := current_setting('app.supabase_url') || '/functions/v1/notify-pedido',
+ headers := jsonb_build_object(
+ 'Authorization', 'Bearer ' || current_setting('app.service_role_key'),
+ 'Content-Type', 'application/json'
+ ),
+ body := jsonb_build_object(
+ 'pedido_id', p_pedido_id,
+ 'loja', p_loja,
+ 'novo_status', 'manual',
+ 'user_id', v_user_id,
+ 'mensagem', p_mensagem
+ )
+ );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
