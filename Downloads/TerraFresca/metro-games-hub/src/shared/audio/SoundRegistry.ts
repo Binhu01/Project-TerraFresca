@@ -31,6 +31,15 @@ const SOUND_MAP: Record<string, AssetRef | null> = {
   'ludo-enter-home': null, // TODO: require('../../assets/sounds/ludo-enter-home.mp3')
   'ludo-finish': null, // TODO: require('../../assets/sounds/ludo-finish.mp3')
   'ludo-win': null, // TODO: require('../../assets/sounds/ludo-win.mp3')
+
+  // Chess (Xadrez)
+  'chess-move': null, // TODO: require('../../assets/sounds/chess-move.mp3')
+  'chess-capture': null, // TODO: require('../../assets/sounds/chess-capture.mp3')
+  'chess-check': null, // TODO: require('../../assets/sounds/chess-check.mp3')
+  'chess-castling': null, // TODO: require('../../assets/sounds/chess-castling.mp3')
+  'chess-promotion': null, // TODO: require('../../assets/sounds/chess-promotion.mp3')
+  'chess-checkmate': null, // TODO: require('../../assets/sounds/chess-checkmate.mp3')
+  'chess-stalemate': null, // TODO: require('../../assets/sounds/chess-stalemate.mp3')
 };
 
 export const SoundRegistry = {
