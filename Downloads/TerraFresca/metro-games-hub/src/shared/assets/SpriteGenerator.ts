@@ -1,0 +1,79 @@
+/**
+ * Procedural sprite generator with deterministic SVG-to-SpriteSpec output.
+ * Templates are keyed by name and produce SVG strings parameterized by seed and palette.
+ * Output is cached by template+seed+palette key.
+ */
+
+import type { SpriteSpec } from '../rendering/PixelRenderer';
+import { generateStationBg } from './templates/station-bg.svg';
+import { generateTrainBase } from './templates/train-base.svg';
+
+/** Parameters for sprite generation. */
+export interface GenerateParams {
+  seed: number;
+  palette: string[];
+}
+
+/** Template function signature. */
+type TemplateFn = (seed: number, palette: string[]) => string;
+
+/** Template dimensions: [width, height]. */
+type TemplateDims = [number, number];
+
+interface TemplateEntry {
+  fn: TemplateFn;
+  dims: TemplateDims;
+}
+
+const TEMPLATES: Record<string, TemplateEntry> = {
+  'station-bg': { fn: generateStationBg, dims: [480, 270] },
+  'train-base': { fn: generateTrainBase, dims: [64, 48] },
+};
+
+/** Cache key builder. */
+function cacheKey(template: string, seed: number, palette: string[]): string {
+  // Use first 3 palette entries + length as a lightweight fingerprint
+  const palId = `${palette.length}:${palette[0]}:${palette[1]}:${palette[2]}`;
+  return `${template}:${seed}:${palId}`;
+}
+
+const cache = new Map<string, SpriteSpec>();
+
+export const SpriteGenerator = {
+  /**
+   * Generate a sprite from a named template.
+   * Returns a cached SpriteSpec if previously generated with the same parameters.
+   */
+  generate(template: string, params: GenerateParams): SpriteSpec {
+    const entry = TEMPLATES[template];
+    if (!entry) {
+      throw new Error(`Unknown sprite template: "${template}". Available: ${Object.keys(TEMPLATES).join(', ')}`);
+    }
+
+    const key = cacheKey(template, params.seed, params.palette);
+    const cached = cache.get(key);
+    if (cached) {
+      return cached;
+    }
+
+    const svgString = entry.fn(params.seed, params.palette);
+    const encoded = typeof btoa === 'function'
+      ? btoa(svgString)
+      : Buffer.from(svgString, 'utf-8').toString('base64');
+    const uri = `data:image/svg+xml;base64,${encoded}`;
+
+    const spec: SpriteSpec = {
+      uri,
+      width: entry.dims[0],
+      height: entry.dims[1],
+    };
+
+    cache.set(key, spec);
+    return spec;
+  },
+
+  /** Clear the sprite cache (useful for testing). */
+  clearCache(): void {
+    cache.clear();
+  },
+};
