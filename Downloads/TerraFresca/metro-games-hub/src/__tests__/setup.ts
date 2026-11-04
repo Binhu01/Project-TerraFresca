@@ -38,6 +38,7 @@ jest.mock('@shopify/react-native-skia', () => ({
   useCanvasRef: () => ({ current: null }),
   Skia: { Image: { MakeFromEncoded: () => null } },
   FilterMode: { Nearest: 0, Linear: 1 },
+  MipmapMode: { None: 0, Nearest: 1, Linear: 2 },
 }));
 
 jest.mock('expo-gl', () => ({
