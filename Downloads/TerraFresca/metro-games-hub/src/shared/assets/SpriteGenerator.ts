@@ -7,6 +7,12 @@
 import type { SpriteSpec } from '../rendering/PixelRenderer';
 import { generateBoardCell } from './templates/board-cell.svg';
 import { generateCheckerPiece } from './templates/checker-piece.svg';
+import { generateChessBishop } from './templates/chess-bishop.svg';
+import { generateChessKing } from './templates/chess-king.svg';
+import { generateChessKnight } from './templates/chess-knight.svg';
+import { generateChessPawn } from './templates/chess-pawn.svg';
+import { generateChessQueen } from './templates/chess-queen.svg';
+import { generateChessRook } from './templates/chess-rook.svg';
 import { generateDiceFace } from './templates/dice-face.svg';
 import { generateLadder } from './templates/ladder.svg';
 import { generatePawn } from './templates/pawn.svg';
@@ -39,6 +45,12 @@ interface TemplateEntry {
 const TEMPLATES: Record<string, TemplateEntry> = {
   'board-cell': { fn: generateBoardCell, dims: [48, 48] },
   'checker-piece': { fn: generateCheckerPiece, dims: [32, 32] },
+  'chess-bishop': { fn: generateChessBishop, dims: [32, 32] },
+  'chess-king': { fn: generateChessKing, dims: [32, 32] },
+  'chess-knight': { fn: generateChessKnight, dims: [32, 32] },
+  'chess-pawn': { fn: generateChessPawn, dims: [32, 32] },
+  'chess-queen': { fn: generateChessQueen, dims: [32, 32] },
+  'chess-rook': { fn: generateChessRook, dims: [32, 32] },
   'dice-face': { fn: generateDiceFace, dims: [96, 96] },
   'ladder': { fn: generateLadder, dims: [48, 240] },
   'pawn': { fn: generatePawn, dims: [32, 32] },
