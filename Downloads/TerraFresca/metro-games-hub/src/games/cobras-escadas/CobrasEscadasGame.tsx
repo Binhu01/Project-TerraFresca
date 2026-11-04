@@ -1,7 +1,7 @@
 /**
  * Cobras e Escadas game component: board rendering, pawn positioning, audio lifecycle.
  * Uses React Native Views with absolute positioning for the 10x10 grid.
- * DiceRoller animation will be integrated in Task 4b.
+ * DiceRoller provides BG3-style rolling animation.
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -17,6 +17,7 @@ import {
 import type { GameState } from './gameState';
 import { SpriteGenerator } from '../../shared/assets/SpriteGenerator';
 import { AudioManager } from '../../shared/audio/AudioManager';
+import { DiceRoller } from './DiceRoller';
 
 const CELL_SIZE = 48;
 const BOARD_SIZE = CELL_SIZE * 10;
@@ -40,24 +41,25 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
     };
   }, []);
 
-  const handleDicePress = useCallback(() => {
+  const handleStartRoll = useCallback(() => {
     if (gameState.phase !== 'waiting-roll') return;
 
     const result = startRoll(gameState);
     setGameState(result.state);
-
-    // For now, immediately transition to moving (Task 4b will add animation delay)
-    const moved = movePawn(result.state);
-    setGameState(moved.state);
-
-    const afterSnake = applySnakeOrLadder(moved.state);
-    setGameState(afterSnake);
-
-    if (afterSnake.phase !== 'game-over') {
-      const nextTurn = advanceTurn(afterSnake);
-      setGameState(nextTurn);
-    }
   }, [gameState]);
+
+  const handleRollComplete = useCallback((_diceValue: number) => {
+    setGameState((prev) => {
+      const moved = movePawn(prev);
+      const afterSnake = applySnakeOrLadder(moved.state);
+
+      if (afterSnake.phase === 'game-over') {
+        return afterSnake;
+      }
+
+      return advanceTurn(afterSnake);
+    });
+  }, []);
 
   const handlePlayAgain = useCallback(() => {
     setGameState(createInitialState(playerCount, generateBoard(Date.now())));
@@ -127,17 +129,14 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
         })}
       </View>
 
-      {/* Dice area placeholder for Task 4b */}
-      <TouchableOpacity
-        testID="dice-area"
-        style={styles.diceArea}
-        onPress={handleDicePress}
-        disabled={gameState.phase !== 'waiting-roll'}
-      >
-        <Text style={styles.diceText}>
-          {gameState.diceValue !== null ? `Dice: ${gameState.diceValue}` : 'Roll Dice'}
-        </Text>
-      </TouchableOpacity>
+      {/* Dice roller with BG3-style animation */}
+      <DiceRoller
+        value={gameState.diceValue ?? null}
+        isRolling={gameState.phase === 'rolling'}
+        playerColor={currentPlayer.color}
+        onRoll={handleStartRoll}
+        onRollComplete={handleRollComplete}
+      />
 
       {/* Win overlay */}
       {gameState.phase === 'game-over' && gameState.winner !== null && (
