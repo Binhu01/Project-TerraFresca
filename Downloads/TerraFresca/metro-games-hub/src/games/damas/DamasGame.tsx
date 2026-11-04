@@ -12,7 +12,7 @@ import {
   executeMove,
 } from './gameState';
 import type { GameState, Move, Player } from './types';
-import { indexToRowCol } from './board';
+import { indexToRowCol, rowColToIndex } from './board';
 import { SpriteGenerator } from '../../shared/assets/SpriteGenerator';
 import { AudioManager } from '../../shared/audio/AudioManager';
 import { SoundRegistry } from '../../shared/audio/SoundRegistry';
@@ -27,7 +27,7 @@ interface DamasGameProps {
   onExit: () => void;
 }
 
-export function DamasGame({ onExit }: DamasGameProps) {
+export function DamasGame({ players: _players, onExit }: DamasGameProps) {
   const [seed] = useState(() => Date.now());
   const [gameState, setGameState] = useState<GameState>(() => createInitialState());
   const [selectedPiece, setSelectedPiece] = useState<number | null>(null);
@@ -143,10 +143,7 @@ export function DamasGame({ onExit }: DamasGameProps) {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         const isDark = (row + col) % 2 === 1;
-        const isValidDest = isDark && validDestinations.has(
-          // Convert row/col to board index
-          row * 4 + (row % 2 === 0 ? (col - 1) / 2 : col / 2),
-        );
+        const isValidDest = isDark && validDestinations.has(rowColToIndex(row, col));
 
         result.push(
           <TouchableOpacity
@@ -159,8 +156,7 @@ export function DamasGame({ onExit }: DamasGameProps) {
             ]}
             onPress={() => {
               if (isDark) {
-                const idx = row * 4 + (row % 2 === 0 ? (col - 1) / 2 : col / 2);
-                handleSquareTap(idx);
+                handleSquareTap(rowColToIndex(row, col));
               }
             }}
             activeOpacity={isDark ? 0.7 : 1}
