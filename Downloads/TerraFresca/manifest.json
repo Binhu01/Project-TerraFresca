@@ -1,0 +1,15 @@
+{
+  "name": "Terra Fresca",
+  "short_name": "TerraFresca",
+  "description": "Produtos orgânicos direto do produtor pra sua mesa",
+  "start_url": "/main.html",
+  "display": "standalone",
+  "background_color": "#fbf8f2",
+  "theme_color": "#1e3320",
+  "icons": [
+    { "src": "/img/favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "/img/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/img/favicon-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

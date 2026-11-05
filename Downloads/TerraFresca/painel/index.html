@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../pedidos/pedidos.css">
+    <link rel="stylesheet" href="/painel/painel.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Painel do Vendedor - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Gerencie seus produtos e acompanhe os pedidos da sua loja no Terra Fresca.">
+    <meta property="og:title" content="Painel do Vendedor - Terra Fresca">
+    <meta property="og:description" content="Gerencie seus produtos e acompanhe os pedidos da sua loja no Terra Fresca.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body data-home="../main.html">
+    <header class="painel-header">
+        <div class="container">
+            <nav>
+                <a href="../main.html">
+                    <img src="../img/logo_terra_fresca__1.png" alt="">
+                </a>
+                <ul class="ul">
+                    <a href="../main.html">Tela inicial</a>
+                    <a href="../sobre.html">Sobre Nós</a>
+                    <a href="../servicos.html">Serviços</a>
+                    <span class="nav-auth" id="nav-auth"><a class="btn" href="../login/index.html">Fazer Login</a></span>
+                    <div class="fechar-icone" onclick="CloseMenu()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </ul>
+                <div class="menu-icon" onclick="OpenMenu()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+            </nav>
+
+            <div class="painel-titulo">
+                <h1>Painel do Vendedor</h1>
+                <p>Cadastre, edite e gerencie os produtos das suas lojas.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Estado: verificando sessão -->
+    <div class="painel-estado" id="estado-carregando">
+        <p>Verificando sua conta...</p>
+    </div>
+
+    <!-- Estado: não tem loja cadastrada -->
+    <div class="painel-estado hidden" id="estado-sem-loja">
+        <i class="fa fa-store painel-estado-icone" aria-hidden="true"></i>
+        <h2>Você ainda não tem uma loja</h2>
+        <p>Crie sua loja no Terra Fresca e comece a vender produtos orgânicos e naturais.</p>
+        <a href="../vendedor/cadastro.html" class="btn painel-estado-btn">Criar minha loja</a>
+    </div>
+
+    <!-- Estado: loja pendente de aprovação -->
+    <div class="painel-estado hidden" id="estado-pendente">
+        <i class="fa fa-clock-o painel-estado-icone" aria-hidden="true"></i>
+        <h2>Sua loja está aguardando aprovação</h2>
+        <p>Nossa equipe está analisando sua solicitação. Você receberá uma resposta em breve.</p>
+        <div class="painel-estado-dados" id="dados-loja-pendente"></div>
+        <p class="painel-estado-sub">Enquanto isso, você pode preparar seus produtos e imagens.</p>
+    </div>
+
+    <!-- Estado: loja rejeitada -->
+    <div class="painel-estado hidden" id="estado-rejeitada">
+        <i class="fa fa-times-circle painel-estado-icone painel-estado-icone--erro" aria-hidden="true"></i>
+        <h2>Sua solicitação foi rejeitada</h2>
+        <p id="motivo-rejeicao">Infelizmente não foi possível aprovar sua loja neste momento.</p>
+        <a href="../vendedor/cadastro.html" class="btn painel-estado-btn">Tentar novamente</a>
+    </div>
+
+    <!-- Estado: não é vendedor (fallback legado) -->
+    <div class="painel-estado hidden" id="estado-sem-acesso">
+        <p>Essa conta ainda não é vendedora de nenhuma loja.</p>
+        <p class="painel-estado-sub">Se você acredita que isso é um engano, fale com o administrador do site.</p>
+    </div>
+
+    <!-- Conteúdo principal (só aparece se a pessoa for vendedora) -->
+    <main class="painel-conteudo hidden" id="painel-conteudo">
+        <div class="container">
+
+            <div class="painel-loja-select" id="painel-loja-select-wrapper">
+                <label for="painel-loja-select">Gerenciando a loja:</label>
+                <select id="painel-loja-select"></select>
+            </div>
+
+            <!-- Configuração White-Label -->
+            <section class="painel-card white-label-section hidden" id="white-label-section">
+                <h2><i class="fa fa-paint-brush" aria-hidden="true"></i> Personalizar Minha Loja</h2>
+                <p class="painel-card-subtitulo">Configure as cores, fontes e domínio da sua loja. Disponível para planos Profissional e Premium.</p>
+
+                <form id="white-label-form">
+                    <div class="painel-form-grid">
+                        <div class="painel-campo">
+                            <label for="wl-cor-primaria">Cor Primária</label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="wl-cor-primaria" value="#1e3320">
+                                <span class="color-hex" id="wl-cor-primaria-hex">#1e3320</span>
+                            </div>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="wl-cor-secundaria">Cor Secundária (destaques)</label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="wl-cor-secundaria" value="#b8860b">
+                                <span class="color-hex" id="wl-cor-secundaria-hex">#b8860b</span>
+                            </div>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="wl-cor-fundo">Cor de Fundo</label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="wl-cor-fundo" value="#fbf8f2">
+                                <span class="color-hex" id="wl-cor-fundo-hex">#fbf8f2</span>
+                            </div>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="wl-fonte-heading">Fonte dos Títulos</label>
+                            <select id="wl-fonte-heading">
+                                <option value="Bevan">Bevan (padrão)</option>
+                                <option value="Playfair Display">Playfair Display</option>
+                                <option value="Merriweather">Merriweather</option>
+                                <option value="Lora">Lora</option>
+                                <option value="Oswald">Oswald</option>
+                                <option value="Montserrat">Montserrat</option>
+                            </select>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="wl-fonte-body">Fonte do Texto</label>
+                            <select id="wl-fonte-body">
+                                <option value="Inter">Inter (padrão)</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Nunito">Nunito</option>
+                            </select>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="wl-dominio">Domínio Customizado</label>
+                            <input type="text" id="wl-dominio" placeholder="ex: meuprojeto.com.br">
+                            <small class="campo-ajuda">Deixe em branco para usar terrafresca.netlify.app/loja/seu-slug</small>
+                        </div>
+                    </div>
+
+                    <!-- Preview ao vivo -->
+                    <div class="wl-preview-container">
+                        <h3>Preview</h3>
+                        <div class="wl-preview" id="wl-preview">
+                            <div class="wl-preview-header">
+                                <h4>Minha Loja Orgânica</h4>
+                                <p>Produtos frescos direto do produtor</p>
+                            </div>
+                            <div class="wl-preview-body">
+                                <div class="wl-preview-card">
+                                    <span class="wl-preview-card-nome">Cenoura Orgânica (KG)</span>
+                                    <span class="wl-preview-card-preco">R$ 9,90</span>
+                                    <button type="button" class="wl-preview-btn">Adicionar</button>
+                                </div>
+                                <div class="wl-preview-card">
+                                    <span class="wl-preview-card-nome">Alface Americana</span>
+                                    <span class="wl-preview-card-preco">R$ 5,50</span>
+                                    <button type="button" class="wl-preview-btn">Adicionar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="painel-form-acoes">
+                        <button type="submit" class="btn" id="btn-salvar-whitelabel">Salvar Personalização</button>
+                        <button type="button" class="btn btn-secondary" id="btn-resetar-whitelabel">Restaurar Padrão</button>
+                    </div>
+                    <p class="painel-mensagem hidden" id="wl-mensagem"></p>
+                </form>
+            </section>
+
+            <!-- Dashboard de Analytics do Vendedor -->
+            <section class="painel-card painel-dashboard">
+                <h2>Resumo da Loja</h2>
+                <p class="painel-card-subtitulo">Métricas dos últimos 30 dias para a loja selecionada.</p>
+
+                <div class="dashboard-stats" id="dashboard-stats">
+                    <div class="dashboard-stat-card">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <div>
+                            <p class="stat-valor" id="stat-total-pedidos">—</p>
+                            <p class="stat-rotulo">Pedidos recebidos</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        <div>
+                            <p class="stat-valor" id="stat-pedidos-concluidos">—</p>
+                            <p class="stat-rotulo">Concluídos / Entregues</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <div>
+                            <p class="stat-valor" id="stat-faturamento">—</p>
+                            <p class="stat-rotulo">Faturamento estimado</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <div>
+                            <p class="stat-valor" id="stat-avaliacao-media">—</p>
+                            <p class="stat-rotulo">Avaliação média</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grafico-container">
+                    <h3>Vendas por dia (últimos 14 dias)</h3>
+                    <canvas id="dashboard-chart" width="600" height="220"></canvas>
+                    <p class="dashboard-grafico-vazio hidden" id="dashboard-chart-vazio">Sem dados de vendas no período.</p>
+                </div>
+            </section>
+
+            <section class="painel-card" id="form-card">
+                <h2 id="form-titulo">Adicionar novo produto</h2>
+
+                <form id="produto-form">
+                    <input type="hidden" id="produto-id" value="">
+
+                    <div class="painel-form-grid">
+                        <div class="painel-campo">
+                            <label for="campo-nome">Nome do produto</label>
+                            <input type="text" id="campo-nome" required placeholder="Ex: Cenoura (KG)">
+                            <button type="button" class="btn btn-secondary hidden" id="btn-scan-barcode" style="margin-top:8px;width:100%">
+                                <i class="fa fa-barcode"></i> Escanear código
+                            </button>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="campo-categoria">Categoria</label>
+                            <select id="campo-categoria">
+                                <option value="produtos">Produto</option>
+                                <option value="bebidas">Bebida</option>
+                            </select>
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="campo-preco">Preço (R$)</label>
+                            <input type="number" id="campo-preco" step="0.01" min="0" required placeholder="Ex: 9.90">
+                        </div>
+
+                        <div class="painel-campo">
+                            <label for="campo-estoque">Estoque</label>
+                            <input type="number" id="campo-estoque" step="1" min="0" required placeholder="Ex: 100">
+                        </div>
+
+                        <div class="painel-campo painel-campo-full">
+                            <label for="campo-imagem-arquivo">Imagem do produto</label>
+                            <input type="file" id="campo-imagem-arquivo" accept="image/png,image/jpeg,image/webp">
+                            <input type="hidden" id="campo-imagem-atual" value="">
+                            <div class="painel-preview-imagem hidden" id="preview-imagem">
+                                <img id="preview-imagem-img" src="" alt="Pré-visualização do produto">
+                            </div>
+                            <p class="painel-ajuda">
+                                Formatos aceitos: JPG, PNG ou WEBP. Ao editar um produto, deixe em branco
+                                para manter a imagem que já está cadastrada.
+                            </p>
+                        </div>
+
+                        <div class="painel-campo painel-campo-full">
+                            <label for="campo-descricao">Descrição</label>
+                            <textarea id="campo-descricao" rows="3" placeholder="Descreva o produto..."></textarea>
+                        </div>
+                    </div>
+
+                    <p class="auth-message" id="form-mensagem"></p>
+
+                    <div class="painel-form-botoes">
+                        <button type="button" class="painel-btn-secundario hidden" id="btn-cancelar-edicao">Cancelar edição</button>
+                        <button type="submit" class="btn" id="btn-salvar">Cadastrar produto</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="painel-card">
+                <h2>Meus produtos</h2>
+                <div id="lista-produtos" class="painel-lista">
+                    <p class="painel-vazio">Carregando produtos...</p>
+                </div>
+            </section>
+
+            <section class="painel-card">
+                <h2>Pedidos da minha loja</h2>
+                <p class="painel-card-subtitulo">
+                    Mostra só os itens da sua loja em cada pedido — o status geral é definido pelo administrador.
+                </p>
+                <div id="lista-pedidos-vendedor" class="pedidos-lista">
+                    <p class="painel-vazio">Carregando pedidos...</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="links">
+                <a href="https://www.instagram.com/o_glauberson/">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <a href="https://github.com/Binhu01">
+                    <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/glauber-cavalcanti-176039309/">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p><a href="../privacidade/index.html">Privacidade e Termos</a> · Desenvolvido por Glauber Luigi</p>
+        </div>
+    </footer>
+
+    <script src="../js/auth-nav.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="/painel/painel.js"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+/* ============================================================
+   Cadastro de Vendedor — Estilos
+   Reusa variáveis e padrões de css/style.css e painel/painel.css
+   ============================================================ */
+
+.cadastro-container {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.cadastro-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.cadastro-header h1 {
+    font-size: 2rem;
+    color: #2d5016;
+    margin-bottom: 8px;
+}
+
+.cadastro-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.cadastro-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.cadastro-card h2 {
+    font-size: 1.25rem;
+    color: #2d5016;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e8f5e9;
+}
+
+.cadastro-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cadastro-campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.cadastro-campo.full-width {
+    grid-column: 1 / -1;
+}
+
+.cadastro-campo label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.cadastro-campo label .obrigatorio {
+    color: #c62828;
+}
+
+.cadastro-campo input,
+.cadastro-campo textarea,
+.cadastro-campo select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.cadastro-campo input:focus,
+.cadastro-campo textarea:focus,
+.cadastro-campo select:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.cadastro-campo textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.cadastro-campo .campo-dica {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Upload de imagem */
+.cadastro-upload {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.cadastro-upload:hover {
+    border-color: #4caf50;
+    background: #f9fdf9;
+}
+
+.cadastro-upload i {
+    font-size: 2rem;
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.cadastro-upload p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.cadastro-upload input[type="file"] {
+    display: none;
+}
+
+.cadastro-upload-preview {
+    margin-top: 12px;
+    max-width: 200px;
+    max-height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Planos */
+.planos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.plano-card {
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.plano-card:hover {
+    border-color: #4caf50;
+}
+
+.plano-card.selecionado {
+    border-color: #4caf50;
+    background: #f1f8e9;
+}
+
+.plano-card.selecionado::after {
+    content: "✓";
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.plano-nome {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2d5016;
+    margin-bottom: 4px;
+}
+
+.plano-preco {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.plano-preco span {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #888;
+}
+
+.plano-descricao {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Termos */
+.cadastro-termos {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.cadastro-termos input[type="checkbox"] {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    accent-color: #4caf50;
+}
+
+.cadastro-termos label {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.cadastro-termos a {
+    color: #4caf50;
+    text-decoration: underline;
+}
+
+/* Mensagens */
+.cadastro-mensagem {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    display: none;
+}
+
+.cadastro-mensagem.sucesso {
+    display: block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.cadastro-mensagem.erro {
+    display: block;
+    background: #fce4ec;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* Botão submit */
+.cadastro-submit {
+    width: 100%;
+    padding: 16px;
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 12px;
+}
+
+.cadastro-submit:hover:not(:disabled) {
+    background: #388e3c;
+}
+
+.cadastro-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Slug preview */
+.slug-preview {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #4caf50;
+    margin-top: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+    .cadastro-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .planos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cadastro-card {
+        padding: 20px;
+    }
+
+    .cadastro-header h1 {
+        font-size: 1.5rem;
+    }
+}

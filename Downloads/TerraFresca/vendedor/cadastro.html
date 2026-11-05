@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../painel/painel.css">
+    <link rel="stylesheet" href="./cadastro.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-client.js"></script>
+
+    <title>Criar Minha Loja - Terra Fresca</title>
+
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+
+    <meta name="description" content="Crie sua loja no Terra Fresca e comece a vender produtos orgânicos e naturais diretamente para consumidores.">
+    <meta property="og:title" content="Criar Minha Loja - Terra Fresca">
+    <meta property="og:description" content="Crie sua loja no Terra Fresca e comece a vender produtos orgânicos e naturais diretamente para consumidores.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../img/assentamento 2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+<body data-home="../main.html">
+    <header class="painel-header">
+        <div class="container">
+            <nav>
+                <a href="../main.html">
+                    <img src="../img/logo_terra_fresca__1.png" alt="Terra Fresca">
+                </a>
+                <ul class="ul">
+                    <a href="../main.html">Tela inicial</a>
+                    <a href="../sobre.html">Sobre Nós</a>
+                    <a href="../servicos.html">Serviços</a>
+                    <span class="nav-auth" id="nav-auth"><a class="btn" href="../login/index.html">Fazer Login</a></span>
+                    <div class="fechar-icone" onclick="CloseMenu()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
+                </ul>
+                <div class="menu-icon" onclick="OpenMenu()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="cadastro-container">
+        <div class="cadastro-header">
+            <h1>Crie sua loja no Terra Fresca</h1>
+            <p>Preencha os dados abaixo para solicitar a criação da sua loja. Após o envio, nossa equipe analisará e aprovará sua solicitação.</p>
+        </div>
+
+        <div class="cadastro-mensagem" id="cadastro-mensagem"></div>
+
+        <form id="cadastro-form">
+            <!-- Dados da Loja -->
+            <div class="cadastro-card">
+                <h2>Dados da Loja</h2>
+                <div class="cadastro-form-grid">
+                    <div class="cadastro-campo full-width">
+                        <label for="campo-nome">Nome da loja <span class="obrigatorio">*</span></label>
+                        <input type="text" id="campo-nome" required placeholder="Ex: Sítio São Jorge" maxlength="100">
+                        <span class="campo-dica">O nome que aparecerá para os clientes na plataforma.</span>
+                    </div>
+
+                    <div class="cadastro-campo full-width">
+                        <label for="campo-slug">URL da loja <span class="obrigatorio">*</span></label>
+                        <input type="text" id="campo-slug" required placeholder="sitio-sao-jorge" pattern="[a-z0-9\-]+" maxlength="60">
+                        <span class="slug-preview" id="slug-preview">terrafresca.netlify.app/loja/<strong>...</strong></span>
+                        <span class="campo-dica">Apenas letras minúsculas, números e hífens. Será gerado automaticamente pelo nome.</span>
+                    </div>
+
+                    <div class="cadastro-campo full-width">
+                        <label for="campo-descricao">Descrição da loja</label>
+                        <textarea id="campo-descricao" placeholder="Conte um pouco sobre sua loja, seus produtos e sua história..." maxlength="500"></textarea>
+                        <span class="campo-dica">Máximo de 500 caracteres.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imagens -->
+            <div class="cadastro-card">
+                <h2>Imagens</h2>
+                <div class="cadastro-form-grid">
+                    <div class="cadastro-campo">
+                        <label>Logo da loja</label>
+                        <label class="cadastro-upload" for="campo-logo">
+                            <i class="fa fa-image" aria-hidden="true"></i>
+                            <p>Clique para enviar o logo</p>
+                            <input type="file" id="campo-logo" accept="image/*">
+                        </label>
+                        <img id="preview-logo" class="cadastro-upload-preview hidden" alt="Preview do logo">
+                        <span class="campo-dica">PNG ou JPG, recomendado 200x200px.</span>
+                    </div>
+
+                    <div class="cadastro-campo">
+                        <label>Imagem de capa</label>
+                        <label class="cadastro-upload" for="campo-capa">
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                            <p>Clique para enviar a capa</p>
+                            <input type="file" id="campo-capa" accept="image/*">
+                        </label>
+                        <img id="preview-capa" class="cadastro-upload-preview hidden" alt="Preview da capa">
+                        <span class="campo-dica">PNG ou JPG, recomendado 1200x400px.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plano -->
+            <div class="cadastro-card">
+                <h2>Escolha seu plano</h2>
+                <div class="planos-grid">
+                    <div class="plano-card selecionado" data-plano="basico">
+                        <div class="plano-nome">Básico</div>
+                        <div class="plano-preco">R$ 29<span>/mês</span></div>
+                        <div class="plano-descricao">Até 20 produtos<br>Suporte por e-mail<br>Relatórios básicos</div>
+                    </div>
+                    <div class="plano-card" data-plano="profissional">
+                        <div class="plano-nome">Profissional</div>
+                        <div class="plano-preco">R$ 59<span>/mês</span></div>
+                        <div class="plano-descricao">Até 100 produtos<br>Suporte prioritário<br>Relatórios avançados</div>
+                    </div>
+                    <div class="plano-card" data-plano="premium">
+                        <div class="plano-nome">Premium</div>
+                        <div class="plano-preco">R$ 99<span>/mês</span></div>
+                        <div class="plano-descricao">Produtos ilimitados<br>Suporte dedicado<br>Analytics completo</div>
+                    </div>
+                </div>
+                <input type="hidden" id="campo-plano" value="basico">
+            </div>
+
+            <!-- Termos -->
+            <div class="cadastro-card">
+                <div class="cadastro-termos">
+                    <input type="checkbox" id="campo-termos" required>
+                    <label for="campo-termos">Li e concordo com os <a href="../privacidade/index.html" target="_blank">Termos de Uso e Política de Privacidade</a> do Terra Fresca. Entendo que minha loja será analisada antes da aprovação.</label>
+                </div>
+            </div>
+
+            <button type="submit" class="cadastro-submit" id="btn-submit">Enviar solicitação</button>
+        </form>
+    </div>
+
+    <script src="../js/auth-nav.js"></script>
+    <script src="./cadastro.js"></script>
+</body>
+</html>
