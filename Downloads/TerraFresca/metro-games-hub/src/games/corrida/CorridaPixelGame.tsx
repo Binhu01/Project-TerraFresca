@@ -80,6 +80,36 @@ interface TouchZone {
   currentY: number;
 }
 
+/**
+ * Pure function that derives input state from active touches.
+ * Lives outside the component to avoid stale-closure risk in useCallback handlers.
+ */
+function updateInputFromTouches(
+  touches: Map<number, TouchZone>,
+  inputRef: React.MutableRefObject<[InputState, InputState]>,
+): void {
+  const newInputs: [InputState, InputState] = [
+    { accelerate: false, brake: false, steerX: 0 },
+    { accelerate: false, brake: false, steerX: 0 },
+  ];
+
+  touches.forEach((touch) => {
+    const input = newInputs[touch.playerId];
+    const dx = touch.currentX - touch.startX;
+    const dy = touch.currentY - touch.startY;
+
+    // Vertical: up = accelerate, down = brake
+    if (dy < -10) input.accelerate = true;
+    if (dy > 10) input.brake = true;
+
+    // Horizontal: steer (-1 to +1), clamped
+    const maxSteerPx = 80;
+    input.steerX = Math.max(-1, Math.min(1, dx / maxSteerPx));
+  });
+
+  inputRef.current = newInputs;
+}
+
 function formatTime(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);
   const minutes = Math.floor(totalSeconds / 60);
@@ -173,7 +203,7 @@ export function CorridaPixelGame({ players: _players, onExit }: CorridaPixelGame
         currentY: locationY,
       });
 
-      updateInputFromTouches();
+      updateInputFromTouches(activeTouches.current, inputRef);
     },
     [layoutMode, windowWidth],
   );
@@ -184,39 +214,15 @@ export function CorridaPixelGame({ players: _players, onExit }: CorridaPixelGame
     if (touch) {
       touch.currentX = locationX;
       touch.currentY = locationY;
-      updateInputFromTouches();
+      updateInputFromTouches(activeTouches.current, inputRef);
     }
   }, []);
 
   const handleTouchEnd = useCallback((event: GestureResponderEvent) => {
     const { identifier } = event.nativeEvent;
     activeTouches.current.delete(identifier);
-    updateInputFromTouches();
+    updateInputFromTouches(activeTouches.current, inputRef);
   }, []);
-
-  function updateInputFromTouches(): void {
-    // Reset inputs
-    const newInputs: [InputState, InputState] = [
-      { accelerate: false, brake: false, steerX: 0 },
-      { accelerate: false, brake: false, steerX: 0 },
-    ];
-
-    activeTouches.current.forEach((touch) => {
-      const input = newInputs[touch.playerId];
-      const dx = touch.currentX - touch.startX;
-      const dy = touch.currentY - touch.startY;
-
-      // Vertical: up = accelerate, down = brake
-      if (dy < -10) input.accelerate = true;
-      if (dy > 10) input.brake = true;
-
-      // Horizontal: steer (-1 to +1), clamped
-      const maxSteerPx = 80;
-      input.steerX = Math.max(-1, Math.min(1, dx / maxSteerPx));
-    });
-
-    inputRef.current = newInputs;
-  }
 
   // -- Render helpers for declarative Skia Canvas --
   function renderTrackTiles(focusPlayer: number, viewW: number, viewH: number): React.ReactNode[] {
@@ -308,16 +314,18 @@ export function CorridaPixelGame({ players: _players, onExit }: CorridaPixelGame
     const winnerName = winnerIdx === 0 ? 'Jogador 1' : 'Jogador 2';
     const winnerTime = displayState.racers[winnerIdx ?? 0].finishTime;
     const loserTime = displayState.racers[winnerIdx === 0 ? 1 : 0].finishTime;
+    const winnerElapsed = (winnerTime ?? 0) - displayState.startTime;
+    const loserElapsed = (loserTime ?? 0) - displayState.startTime;
 
     return (
       <View style={styles.finishOverlay}>
         <Text style={styles.finishTitle}>{winnerName} Venceu!</Text>
         {winnerTime !== null && (
-          <Text style={styles.finishTime}>Tempo: {formatTime(winnerTime)}</Text>
+          <Text style={styles.finishTime}>Tempo: {formatTime(winnerElapsed)}</Text>
         )}
         {loserTime !== null && (
           <Text style={styles.finishTimeSub}>
-            2º lugar: {formatTime(loserTime)}
+            2º lugar: {formatTime(loserElapsed)}
           </Text>
         )}
         <TouchableOpacity style={styles.restartButton} onPress={resetRace}>
