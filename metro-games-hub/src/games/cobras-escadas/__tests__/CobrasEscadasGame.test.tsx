@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 import { CobrasEscadasGame } from '../CobrasEscadasGame';
 
 // Mock dependencies
@@ -26,16 +26,29 @@ jest.mock('../../../shared/assets/SpriteGenerator', () => ({
   },
 }));
 
-test('renders board with player indicators', async () => {
+test('renders player setup screen initially', async () => {
   const { getByText } = await render(<CobrasEscadasGame playerCount={2} />);
-  expect(getByText(/Player 1/i)).toBeTruthy();
-  expect(getByText(/Player 2/i)).toBeTruthy();
+  expect(getByText(/Configurar Jogadores/i)).toBeTruthy();
+  expect(getByText(/Iniciar Jogo/i)).toBeTruthy();
 });
 
-test('shows dice interaction area', async () => {
-  const { getByTestId } = await render(<CobrasEscadasGame playerCount={2} />);
-  // DiceRoller component will be added in Task 4b; for now verify placeholder exists
-  expect(getByTestId('dice-area')).toBeTruthy();
+test('shows player count selector options', async () => {
+  const { getByText } = await render(<CobrasEscadasGame playerCount={2} />);
+  expect(getByText(/2 Jogadores/i)).toBeTruthy();
+  expect(getByText(/3 Jogadores/i)).toBeTruthy();
+  expect(getByText(/4 Jogadores/i)).toBeTruthy();
+});
+
+test('transitions to game board after setup', async () => {
+  const { getByText, getByTestId } = await render(<CobrasEscadasGame playerCount={2} />);
+
+  // Press start button to begin game
+  fireEvent.press(getByText(/Iniciar Jogo/i));
+
+  // Should show dice area after setup
+  await waitFor(() => {
+    expect(getByTestId('dice-area')).toBeTruthy();
+  });
 });
 
 test('calls AudioManager.playMusic on mount', async () => {

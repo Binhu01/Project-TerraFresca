@@ -23,42 +23,42 @@ const req = (mod: unknown): string | null => {
 
 const SOUND_MAP: Record<string, string | null> = {
   // Background music
-  'board-game': req(require('../../assets/sounds/board-game.mp3')),
+  'board-game': req(require('../../../assets/sounds/board-game.mp3')),
 
   // SFX
-  'dice-roll': req(require('../../assets/sounds/dice-roll.mp3')),
-  'dice-land': req(require('../../assets/sounds/dice-land.mp3')),
+  'dice-roll': req(require('../../../assets/sounds/dice-roll.mp3')),
+  'dice-land': req(require('../../../assets/sounds/dice-land.mp3')),
 
   // Damas Brasileiras
-  'damas-move': req(require('../../assets/sounds/damas-move.mp3')),
-  'damas-capture': req(require('../../assets/sounds/damas-capture.mp3')),
-  'damas-promote': req(require('../../assets/sounds/damas-promote.mp3')),
-  'damas-win': req(require('../../assets/sounds/damas-win.mp3')),
+  'damas-move': req(require('../../../assets/sounds/damas-move.mp3')),
+  'damas-capture': req(require('../../../assets/sounds/damas-capture.mp3')),
+  'damas-promote': req(require('../../../assets/sounds/damas-promote.mp3')),
+  'damas-win': req(require('../../../assets/sounds/damas-win.mp3')),
 
   // Ludo
-  'ludo-roll': req(require('../../assets/sounds/ludo-roll.mp3')),
-  'ludo-move': req(require('../../assets/sounds/ludo-move.mp3')),
-  'ludo-capture': req(require('../../assets/sounds/ludo-capture.mp3')),
-  'ludo-enter-home': req(require('../../assets/sounds/ludo-enter-home.mp3')),
-  'ludo-finish': req(require('../../assets/sounds/ludo-finish.mp3')),
-  'ludo-win': req(require('../../assets/sounds/ludo-win.mp3')),
+  'ludo-roll': req(require('../../../assets/sounds/ludo-roll.mp3')),
+  'ludo-move': req(require('../../../assets/sounds/ludo-move.mp3')),
+  'ludo-capture': req(require('../../../assets/sounds/ludo-capture.mp3')),
+  'ludo-enter-home': req(require('../../../assets/sounds/ludo-enter-home.mp3')),
+  'ludo-finish': req(require('../../../assets/sounds/ludo-finish.mp3')),
+  'ludo-win': req(require('../../../assets/sounds/ludo-win.mp3')),
 
   // Chess (Xadrez)
-  'chess-move': req(require('../../assets/sounds/chess-move.mp3')),
-  'chess-capture': req(require('../../assets/sounds/chess-capture.mp3')),
-  'chess-check': req(require('../../assets/sounds/chess-check.mp3')),
-  'chess-castling': req(require('../../assets/sounds/chess-castling.mp3')),
-  'chess-promotion': req(require('../../assets/sounds/chess-promotion.mp3')),
-  'chess-checkmate': req(require('../../assets/sounds/chess-checkmate.mp3')),
-  'chess-stalemate': req(require('../../assets/sounds/chess-stalemate.mp3')),
+  'chess-move': req(require('../../../assets/sounds/chess-move.mp3')),
+  'chess-capture': req(require('../../../assets/sounds/chess-capture.mp3')),
+  'chess-check': req(require('../../../assets/sounds/chess-check.mp3')),
+  'chess-castling': req(require('../../../assets/sounds/chess-castling.mp3')),
+  'chess-promotion': req(require('../../../assets/sounds/chess-promotion.mp3')),
+  'chess-checkmate': req(require('../../../assets/sounds/chess-checkmate.mp3')),
+  'chess-stalemate': req(require('../../../assets/sounds/chess-stalemate.mp3')),
 
   // Corrida Pixel
-  'race-engine': req(require('../../assets/sounds/race-engine.mp3')),
-  'race-collision': req(require('../../assets/sounds/race-collision.mp3')),
-  'race-lap': req(require('../../assets/sounds/race-lap.mp3')),
-  'race-countdown': req(require('../../assets/sounds/race-countdown.mp3')),
-  'race-finish': req(require('../../assets/sounds/race-finish.mp3')),
-  'race-bg': req(require('../../assets/sounds/race-bg.mp3')),
+  'race-engine': req(require('../../../assets/sounds/race-engine.mp3')),
+  'race-collision': req(require('../../../assets/sounds/race-collision.mp3')),
+  'race-lap': req(require('../../../assets/sounds/race-lap.mp3')),
+  'race-countdown': req(require('../../../assets/sounds/race-countdown.mp3')),
+  'race-finish': req(require('../../../assets/sounds/race-finish.mp3')),
+  'race-bg': req(require('../../../assets/sounds/race-bg.mp3')),
 };
 
 export const SoundRegistry = {

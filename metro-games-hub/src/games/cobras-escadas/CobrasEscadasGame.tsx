@@ -1,10 +1,9 @@
 /**
- * Cobras e Escadas game component: board rendering, pawn positioning, audio lifecycle.
- * Uses React Native Views with absolute positioning for the 10x10 grid.
- * DiceRoller provides BG3-style rolling animation.
+ * Cobras e Escadas game component with 3D dice, custom player names,
+ * and smart pawn positioning when multiple players share the same cell.
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { generateBoard, getCellPosition } from './board';
 import {
@@ -14,27 +13,58 @@ import {
   applySnakeOrLadder,
   advanceTurn,
 } from './gameState';
-import type { GameState } from './gameState';
+import type { GameState, Player } from './gameState';
 import { SpriteGenerator } from '../../shared/assets/SpriteGenerator';
 import { AudioManager } from '../../shared/audio/AudioManager';
 import { SoundRegistry } from '../../shared/audio/SoundRegistry';
-import { DiceRoller } from './DiceRoller';
+import { Dice3D } from './Dice3D';
+import { PlayerSetup } from './PlayerSetup';
 
 const CELL_SIZE = 48;
 const BOARD_SIZE = CELL_SIZE * 10;
 const PALETTE = ['#2d6a4f', '#40916c', '#52b788', '#74c69d', '#95d5b2'];
 
+interface PlayerConfig {
+  name: string;
+  color: string;
+}
+
 interface CobrasEscadasGameProps {
   playerCount: number;
 }
 
-export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
-  const [seed] = useState(() => Date.now());
-  const [gameState, setGameState] = useState<GameState>(() =>
-    createInitialState(playerCount, generateBoard(seed))
-  );
+/** Calculate offset for pawns sharing the same cell */
+function getPawnOffset(playerIndex: number, totalPlayersInCell: number): { dx: number; dy: number } {
+  if (totalPlayersInCell === 1) return { dx: 0, dy: 0 };
 
-  // Audio lifecycle — init must complete before playMusic; resolve symbolic names via SoundRegistry
+  const spacing = 10;
+  if (totalPlayersInCell === 2) {
+    return playerIndex === 0 ? { dx: -spacing, dy: 0 } : { dx: spacing, dy: 0 };
+  }
+  if (totalPlayersInCell === 3) {
+    const offsets = [
+      { dx: -spacing, dy: -spacing / 2 },
+      { dx: spacing, dy: -spacing / 2 },
+      { dx: 0, dy: spacing },
+    ];
+    return offsets[playerIndex] ?? { dx: 0, dy: 0 };
+  }
+  // 4 players in corners
+  const offsets = [
+    { dx: -spacing, dy: -spacing },
+    { dx: spacing, dy: -spacing },
+    { dx: -spacing, dy: spacing },
+    { dx: spacing, dy: spacing },
+  ];
+  return offsets[playerIndex] ?? { dx: 0, dy: 0 };
+}
+
+export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
+  const [playerConfigs, setPlayerConfigs] = useState<PlayerConfig[] | null>(null);
+  const [seed] = useState(() => Date.now());
+  const [gameState, setGameState] = useState<GameState | null>(null);
+
+  // Audio lifecycle — must be before any conditional returns
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -51,47 +81,102 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
     };
   }, []);
 
-  const handleStartRoll = useCallback(() => {
-    if (gameState.phase !== 'waiting-roll') return;
+  // Initialize game when player configs are set
+  useEffect(() => {
+    if (playerConfigs && !gameState) {
+      const state = createInitialState(playerConfigs.length, generateBoard(seed));
+      const updatedPlayers = state.players.map((p, i) => ({
+        ...p,
+        color: playerConfigs[i]?.color as Player['color'] ?? p.color,
+      }));
+      setGameState({ ...state, players: updatedPlayers });
+    }
+  }, [playerConfigs, gameState, seed]);
 
+  const handleStartRoll = useCallback(() => {
+    if (!gameState || gameState.phase !== 'waiting-roll') return;
     const result = startRoll(gameState);
     setGameState(result.state);
   }, [gameState]);
 
   const handleRollComplete = useCallback((_diceValue: number) => {
     setGameState((prev) => {
+      if (!prev) return prev;
       const moved = movePawn(prev);
       const afterSnake = applySnakeOrLadder(moved.state);
-
-      if (afterSnake.phase === 'game-over') {
-        return afterSnake;
-      }
-
+      if (afterSnake.phase === 'game-over') return afterSnake;
       return advanceTurn(afterSnake);
     });
   }, []);
 
   const handlePlayAgain = useCallback(() => {
-    setGameState(createInitialState(playerCount, generateBoard(Date.now())));
-  }, [playerCount]);
+    setPlayerConfigs(null);
+    setGameState(null);
+  }, []);
+
+  const handleSetupComplete = useCallback((players: PlayerConfig[]) => {
+    setPlayerConfigs(players);
+  }, []);
+
+  // Group players by position for smart rendering — always called, handles null safely
+  const playersByPosition = useMemo(() => {
+    if (!gameState || !playerConfigs) return new Map<number, { player: Player; config: PlayerConfig; indexInCell: number; totalInCell: number }[]>();
+    const map = new Map<number, { player: Player; config: PlayerConfig; indexInCell: number; totalInCell: number }[]>();
+    gameState.players.forEach((player, idx) => {
+      const existing = map.get(player.position) ?? [];
+      existing.push({
+        player,
+        config: playerConfigs[idx],
+        indexInCell: existing.length,
+        totalInCell: 0,
+      });
+      map.set(player.position, existing);
+    });
+    map.forEach((group) => {
+      group.forEach((item) => {
+        item.totalInCell = group.length;
+      });
+    });
+    return map;
+  }, [gameState, playerConfigs]);
+
+  // Conditional renders AFTER all hooks
+  if (!playerConfigs) {
+    return <PlayerSetup onStart={handleSetupComplete} />;
+  }
+
+  if (!gameState) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Carregando...</Text>
+      </View>
+    );
+  }
 
   const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+  const currentPlayerConfig = playerConfigs[gameState.currentPlayerIndex];
 
   return (
     <View style={styles.container}>
-      {/* Player indicators */}
+      {/* Player indicators with custom names */}
       <View style={styles.playerBar}>
-        {gameState.players.map((player) => (
-          <View
-            key={player.id}
-            style={[
-              styles.playerIndicator,
-              player.id === currentPlayer.id && styles.activePlayer,
-            ]}
-          >
-            <Text style={styles.playerName}>Player {player.id + 1}</Text>
-          </View>
-        ))}
+        {gameState.players.map((player, idx) => {
+          const config = playerConfigs[idx];
+          const isActive = player.id === currentPlayer.id;
+          return (
+            <View
+              key={player.id}
+              style={[
+                styles.playerIndicator,
+                isActive && styles.activePlayer,
+                { borderColor: config.color, borderWidth: isActive ? 3 : 1 },
+              ]}
+            >
+              <View style={[styles.colorDot, { backgroundColor: config.color }]} />
+              <Text style={styles.playerName}>{config.name}</Text>
+            </View>
+          );
+        })}
       </View>
 
       {/* Board grid */}
@@ -107,10 +192,7 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
               key={cellNumber}
               style={[
                 styles.cell,
-                {
-                  top: row * CELL_SIZE,
-                  left: col * CELL_SIZE,
-                },
+                { top: row * CELL_SIZE, left: col * CELL_SIZE },
                 isSnake && styles.snakeCell,
                 isLadder && styles.ladderCell,
               ]}
@@ -120,18 +202,31 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
           );
         })}
 
-        {/* Pawns */}
-        {gameState.players.map((player) => {
+        {/* Pawns with smart positioning */}
+        {gameState.players.map((player, idx) => {
           const { row, col } = getCellPosition(player.position);
+          const cellGroup = playersByPosition.get(player.position);
+          const itemInCell = cellGroup?.find((g) => g.player.id === player.id);
+          const offset = itemInCell
+            ? getPawnOffset(itemInCell.indexInCell, itemInCell.totalInCell)
+            : { dx: 0, dy: 0 };
+
+          const config = playerConfigs[idx];
+          const sprite = SpriteGenerator.generate('pawn', {
+            seed,
+            palette: PALETTE,
+            overrides: { color: config.color },
+          });
+
           return (
             <Image
               key={`pawn-${player.id}`}
-              source={{ uri: SpriteGenerator.generate('pawn', { seed, palette: PALETTE, overrides: { color: player.color } }).uri }}
+              source={{ uri: sprite.uri }}
               style={[
                 styles.pawn,
                 {
-                  top: row * CELL_SIZE + (CELL_SIZE - 32) / 2,
-                  left: col * CELL_SIZE + (CELL_SIZE - 32) / 2,
+                  top: row * CELL_SIZE + (CELL_SIZE - 32) / 2 + offset.dy,
+                  left: col * CELL_SIZE + (CELL_SIZE - 32) / 2 + offset.dx,
                 },
               ]}
             />
@@ -139,23 +234,28 @@ export function CobrasEscadasGame({ playerCount }: CobrasEscadasGameProps) {
         })}
       </View>
 
-      {/* Dice roller with BG3-style animation */}
-      <DiceRoller
+      {/* 3D Dice roller */}
+      <Dice3D
         value={gameState.diceValue ?? null}
         isRolling={gameState.phase === 'rolling'}
-        playerColor={currentPlayer.color}
+        playerColor={currentPlayerConfig?.color ?? '#ffffff'}
         onRoll={handleStartRoll}
         onRollComplete={handleRollComplete}
       />
+
+      {/* Current turn indicator */}
+      <Text style={styles.turnIndicator}>
+        Vez de: {currentPlayerConfig?.name ?? `Jogador ${currentPlayer.id + 1}`}
+      </Text>
 
       {/* Win overlay */}
       {gameState.phase === 'game-over' && gameState.winner !== null && (
         <View style={styles.winOverlay}>
           <Text style={styles.winText}>
-            Player {gameState.winner + 1} Wins!
+            🎉 {playerConfigs[gameState.winner]?.name ?? `Jogador ${gameState.winner + 1}`} Venceu!
           </Text>
           <TouchableOpacity style={styles.playAgainButton} onPress={handlePlayAgain}>
-            <Text style={styles.playAgainText}>Play Again</Text>
+            <Text style={styles.playAgainText}>Jogar Novamente</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -170,23 +270,37 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#1b4332',
   },
+  loadingText: {
+    color: '#d8f3dc',
+    fontSize: 20,
+  },
   playerBar: {
     flexDirection: 'row',
     marginBottom: 12,
     gap: 8,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   playerIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 4,
+    paddingVertical: 6,
+    borderRadius: 8,
     backgroundColor: '#2d6a4f',
+    gap: 6,
   },
   activePlayer: {
-    backgroundColor: '#52b788',
+    backgroundColor: '#40916c',
+  },
+  colorDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
   },
   playerName: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   board: {
@@ -221,26 +335,34 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
   },
+  turnIndicator: {
+    color: '#d8f3dc',
+    fontSize: 16,
+    marginTop: 8,
+    fontWeight: '600',
+  },
   winOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   winText: {
     color: '#ffffff',
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 24,
+    textAlign: 'center',
+    paddingHorizontal: 32,
   },
   playAgainButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 14,
+    paddingHorizontal: 36,
     backgroundColor: '#52b788',
-    borderRadius: 8,
+    borderRadius: 10,
   },
   playAgainText: {
-    color: '#ffffff',
+    color: '#1b4332',
     fontSize: 18,
     fontWeight: 'bold',
   },

@@ -5,24 +5,24 @@
  */
 
 import type { SpriteSpec } from '../rendering/PixelRenderer';
-import { generateBoardCell } from './templates/board-cell.svg';
-import { generateCheckerPiece } from './templates/checker-piece.svg';
-import { generateChessBishop } from './templates/chess-bishop.svg';
-import { generateChessKing } from './templates/chess-king.svg';
-import { generateChessKnight } from './templates/chess-knight.svg';
-import { generateChessPawn } from './templates/chess-pawn.svg';
-import { generateChessQueen } from './templates/chess-queen.svg';
-import { generateChessRook } from './templates/chess-rook.svg';
-import { generateDiceFace } from './templates/dice-face.svg';
-import { generateLadder } from './templates/ladder.svg';
-import { generatePawn } from './templates/pawn.svg';
-import { generateRaceCar } from './templates/race-car.svg';
-import { generateRaceTileAsphalt } from './templates/race-tile-asphalt.svg';
-import { generateRaceTileBarrier } from './templates/race-tile-barrier.svg';
-import { generateRaceTileGrass } from './templates/race-tile-grass.svg';
-import { generateSnake } from './templates/snake.svg';
-import { generateStationBg } from './templates/station-bg.svg';
-import { generateTrainBase } from './templates/train-base.svg';
+import { generateBoardCell } from './templates/board-cell.svg.ts';
+import { generateCheckerPiece } from './templates/checker-piece.svg.ts';
+import { generateChessBishop } from './templates/chess-bishop.svg.ts';
+import { generateChessKing } from './templates/chess-king.svg.ts';
+import { generateChessKnight } from './templates/chess-knight.svg.ts';
+import { generateChessPawn } from './templates/chess-pawn.svg.ts';
+import { generateChessQueen } from './templates/chess-queen.svg.ts';
+import { generateChessRook } from './templates/chess-rook.svg.ts';
+import { generateDiceFace } from './templates/dice-face.svg.ts';
+import { generateLadder } from './templates/ladder.svg.ts';
+import { generatePawn } from './templates/pawn.svg.ts';
+import { generateRaceCar } from './templates/race-car.svg.ts';
+import { generateRaceTileAsphalt } from './templates/race-tile-asphalt.svg.ts';
+import { generateRaceTileBarrier } from './templates/race-tile-barrier.svg.ts';
+import { generateRaceTileGrass } from './templates/race-tile-grass.svg.ts';
+import { generateSnake } from './templates/snake.svg.ts';
+import { generateStationBg } from './templates/station-bg.svg.ts';
+import { generateTrainBase } from './templates/train-base.svg.ts';
 
 /** Parameters for sprite generation. */
 export interface GenerateParams<TOverrides = Record<string, unknown>> {
