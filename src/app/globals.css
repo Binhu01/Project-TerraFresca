@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-nexora-blue: #3563F5;
+  --color-nexora-cyan: #20C5C9;
+  --color-nexora-dark: #0B1220;
+  --color-nexora-bg: #F8FAFF;
+  --color-nexora-bg-secondary: #F5F7FB;
+  --color-nexora-text: #101828;
+  --color-nexora-text-secondary: #667085;
+  --color-nexora-border: #E4E9F2;
+  --color-nexora-success: #16A34A;
+  --color-nexora-warning: #EAB308;
+  --color-nexora-error: #DC2626;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-nexora-bg text-nexora-text antialiased;
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Nexora",
+    "slug": "nexora",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "nexora",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#3563F5",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nexora.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "A Nexora precisa da câmera para anexar imagens.",
+        "NSPhotoLibraryUsageDescription": "A Nexora precisa acessar suas fotos para anexar imagens."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#3563F5"
+      },
+      "package": "com.nexora.app",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "VIBRATE",
+        "NOTIFICATIONS"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-notifications"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
+    }
+  }
+}
