@@ -201,7 +201,7 @@ export async function getOrCreateMpPlan(
         transaction_amount: monthlyPrice,
         currency_id: currency,
       },
-      back_url: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://nexora.app"}/dashboard/billing`,
+      back_url: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/dashboard/billing`,
     }),
   });
 
@@ -268,7 +268,7 @@ export async function createMpSubscription(params: {
         currency_id: params.currency ?? "BRL",
         ...(startDate ? { start_date: startDate } : {}),
       },
-      back_url: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://nexora.app"}/dashboard/billing`,
+      back_url: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/dashboard/billing`,
     }),
   });
 

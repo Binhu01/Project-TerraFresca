@@ -132,21 +132,6 @@ ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE interactions ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
--- HELPER: check that the caller is a member of the given organization
--- ============================================================================
-CREATE OR REPLACE FUNCTION is_member_of(p_org_id UUID)
-RETURNS BOOLEAN
-LANGUAGE sql
-SECURITY DEFINER STABLE SET search_path = public
-AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM memberships
-    WHERE memberships.organization_id = p_org_id
-      AND memberships.user_id = auth.uid()
-  );
-$$;
-
--- ============================================================================
 -- CUSTOMERS policies
 -- ============================================================================
 CREATE POLICY "Members can view customers of their organizations"

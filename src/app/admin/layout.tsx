@@ -24,7 +24,7 @@ export default async function AdminLayout({
 }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/sign-in");
+  if (!user) redirect("/login");
 
   const { data: admin } = await supabase
     .from("platform_admins")

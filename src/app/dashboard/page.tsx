@@ -531,39 +531,14 @@ export default async function DashboardPage() {
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-nexora-text-secondary">
               Sua organização <strong>{activeData.org.name}</strong> está
-              configurada e operacional. Os módulos de Clientes, Leads, Vendas,
-              Produtos, Estoque e Financeiro estão disponíveis. Equipe e
-              Relatórios serão disponibilizados nas próximas atualizações.
+              configurada e operacional. Todos os módulos estão disponíveis:
+              Clientes, Leads, Vendas, Produtos, Estoque, Financeiro, Equipe,
+              Relatórios, Inteligência IA e Assinaturas.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Coming Soon Modules */}
-      <div>
-        <h2 className="mb-4 font-display text-lg font-semibold text-nexora-dark">
-          Módulos em desenvolvimento
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            "Equipe",
-            "Relatórios",
-            "Configurações",
-          ].map((module) => (
-            <div
-              key={module}
-              className="flex items-center justify-between rounded-lg border border-dashed border-nexora-border bg-nexora-bg-secondary/50 px-4 py-3"
-            >
-              <span className="text-sm font-medium text-nexora-text-secondary">
-                {module}
-              </span>
-              <span className="rounded bg-nexora-bg-secondary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-nexora-text-secondary/70">
-                Em breve
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+          </div>
   );
 }
