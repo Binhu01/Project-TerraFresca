@@ -39,8 +39,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "your-eas-project-id"
+        "projectId": "SEU_EAS_PROJECT_ID_AQUI"
       }
-    }
+    },
+    "_comment_eas": "Para obter o projectId: npx eas init (dentro de apps/mobile). Requer conta em expo.dev."
   }
 }
