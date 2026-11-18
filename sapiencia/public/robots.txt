@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sapiência — Plataforma educacional de prática de redações ENEM
+# Site estático, todo o conteúdo é público e pode ser indexado

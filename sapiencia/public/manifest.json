@@ -1,0 +1,28 @@
+{
+  "name": "Sapiência",
+  "short_name": "Sapiência",
+  "description": "Plataforma de prática de redações ENEM com repertórios socioculturais, modelos didáticos e autoavaliação.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#17121F",
+  "theme_color": "#7F5D99",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
