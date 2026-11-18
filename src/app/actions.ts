@@ -20,30 +20,32 @@ export async function getLandingData() {
     return { barbers: [], services: [], products: [], settings: null };
   }
 
+  // Buscar membros ativos primeiro (necessário para filtrar profissionais)
+  const { data: activeMembers } = await supabase
+    .from("memberships")
+    .select("user_id")
+    .eq("organization_id", org.id)
+    .eq("status", "active");
+
+  const activeUserIds = activeMembers?.map((m: { user_id: string }) => m.user_id) ?? [];
+
   // Buscar dados em paralelo
   const [barbersRes, servicesRes, productsRes, settingsRes] = await Promise.all([
-    // Profissionais ativos
-    supabase
-      .from("profiles")
-      .select(`
-        id,
-        full_name,
-        avatar_url,
-        phone,
-        role,
-        instagram
-      `)
-      .in(
-        "id",
-        (
-          await supabase
-            .from("memberships")
-            .select("user_id")
-            .eq("organization_id", org.id)
-            .eq("status", "active")
-        ).data?.map((m: any) => m.user_id) ?? []
-      )
-      .order("full_name"),
+    // Profissionais ativos (apenas se houver membros)
+    activeUserIds.length > 0
+      ? supabase
+          .from("profiles")
+          .select(`
+            id,
+            full_name,
+            avatar_url,
+            phone,
+            role,
+            instagram
+          `)
+          .in("id", activeUserIds)
+          .order("full_name")
+      : Promise.resolve({ data: [], error: null }),
 
     // Serviços ativos
     supabase
