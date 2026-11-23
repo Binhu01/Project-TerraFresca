@@ -1,18 +1,44 @@
+/**
+ * Modelo de dados de repertórios socioculturais
+ * Reestruturado com tipo_conteudo para organização por subcategorias
+ */
+
+export type TipoConteudo =
+  | 'pessoa'
+  | 'livro'
+  | 'filme'
+  | 'citacao'
+  | 'musica'
+  | 'instituicao'
+
+
 export interface Repertorio {
   id: string
   nome: string
-  tipo: 'Filósofo' | 'Sociólogo' | 'Lei' | 'Livro' | 'Filme' | 'Série' | 'Pensador' | 'Movimento' | 'Fenômeno'
+  /** @deprecated Use tipo_conteudo instead */
+  tipo: string
+  /** Nova classificação por subcategoria */
+  tipo_conteudo: TipoConteudo
   tags: string[]
   explicacao: string
   comoUsar: string
+  /** Campos opcionais por tipo de conteúdo */
+  autor?: string
+  imagem?: string
+  ano?: number
+  contexto?: string
+  fonte?: string
 }
 
 export const REPERTORIOS: Repertorio[] = [
+  // === PESSOAS (Filósofos, Sociólogos, Pensadores) ===
   {
     id: 'bauman',
     nome: 'Zygmunt Bauman — Modernidade Líquida',
     tipo: 'Sociólogo',
+    tipo_conteudo: 'pessoa',
     tags: ['Desigualdade', 'Tecnologia', 'Mídia'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Zygmunt_Bauman_2013.jpg',
     explicacao: 'Na visão de Bauman, a contemporaneidade dissolveu as estruturas sólidas que antes davam segurança aos indivíduos: empregos duradouros, casamentos estáveis, identidades fixas deram lugar a vínculos descartáveis e a uma ansiedade permanente diante da incerteza.',
     comoUsar: 'Quando o tema abordar solidão nas redes sociais, relacionamentos superficiais ou a dificuldade de construir projetos de longo prazo, esse conceito explica por que a liberdade moderna veio acompanhada de insegurança existencial.',
   },
@@ -20,7 +46,9 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'foucault',
     nome: 'Michel Foucault — Vigiar e Punir',
     tipo: 'Filósofo',
+    tipo_conteudo: 'pessoa',
     tags: ['Violência', 'Direitos', 'Política'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/0/02/Michel_Foucault_1974.jpg',
     explicacao: 'Ao estudar a história das prisões, Foucault revelou que o poder moderno não opera apenas pela força bruta, mas pela vigilância sutil: câmeras, algoritmos, avaliações de desempenho e exames médicos funcionam como panópticos invisíveis que disciplinam corpos e mentes sem necessidade de coerção física.',
     comoUsar: 'Em redações sobre monitoramento digital, controle algorítmico ou medicalização da vida cotidiana, essa perspectiva mostra que a submissão voluntária pode ser mais eficaz do que a repressão explícita.',
   },
@@ -28,7 +56,9 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'arendt',
     nome: 'Hannah Arendt — Banalidade do Mal',
     tipo: 'Filósofo',
+    tipo_conteudo: 'pessoa',
     tags: ['Violência', 'Política', 'Direitos'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Hannah_Arendt_1975.jpg',
     explicacao: 'Ao cobrir o julgamento de Adolf Eichmann, Arendt percebeu algo perturbador: o burocrata nazista não era um monstro sádico, mas um funcionário medíocre que simplesmente cumpria ordens sem refletir sobre suas consequências morais. O mal radical, concluiu ela, nasce da ausência de pensamento.',
     comoUsar: 'Esse conceito é poderoso para analisar situações em que pessoas comuns participam de sistemas opressores — seja em ambientes corporativos tóxicos, em conivência com corrupção ou na naturalização de preconceitos cotidianos.',
   },
@@ -36,7 +66,9 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'freire',
     nome: 'Paulo Freire — Pedagogia do Oprimido',
     tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
     tags: ['Educação', 'Desigualdade', 'Direitos'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Paulo_Freire_1963.jpg',
     explicacao: 'Para Freire, a educação tradicional funciona como "educação bancária": o professor deposita conteúdos em alunos passivos, reproduzindo relações de dominação. Em contrapartida, a educação libertadora exige diálogo horizontal, onde educador e educando aprendem juntos a ler o mundo e transformá-lo.',
     comoUsar: 'Ao discutir evasão escolar, currículo desconectado da realidade ou a necessidade de letramento crítico, essa abordagem questiona quem define o que vale como conhecimento legítimo.',
   },
@@ -44,7 +76,9 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'marx',
     nome: 'Karl Marx — Alienação do Trabalho',
     tipo: 'Filósofo',
+    tipo_conteudo: 'pessoa',
     tags: ['Desigualdade', 'Trabalho', 'Economia'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Karl_Marx_001.jpg',
     explicacao: 'Marx observou que, sob o capitalismo industrial, o trabalhador perde a conexão com o fruto de seu labor: ele fabrica objetos que nunca possuirá, executa tarefas fragmentadas que não compreende em sua totalidade e acaba se estranhando de sua própria humanidade criativa.',
     comoUsar: 'Na atualidade, esse conceito ilumina debates sobre burnout profissional, plataformas de entrega que tratam trabalhadores como extensões algorítmicas e a sensação generalizada de que o trabalho perdeu seu sentido além do salário.',
   },
@@ -52,39 +86,19 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'durkheim',
     nome: 'Émile Durkheim — Fato Social',
     tipo: 'Sociólogo',
+    tipo_conteudo: 'pessoa',
     tags: ['Educação', 'Violência', 'Política'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Emile_Durkheim.jpg',
     explicacao: 'Durkheim ensinou que existem forças coletivas — normas, valores, costumes — que agem sobre os indivíduos independentemente de sua vontade pessoal. Essas pressões invisíveis explicam por que pessoas racionais seguem modas absurdas, toleram injustiças familiares ou perpetuam tradições que ninguém mais questiona.',
     comoUsar: 'Quando o tema envolver pressão social, conformismo ou resistência a mudanças culturais, o conceito de fato social ajuda a mostrar que o problema ultrapassa escolhas individuais.',
-  },
-  {
-    id: 'cf88',
-    nome: 'Constituição Federal de 1988',
-    tipo: 'Lei',
-    tags: ['Direitos', 'Educação', 'Saúde mental', 'Meio ambiente'],
-    explicacao: 'Apelidada de "Constituição Cidadã", a Carta de 1988 nasceu da redemocratização e inscreveu pela primeira vez na lei brasileira um catálogo amplo de direitos sociais: saúde universal, educação gratuita, meio ambiente equilibrado e dignidade como fundamento da República.',
-    comoUsar: 'Sempre que um problema social parecer insolúvel, vale lembrar que ele já foi reconhecido como direito constitucional — o desafio, portanto, não é criar novas leis, mas efetivar as que já existem.',
-  },
-  {
-    id: 'ddhu',
-    nome: 'Declaração Universal dos Direitos Humanos',
-    tipo: 'Lei',
-    tags: ['Direitos', 'Violência', 'Desigualdade'],
-    explicacao: 'Redigida em 1948 como resposta aos horrores da Segunda Guerra Mundial, a Declaração afirma que todo ser humano nasce livre e igual em dignidade — independentemente de raça, sexo, religião ou nacionalidade. Setenta anos depois, seu artigo primeiro continua sendo mais aspiração do que realidade.',
-    comoUsar: 'Funciona como parâmetro universal para avaliar qualquer violação: quando um grupo é sistematicamente privado de condições mínimas de existência, a DUDH oferece a linguagem jurídica e moral para nomear essa injustiça.',
-  },
-  {
-    id: 'estatuto-crianca',
-    nome: 'Estatuto da Criança e do Adolescente (ECA)',
-    tipo: 'Lei',
-    tags: ['Direitos', 'Educação', 'Violência'],
-    explicacao: 'Antes do ECA, crianças pobres eram tratadas como "menores em situação irregular" — objeto de tutela estatal, não sujeitos de direitos. A lei de 1990 inverteu essa lógica ao estabelecer proteção integral, prioridade absoluta e responsabilidade compartilhada entre família, Estado e sociedade.',
-    comoUsar: 'Em temas sobre infância vulnerável, trabalho infantil ou falhas no sistema de acolhimento, o ECA permite contrastar o que a lei promete com o que a prática entrega.',
   },
   {
     id: 'racismo-estrutural',
     nome: 'Silvio Almeida — Racismo Estrutural',
     tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
     tags: ['Desigualdade', 'Violência', 'Direitos'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Silvio_Almeida_2023.jpg',
     explicacao: 'Almeida demonstra que o racismo não se reduz a atos individuais de preconceito: ele está embutido nas instituições, nos critérios de contratação, nos algoritmos de reconhecimento facial e na distribuição geográfica de serviços públicos. Mesmo sem intenção discriminatória, o sistema produz resultados racialmente desiguais.',
     comoUsar: 'Essa distinção entre racismo individual e estrutural é crucial para evitar argumentos ingênuos como "não vejo cor" — porque o problema persiste exatamente quando ninguém precisa ser explicitamente racista para que a desigualdade se reproduza.',
   },
@@ -92,39 +106,178 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'byung-chul',
     nome: 'Byung-Chul Han — Sociedade do Cansaço',
     tipo: 'Filósofo',
+    tipo_conteudo: 'pessoa',
     tags: ['Saúde mental', 'Tecnologia', 'Trabalho'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Byung-Chul_Han_2015.jpg',
     explicacao: 'Han diagnostica uma mudança silenciosa: saímos da sociedade disciplinar (onde o poder vinha de fora, via proibições) para a sociedade do desempenho (onde cada indivíduo se cobra internamente). O resultado é uma epidemia de depressão e burnout — não porque trabalhamos demais, mas porque nunca paramos de nos otimizar.',
     comoUsar: 'Ideal para temas sobre saúde mental juvenil, cultura do hustle, dopamina das redes sociais e a paradoxal exaustão de uma geração que tem mais liberdade do que qualquer outra.',
   },
   {
+    id: 'conceicao-evaristo',
+    nome: 'Conceição Evaristo — Escrevivência',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Educação', 'Desigualdade', 'Cultura'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Concei%C3%A7%C3%A3o_Evaristo_2018.jpg',
+    explicacao: 'Evaristo cunhou "escrevivência" para nomear uma escrita que não separa criação literária de experiência vivida: seus textos nascem do corpo de mulher negra, da memória da favela e da recusa em ser porta-voz universal de uma dor que é singular e coletiva ao mesmo tempo.',
+    comoUsar: 'Conceito potente para discutir quem tem autoridade narrativa, por que certos saberes são considerados "literatura" enquanto outros ficam restritos a "depoimento", e como a arte pode ser ato político de autoafirmação.',
+  },
+  {
+    id: 'milton-santos',
+    nome: 'Milton Santos — Globalização como Perversidade',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Desigualdade', 'Globalização', 'Economia'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Milton_Santos_1994.jpg',
+    explicacao: 'Santos distinguia três globalizações: a do mercado (que integra capitais), a da técnica (que conecta infraestruturas) e a da perversidade (que exclui bilhões de pessoas dos benefícios das duas primeiras). Para ele, o espaço geográfico brasileiro era simultaneamente integrado ao mundo financeiro e fragmentado internamente pela miséria.',
+    comoUsar: 'Oferece vocabulário preciso para criticar a ideia de que conectividade equivale a desenvolvimento — regiões inteiras podem ter sinal 5G e ainda carecer de saneamento básico.',
+  },
+  {
+    id: 'jessica-andrade',
+    nome: 'Jéssica Andrade — Luta contra LGBTfobia',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Direitos', 'Violência', 'Saúde mental'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/8/89/J%C3%A9ssica_Andrade_2022.jpg',
+    explicacao: 'Andrade documenta como a violência contra pessoas LGBTQIA+ no Brasil não é exceção, mas regra inscrita nas dinâmicas familiares, escolares e institucionais. Seus estudos mostram que o sofrimento psíquico dessa população correlaciona-se diretamente com a ausência de políticas de acolhimento, não com a orientação sexual em si.',
+    comoUsar: 'Dados e conceitos dessa autora permitem deslocar o debate de "tolerância individual" para "responsabilidade institucional" — o problema não é a existência de pessoas queer, mas a estrutura que as torna alvo.',
+  },
+  {
+    id: 'simone-beauvoir',
+    nome: 'Simone de Beauvoir — O Segundo Sexo',
+    tipo: 'Filósofo',
+    tipo_conteudo: 'pessoa',
+    tags: ['Direitos', 'Desigualdade', 'Educação'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Simone_de_Beauvoir2.jpg',
+    explicacao: '"Não se nasce mulher, torna-se mulher": com essa frase célebre, Beauvoir demonstrou que o gênero não é destino biológico, mas construção cultural acumulada através de educação diferenciada, expectativas sociais e limitações profissionais impostas desde a infância.',
+    comoUsar: 'Fundamenta argumentos sobre desigualdade de gênero que vão além do senso comum: se a feminilidade é aprendida, então pode ser desaprendida e reinventada — abrindo caminho para políticas educacionais e culturais transformadoras.',
+  },
+  {
+    id: 'frantz-fanon',
+    nome: 'Frantz Fanon — Os Condenados da Terra',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Violência', 'Desigualdade', 'Direitos'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Frantz_Fanon.jpg',
+    explicacao: 'Fanon, psiquiatra martinicano que lutou na Argélia, descreveu como o colonialismo não ocupa apenas territórios, mas também mentes: o colonizado internaliza a inferioridade imposta pelo colonizador, resultando em autodestruição, violência intra-comunitária e patologias psíquicas específicas.',
+    comoUsar: 'Essencial para analisar racismos pós-coloniais, complexos de inferioridade cultural e a violência que comunidades oprimidas dirigem contra si mesmas quando não conseguem canalizar sua raiva contra o opressor real.',
+  },
+  {
+    id: 'bell-hooks',
+    nome: 'bell hooks — Ensinando a Transgredir',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Educação', 'Desigualdade', 'Direitos'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Bell_hooks_2014.jpg',
+    explicacao: 'hooks escreveu com letras minúsculas para descentralizar o ego e centralizar as ideias. Sua pedagogia insiste que ensinar é ato de amor político: exige reconhecer a dor dos estudantes marginalizados sem reduzi-los a vítimas, e transformar a sala de aula em espaço de cura coletiva e pensamento insurgente.',
+    comoUsar: 'Oferece alternativa concreta à educação bancária de Freire, adicionando dimensões afetivas e interseccionais — especialmente relevante para temas sobre saúde mental estudantil, racismo curricular e pedagogias antirracistas.',
+  },
+  {
+    id: 'boaventura',
+    nome: 'Boaventura de Sousa Santos — Epistemologias do Sul',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Educação', 'Desigualdade', 'Política'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Boaventura_de_Sousa_Santos_2014.jpg',
+    explicacao: 'Santos denuncia o "epistemicídio": a destruição sistemática de formas de conhecimento não-ocidentais durante a colonização. Seu projeto propõe uma "ecologia de saberes" onde a ciência convive com saberes indígenas, quilombolas e populares, sem hierarquia prévia.',
+    comoUsar: 'Argumento sofisticado para temas sobre diversidade cultural, educação indígena, medicina tradicional e a necessidade de descolonizar currículos universitários que ainda tratam o cânone europeu como universal.',
+  },
+  {
+    id: 'marie-curie',
+    nome: 'Marie Curie — Pioneira na Ciência',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Educação', 'Desigualdade', 'Tecnologia'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Marie_Curie_c._1920s.jpg',
+    explicacao: 'Curie descobriu dois elementos radioativos, ganhou dois Prêmios Nobel em áreas diferentes e morreu de aplasia causada pela exposição prolongada à radiação que ela mesma estudava. Fez tudo isso numa época em que mulheres eram barradas de universidades e laboratórios, trabalhando em galpões improvisados sem ventilação adequada.',
+    comoUsar: 'Seu legado serve tanto para celebrar conquistas femininas quanto para denunciar as condições adversas que tornaram essas conquistas excepcionais — a pergunta que permanece é quantas Marias Curie foram perdidas porque nunca tiveram acesso ao laboratório.',
+  },
+  {
+    id: 'djamila-ribeiro',
+    nome: 'Djamila Ribeiro — Lugar de Fala',
+    tipo: 'Pensador',
+    tipo_conteudo: 'pessoa',
+    tags: ['Direitos', 'Desigualdade', 'Educação'],
+    imagem: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Djamila_Ribeiro_2022.jpg',
+    explicacao: 'Ribeiro esclarece um conceito frequentemente mal compreendido: lugar de fala não significa que só membros de um grupo podem falar sobre ele, mas que a posição social de quem fala importa — um homem branco falando sobre racismo ocupa um lugar diferente de uma mulher negra, e essa diferença deve ser reconhecida, não apagada.',
+    comoUsar: 'Ferramenta analítica para debates sobre representatividade, apropriação cultural e a tendência de universalizar experiências particulares — ajuda a evitar tanto o silenciamento quanto a fala vazia de quem não vive a realidade discutida.',
+  },
+
+  // === LIVROS ===
+  {
     id: 'gilberto-freyre',
-    nome: 'Gilberto Freyre — Casa-Grande & Senzala',
+    nome: 'Casa-Grande & Senzala',
     tipo: 'Livro',
+    tipo_conteudo: 'livro',
     tags: ['Desigualdade', 'História', 'Cultura'],
+    autor: 'Gilberto Freyre',
+    ano: 1933,
     explicacao: 'Publicado em 1933, este livro celebrou a miscigenação como marca positiva da identidade brasileira. Décadas depois, críticos apontaram que essa narrativa romantizou a violência colonial e serviu para mascarar o racismo sob o mito da "democracia racial".',
     comoUsar: 'Pode ser citado tanto como marco interpretativo quanto como exemplo de como interpretações bem-intencionadas podem perpetuar silenciamentos — útil para discutir revisão historiográfica e os limites do conceito de mestiçagem.',
   },
   {
     id: 'graciliano-ramos',
-    nome: 'Graciliano Ramos — Vidas Secas',
+    nome: 'Vidas Secas',
     tipo: 'Livro',
+    tipo_conteudo: 'livro',
     tags: ['Desigualdade', 'Meio ambiente', 'Educação'],
+    autor: 'Graciliano Ramos',
     explicacao: 'Fabiano, Sinhá Vitória e seus filhos vagam pelo sertão numa circularidade cruel: fogem da seca, encontram trabalho explorado, são expulsos pela próxima estiagem. A prosa seca de Graciliano espelha a aridez da paisagem e a impossibilidade de comunicação de personagens reduzidos à sobrevivência animal.',
     comoUsar: 'Retrata a interseção entre desastre ambiental e exclusão social de forma visceral — perfeito para temas sobre migração climática, analfabetismo funcional e a naturalização da miséria no imaginário nacional.',
   },
   {
     id: 'machado-assis',
-    nome: 'Machado de Assis — Memórias Póstumas de Brás Cubas',
+    nome: 'Memórias Póstumas de Brás Cubas',
     tipo: 'Livro',
+    tipo_conteudo: 'livro',
     tags: ['Desigualdade', 'Política', 'Cultura'],
+    autor: 'Machado de Assis',
     explicacao: 'Um narrador morto conta sua vida com ironia devastadora: revela que a elite carioca do Império mantinha a escravidão enquanto debatia liberalismo, que o casamento era transação financeira disfarçada de romance e que a filantropia servia para lavar consciências culpadas.',
     comoUsar: 'A ironia machadiana desmonta discursos hipócritas com precisão cirúrgica — excelente para criticar a distância entre retórica pública e prática privada em qualquer época.',
   },
   {
+    id: 'orwell',
+    nome: '1984',
+    tipo: 'Livro',
+    tipo_conteudo: 'livro',
+    tags: ['Política', 'Tecnologia', 'Mídia'],
+    autor: 'George Orwell',
+    ano: 1949,
+    explicacao: 'No universo de Orwell, o Partido não apenas vigia seus cidadãos através das teletelas, mas reescreve diariamente o passado para garantir que a verdade oficial coincida sempre com o interesse do momento. O neolinguagem reduz o vocabulário para tornar impensável qualquer dissidência.',
+    comoUsar: 'Mais relevante do que nunca em tempos de deepfakes, revisionismo histórico patrocinado por Estados e erosão da confiança em fontes factuais — a distopia orwelliana alerta que a liberdade começa pela capacidade de nomear a realidade.',
+  },
+  {
+    id: 'huxley',
+    nome: 'Admirável Mundo Novo',
+    tipo: 'Livro',
+    tipo_conteudo: 'livro',
+    tags: ['Tecnologia', 'Saúde mental', 'Mídia'],
+    autor: 'Aldous Huxley',
+    ano: 1932,
+    explicacao: 'Enquanto Orwell temia a repressão, Huxley temia a sedução: sua distopia imagina uma sociedade onde ninguém precisa ser forçado a obedecer porque todos foram condicionados desde o nascimento a amar sua servidão, entretidos por entretenimento infinito e anestesiados por uma droga chamada soma.',
+    comoUsar: 'Contraponto essencial a 1984 — sugere que o maior risco à liberdade pode não ser a censura, mas a distração voluntária; não a dor imposta, mas o prazer administrado que elimina a capacidade de questionar.',
+  },
+  {
+    id: 'carolina-maria',
+    nome: 'Quarto de Despejo',
+    tipo: 'Livro',
+    tipo_conteudo: 'livro',
+    tags: ['Desigualdade', 'Educação', 'Direitos'],
+    autor: 'Carolina Maria de Jesus',
+    ano: 1960,
+    explicacao: 'Catadora de papel na favela do Canindé, Carolina escreveu em cadernos encontrados no lixo um diário que chocou o Brasil de 1960: relatou fome, violência policial, racismo e a humilhação diária de viver na margem com uma prosa crua que nenhuma academia teria produzido.',
+    comoUsar: 'Representa a voz que rompe o silêncio imposto pela exclusão — citá-la é afirmar que saber não é privilégio de classe e que a literatura brasileira mais autêntica muitas vezes nasce fora das livrarias.',
+  },
+
+  // === FILMES E SÉRIES ===
+  {
     id: 'parasita',
-    nome: 'Parasita (2019) — Bong Joon-ho',
+    nome: 'Parasita',
     tipo: 'Filme',
+    tipo_conteudo: 'filme',
     tags: ['Desigualdade', 'Violência', 'Economia'],
+    ano: 2019,
+    autor: 'Bong Joon-ho',
     explicacao: 'Duas famílias ocupam extremos opostos da pirâmide social sul-coreana: os Kim vivem num porão alagável; os Park, numa mansão arquitetônica. Quando os primeiros infiltram-se na casa dos segundos como empregados, o filme expõe como a proximidade física entre classes não elimina o abismo simbólico que as separa.',
     comoUsar: 'A metáfora vertical (porão vs. colina) traduz visualmente a imobilidade social — aplicável a discussões sobre meritocracia, segregação urbana e a ilusão de que talento basta para superar barreiras estruturais.',
   },
@@ -132,14 +285,48 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'black-mirror',
     nome: 'Black Mirror — Série Antológica',
     tipo: 'Série',
+    tipo_conteudo: 'filme',
     tags: ['Tecnologia', 'Mídia', 'Saúde mental'],
     explicacao: 'Cada episódio projeta tecnologias atuais para futuros próximos e perturbadores: sistemas de reputação social que determinam acesso a serviços, implantes que gravam memórias para serem revividas obsessivamente, inteligências artificiais que simulam entes queridos falecidos. O horror nunca vem da tecnologia em si, mas do uso que fazemos dela.',
     comoUsar: 'Funciona como laboratório ético ficcional — cite episódios específicos para ilustrar riscos concretos de tendências tecnológicas que já estão em curso.',
+  },
+
+  // === INSTITUIÇÕES, LEIS, MOVIMENTOS E FENÔMENOS ===
+  {
+    id: 'cf88',
+    nome: 'Constituição Federal de 1988',
+    tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
+    tags: ['Direitos', 'Educação', 'Saúde mental', 'Meio ambiente'],
+    ano: 1988,
+    explicacao: 'Apelidada de "Constituição Cidadã", a Carta de 1988 nasceu da redemocratização e inscreveu pela primeira vez na lei brasileira um catálogo amplo de direitos sociais: saúde universal, educação gratuita, meio ambiente equilibrado e dignidade como fundamento da República.',
+    comoUsar: 'Sempre que um problema social parecer insolúvel, vale lembrar que ele já foi reconhecido como direito constitucional — o desafio, portanto, não é criar novas leis, mas efetivar as que já existem.',
+  },
+  {
+    id: 'ddhu',
+    nome: 'Declaração Universal dos Direitos Humanos',
+    tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
+    tags: ['Direitos', 'Violência', 'Desigualdade'],
+    ano: 1948,
+    explicacao: 'Redigida em 1948 como resposta aos horrores da Segunda Guerra Mundial, a Declaração afirma que todo ser humano nasce livre e igual em dignidade — independentemente de raça, sexo, religião ou nacionalidade. Setenta anos depois, seu artigo primeiro continua sendo mais aspiração do que realidade.',
+    comoUsar: 'Funciona como parâmetro universal para avaliar qualquer violação: quando um grupo é sistematicamente privado de condições mínimas de existência, a DUDH oferece a linguagem jurídica e moral para nomear essa injustiça.',
+  },
+  {
+    id: 'estatuto-crianca',
+    nome: 'Estatuto da Criança e do Adolescente (ECA)',
+    tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
+    tags: ['Direitos', 'Educação', 'Violência'],
+    ano: 1990,
+    explicacao: 'Antes do ECA, crianças pobres eram tratadas como "menores em situação irregular" — objeto de tutela estatal, não sujeitos de direitos. A lei de 1990 inverteu essa lógica ao estabelecer proteção integral, prioridade absoluta e responsabilidade compartilhada entre família, Estado e sociedade.',
+    comoUsar: 'Em temas sobre infância vulnerável, trabalho infantil ou falhas no sistema de acolhimento, o ECA permite contrastar o que a lei promete com o que a prática entrega.',
   },
   {
     id: 'revolucao-industrial',
     nome: 'Revolução Industrial',
     tipo: 'Movimento',
+    tipo_conteudo: 'instituicao',
     tags: ['Trabalho', 'Meio ambiente', 'Desigualdade'],
     explicacao: 'Entre os séculos XVIII e XIX, máquinas a vapor e fábricas reorganizaram a vida humana em escala inédita: camponeses tornaram-se operários assalariados, cidades incharam sem infraestrutura e a natureza passou a ser vista como recurso infinito. As conquistas materiais vieram acompanhadas de chaminés, jornadas de 16 horas e trabalho infantil legalizado.',
     comoUsar: 'Serve como precedente histórico para mostrar que progresso tecnológico nunca é neutro — sempre beneficia alguns e sacrifica outros, exigindo regulação para distribuir seus frutos.',
@@ -148,47 +335,28 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'movimento-negro',
     nome: 'Movimento Negro Brasileiro',
     tipo: 'Movimento',
+    tipo_conteudo: 'instituicao',
     tags: ['Direitos', 'Desigualdade', 'Violência'],
     explicacao: 'Das irmandades coloniais ao Movimento Negro Unificado de 1978, passando pelas marchas Zumbi dos Palmares e as ocupações contemporâneas, a resistência negra no Brasil construiu conquistas legislativas (como as cotas e a criminalização do racismo) que nenhum governo concedeu espontaneamente.',
     comoUsar: 'Demonstra que direitos não surgem por benevolência estatal, mas por organização coletiva — argumento forte para temas sobre participação política, ações afirmativas e memória histórica.',
   },
   {
-    id: 'conceicao-evaristo',
-    nome: 'Conceição Evaristo — Escrevivência',
-    tipo: 'Pensador',
-    tags: ['Educação', 'Desigualdade', 'Cultura'],
-    explicacao: 'Evaristo cunhou "escrevivência" para nomear uma escrita que não separa criação literária de experiência vivida: seus textos nascem do corpo de mulher negra, da memória da favela e da recusa em ser porta-voz universal de uma dor que é singular e coletiva ao mesmo tempo.',
-    comoUsar: 'Conceito potente para discutir quem tem autoridade narrativa, por que certos saberes são considerados "literatura" enquanto outros ficam restritos a "depoimento", e como a arte pode ser ato político de autoafirmação.',
-  },
-  {
     id: 'acordo-paris',
-    nome: 'Acordo de Paris (2015)',
+    nome: 'Acordo de Paris',
     tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
     tags: ['Meio ambiente', 'Política', 'Tecnologia'],
+    ano: 2015,
     explicacao: 'Pela primeira vez, 195 países concordaram com metas vinculantes para limitar o aquecimento global a 1,5°C acima dos níveis pré-industriais. O acordo reconheceu oficialmente que os países mais pobres — que menos contribuíram para a crise — são os mais vulneráveis a seus efeitos.',
     comoUsar: 'Permite argumentar que a comunidade científica e diplomática já reconhece a urgência climática; o problema deixou de ser negacionismo e passou a ser vontade política e financiamento adequado.',
-  },
-  {
-    id: 'milton-santos',
-    nome: 'Milton Santos — Globalização como Perversidade',
-    tipo: 'Pensador',
-    tags: ['Desigualdade', 'Globalização', 'Economia'],
-    explicacao: 'Santos distinguia três globalizações: a do mercado (que integra capitais), a da técnica (que conecta infraestruturas) e a da perversidade (que exclui bilhões de pessoas dos benefícios das duas primeiras). Para ele, o espaço geográfico brasileiro era simultaneamente integrado ao mundo financeiro e fragmentado internamente pela miséria.',
-    comoUsar: 'Oferece vocabulário preciso para criticar a ideia de que conectividade equivale a desenvolvimento — regiões inteiras podem ter sinal 5G e ainda carecer de saneamento básico.',
-  },
-  {
-    id: 'jessica-andrade',
-    nome: 'Jéssica Andrade — Luta contra LGBTfobia',
-    tipo: 'Pensador',
-    tags: ['Direitos', 'Violência', 'Saúde mental'],
-    explicacao: 'Andrade documenta como a violência contra pessoas LGBTQIA+ no Brasil não é exceção, mas regra inscrita nas dinâmicas familiares, escolares e institucionais. Seus estudos mostram que o sofrimento psíquico dessa população correlaciona-se diretamente com a ausência de políticas de acolhimento, não com a orientação sexual em si.',
-    comoUsar: 'Dados e conceitos dessa autora permitem deslocar o debate de "tolerância individual" para "responsabilidade institucional" — o problema não é a existência de pessoas queer, mas a estrutura que as torna alvo.',
   },
   {
     id: 'marco-civil',
     nome: 'Marco Civil da Internet (Lei 12.965/2014)',
     tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
     tags: ['Tecnologia', 'Direitos', 'Mídia'],
+    ano: 2014,
     explicacao: 'Resultado de anos de consulta pública multissetorial, o Marco Civil estabeleceu a internet como espaço de exercício de cidadania: garantiu neutralidade da rede, privacidade de comunicações e responsabilidade proporcional de plataformas. Foi pioneiro mundial em tratar direitos digitais como extensão de direitos fundamentais.',
     comoUsar: 'Quando o tema envolver moderação de conteúdo, desinformação ou poder das big techs, o Marco Civil oferece o arcabouço legal brasileiro para exigir accountability sem abrir mão da liberdade de expressão.',
   },
@@ -196,87 +364,19 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'lgpd',
     nome: 'Lei Geral de Proteção de Dados (LGPD)',
     tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
     tags: ['Tecnologia', 'Direitos', 'Política'],
+    ano: 2018,
     explicacao: 'Inspirada no regulamento europeu GDPR, a LGPD transformou dados pessoais em bem jurídico protegido: empresas precisam justificar cada coleta, informar finalidades específicas e permitir que cidadãos acessem, corrijam ou deletem suas informações. Na prática, porém, a fiscalização ainda engatinha.',
     comoUsar: 'Ilustra a tensão entre inovação tecnológica e proteção individual — a lei existe, mas sua eficácia depende de órgãos reguladores fortalecidos e de uma cultura de privacidade que o Brasil ainda não consolidou.',
-  },
-  {
-    id: 'orwell',
-    nome: 'George Orwell — 1984',
-    tipo: 'Livro',
-    tags: ['Política', 'Tecnologia', 'Mídia'],
-    explicacao: 'No universo de Orwell, o Partido não apenas vigia seus cidadãos através das teletelas, mas reescreve diariamente o passado para garantir que a verdade oficial coincida sempre com o interesse do momento. O neolinguagem reduz o vocabulário para tornar impensável qualquer dissidência.',
-    comoUsar: 'Mais relevante do que nunca em tempos de deepfakes, revisionismo histórico patrocinado por Estados e erosão da confiança em fontes factuais — a distopia orwelliana alerta que a liberdade começa pela capacidade de nomear a realidade.',
-  },
-  {
-    id: 'huxley',
-    nome: 'Aldous Huxley — Admirável Mundo Novo',
-    tipo: 'Livro',
-    tags: ['Tecnologia', 'Saúde mental', 'Mídia'],
-    explicacao: 'Enquanto Orwell temia a repressão, Huxley temia a sedução: sua distopia imagina uma sociedade onde ninguém precisa ser forçado a obedecer porque todos foram condicionados desde o nascimento a amar sua servidão, entretidos por entretenimento infinito e anestesiados por uma droga chamada soma.',
-    comoUsar: 'Contraponto essencial a 1984 — sugere que o maior risco à liberdade pode não ser a censura, mas a distração voluntária; não a dor imposta, mas o prazer administrado que elimina a capacidade de questionar.',
-  },
-  {
-    id: 'simone-beauvoir',
-    nome: 'Simone de Beauvoir — O Segundo Sexo',
-    tipo: 'Filósofo',
-    tags: ['Direitos', 'Desigualdade', 'Educação'],
-    explicacao: '"Não se nasce mulher, torna-se mulher": com essa frase célebre, Beauvoir demonstrou que o gênero não é destino biológico, mas construção cultural acumulada através de educação diferenciada, expectativas sociais e limitações profissionais impostas desde a infância.',
-    comoUsar: 'Fundamenta argumentos sobre desigualdade de gênero que vão além do senso comum: se a feminilidade é aprendida, então pode ser desaprendida e reinventada — abrindo caminho para políticas educacionais e culturais transformadoras.',
-  },
-  {
-    id: 'frantz-fanon',
-    nome: 'Frantz Fanon — Os Condenados da Terra',
-    tipo: 'Pensador',
-    tags: ['Violência', 'Desigualdade', 'Direitos'],
-    explicacao: 'Fanon, psiquiatra martinicano que lutou na Argélia, descreveu como o colonialismo não ocupa apenas territórios, mas também mentes: o colonizado internaliza a inferioridade imposta pelo colonizador, resultando em autodestruição, violência intra-comunitária e patologias psíquicas específicas.',
-    comoUsar: 'Essencial para analisar racismos pós-coloniais, complexos de inferioridade cultural e a violência que comunidades oprimidas dirigem contra si mesmas quando não conseguem canalizar sua raiva contra o opressor real.',
-  },
-  {
-    id: 'bell-hooks',
-    nome: 'bell hooks — Ensinando a Transgredir',
-    tipo: 'Pensador',
-    tags: ['Educação', 'Desigualdade', 'Direitos'],
-    explicacao: 'hooks escreveu com letras minúsculas para descentralizar o ego e centralizar as ideias. Sua pedagogia insiste que ensinar é ato de amor político: exige reconhecer a dor dos estudantes marginalizados sem reduzi-los a vítimas, e transformar a sala de aula em espaço de cura coletiva e pensamento insurgente.',
-    comoUsar: 'Oferece alternativa concreta à educação bancária de Freire, adicionando dimensões afetivas e interseccionais — especialmente relevante para temas sobre saúde mental estudantil, racismo curricular e pedagogias antirracistas.',
-  },
-  {
-    id: 'boaventura',
-    nome: 'Boaventura de Sousa Santos — Epistemologias do Sul',
-    tipo: 'Pensador',
-    tags: ['Educação', 'Desigualdade', 'Política'],
-    explicacao: 'Santos denuncia o "epistemicídio": a destruição sistemática de formas de conhecimento não-ocidentais durante a colonização. Seu projeto propõe uma "ecologia de saberes" onde a ciência convive com saberes indígenas, quilombolas e populares, sem hierarquia prévia.',
-    comoUsar: 'Argumento sofisticado para temas sobre diversidade cultural, educação indígena, medicina tradicional e a necessidade de descolonizar currículos universitários que ainda tratam o cânone europeu como universal.',
-  },
-  {
-    id: 'marie-curie',
-    nome: 'Marie Curie — Pioneira na Ciência',
-    tipo: 'Pensador',
-    tags: ['Educação', 'Desigualdade', 'Tecnologia'],
-    explicacao: 'Curie descobriu dois elementos radioativos, ganhou dois Prêmios Nobel em áreas diferentes e morreu de aplasia causada pela exposição prolongada à radiação que ela mesma estudava. Fez tudo isso numa época em que mulheres eram barradas de universidades e laboratórios, trabalhando em galpões improvisados sem ventilação adequada.',
-    comoUsar: 'Seu legado serve tanto para celebrar conquistas femininas quanto para denunciar as condições adversas que tornaram essas conquistas excepcionais — a pergunta que permanece é quantas Marias Curie foram perdidas porque nunca tiveram acesso ao laboratório.',
-  },
-  {
-    id: 'carolina-maria',
-    nome: 'Carolina Maria de Jesus — Quarto de Despejo',
-    tipo: 'Livro',
-    tags: ['Desigualdade', 'Educação', 'Direitos'],
-    explicacao: 'Catadora de papel na favela do Canindé, Carolina escreveu em cadernos encontrados no lixo um diário que chocou o Brasil de 1960: relatou fome, violência policial, racismo e a humilhação diária de viver na margem com uma prosa crua que nenhuma academia teria produzido.',
-    comoUsar: 'Representa a voz que rompe o silêncio imposto pela exclusão — citá-la é afirmar que saber não é privilégio de classe e que a literatura brasileira mais autêntica muitas vezes nasce fora das livrarias.',
-  },
-  {
-    id: 'djamila-ribeiro',
-    nome: 'Djamila Ribeiro — Lugar de Fala',
-    tipo: 'Livro',
-    tags: ['Direitos', 'Desigualdade', 'Educação'],
-    explicacao: 'Ribeiro esclarece um conceito frequentemente mal compreendido: lugar de fala não significa que só membros de um grupo podem falar sobre ele, mas que a posição social de quem fala importa — um homem branco falando sobre racismo ocupa um lugar diferente de uma mulher negra, e essa diferença deve ser reconhecida, não apagada.',
-    comoUsar: 'Ferramenta analítica para debates sobre representatividade, apropriação cultural e a tendência de universalizar experiências particulares — ajuda a evitar tanto o silenciamento quanto a fala vazia de quem não vive a realidade discutida.',
   },
   {
     id: 'statute-idoso',
     nome: 'Estatuto do Idoso (Lei 10.741/2003)',
     tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
     tags: ['Direitos', 'Saúde mental', 'Violência'],
+    ano: 2003,
     explicacao: 'Com o envelhecimento acelerado da população brasileira, o Estatuto garantiu prioridade em processos judiciais, gratuidade em transportes, criminalização do etarismo e obrigação familiar de cuidado. Na prática, porém, filas de espera em hospitais e abandono em asilos clandestinos revelam o abismo entre norma e realidade.',
     comoUsar: 'Permite contrastar o discurso de "respeito aos mais velhos" com dados concretos de negligência — especialmente relevante dado que o Brasil será um dos países mais envelhecidos do mundo em poucas décadas.',
   },
@@ -284,7 +384,9 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'lei-maria-penha',
     nome: 'Lei Maria da Penha (Lei 11.340/2006)',
     tipo: 'Lei',
+    tipo_conteudo: 'instituicao',
     tags: ['Direitos', 'Violência', 'Desigualdade'],
+    ano: 2006,
     explicacao: 'Nomeada em homenagem à biofarmacêutica cearense que ficou paraplégica após duas tentativas de homicídio pelo marido, esta lei criou medidas protetivas de urgência, delegacias especializadas e tipificou a violência doméstica como crime com penas agravadas. Reconheceu, finalmente, que o lar pode ser o lugar mais perigoso para uma mulher.',
     comoUsar: 'Apesar de ser considerada uma das melhores legislações do mundo no tema, os índices de feminicídio permanecem altos — o que permite argumentar que leis necessárias não são suficientes sem mudança cultural e orçamento adequado.',
   },
@@ -292,6 +394,7 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'coral-reef',
     nome: 'Branqueamento de Corais',
     tipo: 'Fenômeno',
+    tipo_conteudo: 'instituicao',
     tags: ['Meio ambiente', 'Tecnologia', 'Política'],
     explicacao: 'Recifes de coral abrigam 25% da vida marinha, mas estão morrendo em velocidade alarmante: quando a temperatura do oceano sobe apenas 1-2°C, os corais expulsam as algas simbióticas que lhes dão cor e nutrientes, ficando brancos e vulneráveis à morte. Eventos de branqueamento em massa, antes raros, agora ocorrem a cada poucos anos.',
     comoUsar: 'Metáfora visual poderosa para a crise climática — o embranquecimento dos recifes é o equivalente submarino dos incêndios florestais: visível, irreversível em curto prazo e diretamente ligado às emissões humanas.',
@@ -300,6 +403,7 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'uberizacao',
     nome: 'Uberização do Trabalho',
     tipo: 'Fenômeno',
+    tipo_conteudo: 'instituicao',
     tags: ['Trabalho', 'Tecnologia', 'Desigualdade'],
     explicacao: 'Plataformas digitais reconfiguraram o trabalho sob a promessa de flexibilidade e empreendedorismo individual. Na realidade, transferiram riscos (manutenção, acidentes, falta de demanda) para trabalhadores classificados como "parceiros", enquanto algoritmos definem tarifas, rotas e punições sem transparência ou negociação coletiva.',
     comoUsar: 'Exemplo contemporâneo de como inovação tecnológica pode servir para contornar proteções trabalhistas conquistadas ao longo de um século — útil para discutir reforma trabalhista, renda básica e os limites da regulação diante de modelos de negócio globais.',
@@ -308,6 +412,7 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'intolerancia-religiosa',
     nome: 'Intolerância Religiosa no Brasil',
     tipo: 'Fenômeno',
+    tipo_conteudo: 'instituicao',
     tags: ['Violência', 'Direitos', 'Cultura'],
     explicacao: 'Terreiros de candomblé e umbanda são atacados regularmente no Brasil, muitas vezes por grupos que confundem fé alheia com demonização. Essa violência tem raízes históricas profundas: o sincretismo forçado durante a escravidão e a criminalização das religiões afro-brasileiras até meados do século XX deixaram marcas que persistem sob novas roupagens.',
     comoUsar: 'Tema sensível que exige cuidado: citar dados de ataques recentes junto com o contexto histórico evita tratar a intolerância como fenômeno isolado e mostra sua continuidade estrutural com o racismo religioso.',
@@ -316,6 +421,7 @@ export const REPERTORIOS: Repertorio[] = [
     id: 'crise-climatica',
     nome: 'Crise Climática Global',
     tipo: 'Fenômeno',
+    tipo_conteudo: 'instituicao',
     tags: ['Meio ambiente', 'Política', 'Desigualdade'],
     explicacao: 'Secas recordes no Sul, enchentes devastadoras no Nordeste, temperaturas acima de 50°C em regiões temperadas: os eventos extremos deixaram de ser previsões científicas para se tornarem rotina noticiosa. A ciência é clara sobre as causas antropogênicas; a política, paralisada pela disputa entre crescimento econômico imediato e sobrevivência de longo prazo.',
     comoUsar: 'A chave argumentativa é a justiça climática: os 10% mais ricos do planeta respondem por quase metade das emissões históricas, enquanto os 50% mais pobres sofrem desproporcionalmente os efeitos — tornando a crise ambiental inseparável da crise de desigualdade.',
@@ -338,3 +444,78 @@ export const TEMAS_REPERTORIO = [
   'Cultura',
   'Globalização',
 ] as const
+
+/** Subcategorias padronizadas para organização por tipo de conteúdo */
+export const SUBCATEGORIAS: { key: TipoConteudo; label: string; icon: string }[] = [
+  { key: 'pessoa', label: 'Pessoas', icon: '👤' },
+  { key: 'livro', label: 'Livros', icon: '📚' },
+  { key: 'filme', label: 'Filmes', icon: '🎬' },
+  { key: 'citacao', label: 'Frases e Citações', icon: '💬' },
+  { key: 'musica', label: 'Músicas', icon: '🎵' },
+  { key: 'instituicao', label: 'Estatutos e Instituições', icon: '🏛️' },
+]
+
+/** Retorna a contagem de repertórios por subcategoria dentro de um tema */
+export function countBySubcategoria(repertorios: Repertorio[], tema: string): Record<TipoConteudo, number> {
+  const counts: Record<TipoConteudo, number> = {
+    pessoa: 0,
+    livro: 0,
+    filme: 0,
+    citacao: 0,
+    musica: 0,
+    instituicao: 0,
+  }
+
+  for (const r of repertorios) {
+    if (!tema || r.tags.includes(tema)) {
+      counts[r.tipo_conteudo]++
+    }
+  }
+
+  return counts
+}
+
+/** Filtra repertórios por tema e subcategoria */
+export function filterRepertorios(
+  repertorios: Repertorio[],
+  tema: string,
+  subcategoria: TipoConteudo | '',
+  search: string,
+  favoritesOnly: boolean,
+  favorites: Set<string>,
+): Repertorio[] {
+  let filtered = repertorios
+
+  // Filtro por tema
+  if (tema) {
+    filtered = filtered.filter(r => r.tags.includes(tema))
+  }
+
+  // Filtro por subcategoria
+  if (subcategoria) {
+    filtered = filtered.filter(r => r.tipo_conteudo === subcategoria)
+  }
+
+  // Filtro por busca (ignora acentos e case)
+  if (search) {
+    const normalizedSearch = search
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+
+    filtered = filtered.filter(r => {
+      const haystack = `${r.nome} ${r.explicacao} ${r.autor || ''} ${r.tags.join(' ')}`
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+      return haystack.includes(normalizedSearch)
+    })
+  }
+
+  // Filtro por favoritos
+  if (favoritesOnly) {
+    filtered = filtered.filter(r => favorites.has(r.id))
+  }
+
+  return filtered
+}
