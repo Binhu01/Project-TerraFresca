@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import SilkShaderBackground from './components/ui/SilkShaderBackground'
+import SplashScreen from './components/ui/SplashScreen'
 import Skeleton from './components/ui/Skeleton'
 import Header from './components/layout/Header'
 import Navigation from './components/layout/Navigation'
@@ -25,6 +26,11 @@ function getPageFromHash(): Page {
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>(getPageFromHash)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [splashFinished, setSplashFinished] = useState(() => !!sessionStorage.getItem('sapiencia-splash-shown'))
+
+  const handleSplashFinish = useCallback(() => {
+    setSplashFinished(true)
+  }, [])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -62,6 +68,10 @@ export default function App() {
       default:
         return <Inicio onNavigate={navigateTo} />
     }
+  }
+
+  if (!splashFinished) {
+    return <SplashScreen onFinish={handleSplashFinish} />
   }
 
   return (

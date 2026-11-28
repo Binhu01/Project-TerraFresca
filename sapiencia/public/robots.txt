@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://sapiencia-xi.vercel.app/sitemap.xml
+
 # Sapiência — Plataforma educacional de prática de redações ENEM
 # Site estático, todo o conteúdo é público e pode ser indexado
