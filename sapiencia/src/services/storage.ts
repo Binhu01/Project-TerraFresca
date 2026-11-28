@@ -27,6 +27,8 @@ export interface TrainingRecord {
     purpose: boolean
     detail: boolean
   }
+  correctionMode?: 'realtime' | 'final'
+  aiEvaluation?: import('../features/ai-correction/types/aiCorrection.types').DeepCorrectionResult
 }
 
 function isLocalStorageAvailable(): boolean {

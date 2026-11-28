@@ -159,3 +159,36 @@ h1, h2, h3, h4 {
     outline-color: var(--color-lavender);
   }
 }
+
+/* Splash screen entrance animation */
+@keyframes splashIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-splashIn {
+  animation: splashIn 0.6s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-splashIn {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Hide scrollbar for horizontal tab scroll on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
